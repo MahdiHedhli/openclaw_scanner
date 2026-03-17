@@ -1,4 +1,12 @@
 .DS_Store
+._*
+.AppleDouble
+.LSOverride
+.Spotlight-V100/
+.Trashes/
+Icon?
+.env
+.env.*
 __pycache__/
 *.py[cod]
 *.egg-info/
