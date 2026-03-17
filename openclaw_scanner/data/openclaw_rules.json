@@ -1,0 +1,252 @@
+{
+  "product": "OpenClaw",
+  "product_markers": [
+    "openclaw",
+    "claw gateway",
+    "gateway token",
+    "clawdbot",
+    "moltbot"
+  ],
+  "version_rules": [
+    {
+      "id": "example-ui-bundle-family",
+      "version": "2026.2.x",
+      "confidence": 0.72,
+      "notes": "Example placeholder rule. Replace with a lab-derived bundle hash or asset name.",
+      "all": [
+        {
+          "type": "script_contains",
+          "value": "dashboard.examplehash.js"
+        }
+      ]
+    }
+  ],
+  "vulnerabilities": [
+    {
+      "id": "CVE-2026-25593",
+      "title": "Gateway WebSocket config.apply allows unsafe cliPath command injection",
+      "severity": "HIGH",
+      "fixed_in": "2026.1.20",
+      "surface": [
+        "gateway_ws",
+        "local_client"
+      ],
+      "requires_auth": false,
+      "affected_ranges": [
+        {
+          "lt": "2026.1.20"
+        }
+      ],
+      "references": [
+        "https://nvd.nist.gov/vuln/detail/CVE-2026-25593"
+      ]
+    },
+    {
+      "id": "CVE-2026-24763",
+      "title": "Docker sandbox PATH handling command injection",
+      "severity": "HIGH",
+      "fixed_in": "2026.1.29",
+      "surface": [
+        "tooling",
+        "sandbox"
+      ],
+      "requires_auth": true,
+      "affected_ranges": [
+        {
+          "lt": "2026.1.29"
+        }
+      ],
+      "references": [
+        "https://nvd.nist.gov/vuln/detail/CVE-2026-24763"
+      ]
+    },
+    {
+      "id": "CVE-2026-25157",
+      "title": "sshNodeCommand project path and SSH target OS command injection",
+      "severity": "HIGH",
+      "fixed_in": "2026.1.29",
+      "surface": [
+        "ssh_tooling"
+      ],
+      "requires_auth": false,
+      "affected_ranges": [
+        {
+          "lt": "2026.1.29"
+        }
+      ],
+      "references": [
+        "https://nvd.nist.gov/vuln/detail/CVE-2026-25157"
+      ]
+    },
+    {
+      "id": "CVE-2026-26317",
+      "title": "Browser-facing localhost mutation routes accept cross-origin state changes",
+      "severity": "MEDIUM",
+      "fixed_in": "2026.2.14",
+      "surface": [
+        "browser_control",
+        "local_http"
+      ],
+      "requires_auth": false,
+      "affected_ranges": [
+        {
+          "lt": "2026.2.14"
+        }
+      ],
+      "references": [
+        "https://nvd.nist.gov/vuln/detail/CVE-2026-26317"
+      ]
+    },
+    {
+      "id": "CVE-2026-26322",
+      "title": "Gateway tool accepts untrusted gatewayUrl and can initiate outbound WebSocket connections",
+      "severity": "MEDIUM",
+      "fixed_in": "2026.2.14",
+      "surface": [
+        "gateway_ws",
+        "ssrf"
+      ],
+      "requires_auth": true,
+      "affected_ranges": [
+        {
+          "lt": "2026.2.14"
+        }
+      ],
+      "references": [
+        "https://nvd.nist.gov/vuln/detail/CVE-2026-26322"
+      ]
+    },
+    {
+      "id": "CVE-2026-26324",
+      "title": "SSRF protection bypass using full-form IPv4-mapped IPv6 literals",
+      "severity": "MEDIUM",
+      "fixed_in": "2026.2.14",
+      "surface": [
+        "gateway_http",
+        "ssrf"
+      ],
+      "requires_auth": true,
+      "affected_ranges": [
+        {
+          "lt": "2026.2.14"
+        }
+      ],
+      "references": [
+        "https://nvd.nist.gov/vuln/detail/CVE-2026-26324"
+      ]
+    },
+    {
+      "id": "CVE-2026-26326",
+      "title": "skills.status can disclose raw resolved config values to operator.read clients",
+      "severity": "MEDIUM",
+      "fixed_in": "2026.2.14",
+      "surface": [
+        "gateway_http",
+        "api"
+      ],
+      "requires_auth": true,
+      "affected_ranges": [
+        {
+          "lt": "2026.2.14"
+        }
+      ],
+      "references": [
+        "https://nvd.nist.gov/vuln/detail/CVE-2026-26326"
+      ]
+    },
+    {
+      "id": "CVE-2026-26329",
+      "title": "Browser upload action permits arbitrary file read from the Gateway host",
+      "severity": "HIGH",
+      "fixed_in": "2026.2.14",
+      "surface": [
+        "gateway_http",
+        "browser_tool"
+      ],
+      "requires_auth": true,
+      "affected_ranges": [
+        {
+          "lt": "2026.2.14"
+        }
+      ],
+      "references": [
+        "https://nvd.nist.gov/vuln/detail/CVE-2026-26329"
+      ]
+    },
+    {
+      "id": "CVE-2026-27001",
+      "title": "Workspace path prompt injection through unsanitized current working directory",
+      "severity": "MEDIUM",
+      "fixed_in": "2026.2.15",
+      "surface": [
+        "agent_runtime"
+      ],
+      "requires_auth": false,
+      "affected_ranges": [
+        {
+          "lt": "2026.2.15"
+        }
+      ],
+      "references": [
+        "https://nvd.nist.gov/vuln/detail/CVE-2026-27001"
+      ]
+    },
+    {
+      "id": "CVE-2026-27009",
+      "title": "Stored XSS in the OpenClaw Control UI assistant identity bootstrap",
+      "severity": "HIGH",
+      "fixed_in": "2026.2.15",
+      "surface": [
+        "control_ui",
+        "gateway_http"
+      ],
+      "requires_auth": true,
+      "affected_ranges": [
+        {
+          "lt": "2026.2.15"
+        }
+      ],
+      "references": [
+        "https://nvd.nist.gov/vuln/detail/CVE-2026-27009"
+      ]
+    },
+    {
+      "id": "CVE-2026-28472",
+      "title": "Gateway WebSocket handshake skips device identity validation when auth.token is present",
+      "severity": "CRITICAL",
+      "fixed_in": "2026.2.2",
+      "surface": [
+        "gateway_ws"
+      ],
+      "requires_auth": false,
+      "affected_ranges": [
+        {
+          "lt": "2026.2.2"
+        }
+      ],
+      "references": [
+        "https://nvd.nist.gov/vuln/detail/CVE-2026-28472"
+      ]
+    },
+    {
+      "id": "CVE-2026-32063",
+      "title": "systemd unit file generation allows CRLF-based directive injection",
+      "severity": "HIGH",
+      "fixed_in": "2026.2.21",
+      "surface": [
+        "service_install",
+        "gateway_host"
+      ],
+      "requires_auth": true,
+      "affected_ranges": [
+        {
+          "gte": "2026.2.19-2",
+          "lt": "2026.2.21"
+        }
+      ],
+      "references": [
+        "https://nvd.nist.gov/vuln/detail/CVE-2026-32063"
+      ]
+    }
+  ]
+}
