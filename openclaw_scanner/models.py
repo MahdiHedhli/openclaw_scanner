@@ -48,6 +48,18 @@ class VersionMatch:
 
 
 @dataclass
+class FingerprintMatch:
+    family: str
+    confidence: float
+    source: str
+    label: Optional[str] = None
+    notes: Optional[str] = None
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
 class VulnerabilityMatch:
     id: str
     title: str
@@ -72,6 +84,7 @@ class ScanResult:
     metadata: Dict[str, Any] = field(default_factory=dict)
     product_confidence: float = 0.0
     observations: Dict[str, ProbeObservation] = field(default_factory=dict)
+    fingerprint_matches: List[FingerprintMatch] = field(default_factory=list)
     matched_versions: List[VersionMatch] = field(default_factory=list)
     vulnerability_matches: List[VulnerabilityMatch] = field(default_factory=list)
     errors: List[str] = field(default_factory=list)
@@ -87,6 +100,9 @@ class ScanResult:
                 path: observation.to_dict()
                 for path, observation in self.observations.items()
             },
+            "fingerprint_matches": [
+                match.to_dict() for match in self.fingerprint_matches
+            ],
             "matched_versions": [match.to_dict() for match in self.matched_versions],
             "vulnerability_matches": [
                 match.to_dict() for match in self.vulnerability_matches

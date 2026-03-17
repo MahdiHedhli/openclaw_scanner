@@ -3,7 +3,7 @@ import re
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple
 
-from .models import ProbeObservation, VersionMatch, VulnerabilityMatch
+from .models import FingerprintMatch, ProbeObservation, VersionMatch, VulnerabilityMatch
 
 VERSION_RE = re.compile(r"(?<![0-9A-Za-z])(20\d{2}\.\d+\.\d+(?:-[A-Za-z0-9]+)?)(?=$|[^0-9A-Za-z])")
 
@@ -85,6 +85,40 @@ def infer_versions(
         reverse=True,
     )
     return ordered
+
+
+def infer_fingerprint_matches(
+    observations: Dict[str, ProbeObservation], rules: Dict[str, Any]
+) -> List[FingerprintMatch]:
+    matches: List[FingerprintMatch] = []
+    version_hints = _collect_version_hints(observations.values())
+
+    for rule in rules.get("fingerprint_rules", []):
+        if not _rule_matches(rule, observations, version_hints):
+            continue
+
+        matches.append(
+            FingerprintMatch(
+                family=rule["family"],
+                confidence=float(rule.get("confidence", 0.75)),
+                source=rule.get("id", "custom_rule"),
+                label=rule.get("label"),
+                notes=rule.get("notes"),
+            )
+        )
+
+    deduped: Dict[Tuple[str, str], FingerprintMatch] = {}
+    for match in matches:
+        key = (match.family, match.source)
+        existing = deduped.get(key)
+        if existing is None or existing.confidence < match.confidence:
+            deduped[key] = match
+
+    return sorted(
+        deduped.values(),
+        key=lambda item: (item.confidence, item.family),
+        reverse=True,
+    )
 
 
 def correlate_vulnerabilities(
@@ -174,11 +208,12 @@ def _condition_matches(
 ) -> bool:
     condition_type = condition["type"]
     target_path = condition.get("path")
-    candidate_observations = (
-        [observations[target_path]]
-        if target_path and target_path in observations
-        else list(observations.values())
-    )
+    if target_path:
+        candidate_observations = (
+            [observations[target_path]] if target_path in observations else []
+        )
+    else:
+        candidate_observations = list(observations.values())
 
     if condition_type == "path_status":
         statuses = {int(value) for value in condition.get("statuses", [])}

@@ -21,6 +21,247 @@
       ]
     }
   ],
+  "fingerprint_rules": [
+    {
+      "id": "openclaw-ui-only-404-api",
+      "family": "openclaw_ui_only_404_api",
+      "label": "OpenClaw UI-only gateway with JSON /health and 404 API paths",
+      "confidence": 0.93,
+      "notes": "Observed on live port 18789 responders where the dashboard is present, /api paths return a stable text/plain Not Found body, and /health exposes compact JSON.",
+      "all": [
+        {
+          "type": "title_contains",
+          "path": "/",
+          "value": "OpenClaw Control"
+        },
+        {
+          "type": "path_status",
+          "path": "/login",
+          "statuses": [200]
+        },
+        {
+          "type": "path_status",
+          "path": "/api",
+          "statuses": [404]
+        },
+        {
+          "type": "header_contains",
+          "path": "/api",
+          "header": "content-type",
+          "value": "text/plain"
+        },
+        {
+          "type": "body_hash",
+          "path": "/api",
+          "value": "0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5"
+        },
+        {
+          "type": "path_status",
+          "path": "/api/version",
+          "statuses": [404]
+        },
+        {
+          "type": "body_hash",
+          "path": "/api/version",
+          "value": "0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5"
+        },
+        {
+          "type": "path_status",
+          "path": "/health",
+          "statuses": [200]
+        },
+        {
+          "type": "header_contains",
+          "path": "/health",
+          "header": "content-type",
+          "value": "json"
+        },
+        {
+          "type": "json_key",
+          "path": "/health",
+          "value": "ok"
+        },
+        {
+          "type": "json_key",
+          "path": "/health",
+          "value": "status"
+        },
+        {
+          "type": "body_hash",
+          "path": "/health",
+          "value": "6191c1f860b8a0225c697e46ebce756193dfb18c189218cfe742037501da05eb"
+        }
+      ]
+    },
+    {
+      "id": "openclaw-spa-fallback-all-200",
+      "family": "openclaw_spa_fallback_all_200",
+      "label": "OpenClaw SPA fallback on API and health routes",
+      "confidence": 0.86,
+      "notes": "Observed on live port 18789 responders where /api, /api/version, and /health all return the same HTML control shell instead of a dedicated API response.",
+      "all": [
+        {
+          "type": "title_contains",
+          "path": "/",
+          "value": "OpenClaw Control"
+        },
+        {
+          "type": "path_status",
+          "path": "/api",
+          "statuses": [200]
+        },
+        {
+          "type": "title_contains",
+          "path": "/api",
+          "value": "OpenClaw Control"
+        },
+        {
+          "type": "path_status",
+          "path": "/api/version",
+          "statuses": [200]
+        },
+        {
+          "type": "title_contains",
+          "path": "/api/version",
+          "value": "OpenClaw Control"
+        },
+        {
+          "type": "path_status",
+          "path": "/health",
+          "statuses": [200]
+        },
+        {
+          "type": "title_contains",
+          "path": "/health",
+          "value": "OpenClaw Control"
+        },
+        {
+          "type": "header_contains",
+          "path": "/api/version",
+          "header": "content-type",
+          "value": "text/html"
+        },
+        {
+          "type": "header_contains",
+          "path": "/health",
+          "header": "content-type",
+          "value": "text/html"
+        }
+      ]
+    },
+    {
+      "id": "clawdbot-spa-fallback-all-200",
+      "family": "clawdbot_spa_fallback_all_200",
+      "label": "Clawdbot SPA fallback on API and health routes",
+      "confidence": 0.88,
+      "notes": "Observed on live port 18789 responders where the Clawdbot control shell is returned across UI, API, and health endpoints.",
+      "all": [
+        {
+          "type": "title_contains",
+          "path": "/",
+          "value": "Clawdbot Control"
+        },
+        {
+          "type": "path_status",
+          "path": "/api",
+          "statuses": [200]
+        },
+        {
+          "type": "title_contains",
+          "path": "/api",
+          "value": "Clawdbot Control"
+        },
+        {
+          "type": "path_status",
+          "path": "/api/version",
+          "statuses": [200]
+        },
+        {
+          "type": "title_contains",
+          "path": "/api/version",
+          "value": "Clawdbot Control"
+        },
+        {
+          "type": "path_status",
+          "path": "/health",
+          "statuses": [200]
+        },
+        {
+          "type": "title_contains",
+          "path": "/health",
+          "value": "Clawdbot Control"
+        },
+        {
+          "type": "header_contains",
+          "path": "/api/version",
+          "header": "content-type",
+          "value": "text/html"
+        },
+        {
+          "type": "header_contains",
+          "path": "/health",
+          "header": "content-type",
+          "value": "text/html"
+        }
+      ]
+    },
+    {
+      "id": "moltbot-spa-fallback-all-200",
+      "family": "moltbot_spa_fallback_all_200",
+      "label": "Moltbot SPA fallback on API and health routes",
+      "confidence": 0.9,
+      "notes": "Observed on live port 18789 responders where the Moltbot control shell is returned across UI, API, and health endpoints.",
+      "all": [
+        {
+          "type": "title_contains",
+          "path": "/",
+          "value": "Moltbot Control"
+        },
+        {
+          "type": "path_status",
+          "path": "/api",
+          "statuses": [200]
+        },
+        {
+          "type": "title_contains",
+          "path": "/api",
+          "value": "Moltbot Control"
+        },
+        {
+          "type": "path_status",
+          "path": "/api/version",
+          "statuses": [200]
+        },
+        {
+          "type": "title_contains",
+          "path": "/api/version",
+          "value": "Moltbot Control"
+        },
+        {
+          "type": "path_status",
+          "path": "/health",
+          "statuses": [200]
+        },
+        {
+          "type": "title_contains",
+          "path": "/health",
+          "value": "Moltbot Control"
+        },
+        {
+          "type": "header_contains",
+          "path": "/api/version",
+          "header": "content-type",
+          "value": "text/html"
+        },
+        {
+          "type": "header_contains",
+          "path": "/health",
+          "header": "content-type",
+          "value": "text/html"
+        }
+      ]
+    }
+  ],
   "vulnerabilities": [
     {
       "id": "CVE-2026-25593",

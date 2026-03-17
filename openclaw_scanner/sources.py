@@ -12,6 +12,7 @@ def load_targets(
     direct_targets: Optional[Sequence[str]] = None,
     targets_file: Optional[str] = None,
     shodan_file: Optional[str] = None,
+    shodan_records: Optional[Sequence[dict]] = None,
 ) -> List[ScanTarget]:
     targets: List[ScanTarget] = []
 
@@ -38,28 +39,10 @@ def load_targets(
             )
 
     if shodan_file:
-        for item in _load_shodan_objects(Path(shodan_file)):
-            label = _shodan_label(item)
-            targets.append(
-                ScanTarget(
-                    label=label,
-                    source="shodan",
-                    candidates=_shodan_candidates(item),
-                    metadata={
-                        **{
-                            key: item.get(key)
-                            for key in ("ip_str", "port", "hostnames", "org", "ssl")
-                            if key in item
-                        },
-                        **(
-                            {"gateway_port": gateway_port}
-                            if (gateway_port := _extract_gateway_port(item)) is not None
-                            else {}
-                        ),
-                    },
-                    raw_record=item,
-                )
-            )
+        _append_shodan_targets(targets, _load_shodan_objects(Path(shodan_file)), "shodan")
+
+    if shodan_records:
+        _append_shodan_targets(targets, shodan_records, "shodan_api")
 
     deduped: Dict[str, ScanTarget] = {}
     for target in targets:
@@ -67,6 +50,46 @@ def load_targets(
         deduped[key] = target
 
     return list(deduped.values())
+
+
+def _append_shodan_targets(
+    targets: List[ScanTarget],
+    records: Iterable[dict],
+    source: str,
+) -> None:
+    for item in records:
+        label = _shodan_label(item)
+        scanner_meta = item.get("_openclaw_scanner") or {}
+        targets.append(
+            ScanTarget(
+                label=label,
+                source=source,
+                candidates=_shodan_candidates(item),
+                metadata={
+                    **{
+                        key: item.get(key)
+                        for key in ("ip_str", "port", "hostnames", "org", "ssl")
+                        if key in item
+                    },
+                    **(
+                        {"gateway_port": gateway_port}
+                        if (gateway_port := _extract_gateway_port(item)) is not None
+                        else {}
+                    ),
+                    **(
+                        {"shodan_query": scanner_meta.get("query")}
+                        if scanner_meta.get("query")
+                        else {}
+                    ),
+                    **(
+                        {"shodan_page": scanner_meta.get("page")}
+                        if scanner_meta.get("page") is not None
+                        else {}
+                    ),
+                },
+                raw_record=item,
+            )
+        )
 
 
 def _target_candidates(value: str) -> List[str]:

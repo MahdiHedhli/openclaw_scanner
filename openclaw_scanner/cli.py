@@ -1,14 +1,23 @@
 import argparse
+import csv
 import json
+import io
 import re
 import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from typing import Iterable, List, Optional
 
-from .inference import correlate_vulnerabilities, infer_product_confidence, infer_versions, load_rules
+from .inference import (
+    correlate_vulnerabilities,
+    infer_fingerprint_matches,
+    infer_product_confidence,
+    infer_versions,
+    load_rules,
+)
 from .models import ProbeObservation, ScanResult
 from .probe import DEFAULT_PROBE_PATHS, has_signal, probe_candidate
+from .shodan_api import ShodanAPIError, resolve_shodan_api_key, search_shodan
 from .sources import load_targets
 
 VERSION_RE = re.compile(r"(?<![0-9A-Za-z])(20\d{2}\.\d+\.\d+(?:-[A-Za-z0-9]+)?)(?=$|[^0-9A-Za-z])")
@@ -16,11 +25,42 @@ VERSION_RE = re.compile(r"(?<![0-9A-Za-z])(20\d{2}\.\d+\.\d+(?:-[A-Za-z0-9]+)?)(
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="Fingerprint OpenClaw versions from direct targets or Shodan exports."
+        description="Fingerprint OpenClaw versions from direct targets, Shodan exports, or live Shodan API searches."
     )
     parser.add_argument("--target", action="append", default=[], help="Target base URL or host.")
     parser.add_argument("--targets-file", help="Path to a newline-delimited target list.")
     parser.add_argument("--shodan-file", help="Path to a Shodan export JSON or JSONL file.")
+    parser.add_argument(
+        "--shodan-query",
+        action="append",
+        default=[],
+        help="Live Shodan search query. Can be repeated.",
+    )
+    parser.add_argument(
+        "--shodan-key",
+        help="Shodan API key. Falls back to SHODAN_API_KEY or .env if omitted.",
+    )
+    parser.add_argument(
+        "--shodan-pages",
+        type=int,
+        default=1,
+        help="Number of Shodan search result pages to fetch per query.",
+    )
+    parser.add_argument(
+        "--shodan-fields",
+        help="Comma-separated Shodan fields to request.",
+    )
+    parser.add_argument(
+        "--shodan-minify",
+        action="store_true",
+        help="Use Shodan's minified search response mode.",
+    )
+    parser.add_argument(
+        "--shodan-timeout",
+        type=float,
+        default=10.0,
+        help="Timeout in seconds for live Shodan API requests.",
+    )
     parser.add_argument(
         "--probe-path",
         action="append",
@@ -47,7 +87,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--rules-file",
-        help="Path to a custom rules file. Defaults to data/openclaw_rules.json.",
+        help="Path to a custom rules file. Defaults to openclaw_scanner/data/openclaw_rules.json.",
     )
     parser.add_argument(
         "--rescan-shodan",
@@ -56,7 +96,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--format",
-        choices=("pretty", "json", "ndjson"),
+        choices=("pretty", "json", "ndjson", "csv"),
         default="pretty",
         help="Output format.",
     )
@@ -73,14 +113,40 @@ def main(argv: Optional[List[str]] = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
 
+    shodan_records = []
+    if args.shodan_query:
+        api_key = resolve_shodan_api_key(args.shodan_key)
+        if not api_key:
+            parser.error(
+                "Provide --shodan-key, set SHODAN_API_KEY, or add SHODAN_API_KEY=... to .env for --shodan-query."
+            )
+
+        for query in args.shodan_query:
+            try:
+                response = search_shodan(
+                    query=query,
+                    api_key=api_key,
+                    pages=max(args.shodan_pages, 1),
+                    fields=args.shodan_fields,
+                    minify=args.shodan_minify,
+                    timeout=args.shodan_timeout,
+                    user_agent=args.user_agent,
+                )
+            except ShodanAPIError as exc:
+                parser.exit(2, f"Shodan API error: {exc}\n")
+            shodan_records.extend(response["matches"])
+
     targets = load_targets(
         direct_targets=args.target,
         targets_file=args.targets_file,
         shodan_file=args.shodan_file,
+        shodan_records=shodan_records,
     )
 
     if not targets:
-        parser.error("Provide at least one --target, --targets-file, or --shodan-file.")
+        parser.error(
+            "Provide at least one --target, --targets-file, --shodan-file, or --shodan-query."
+        )
 
     rules = load_rules(args.rules_file)
     probe_paths = list(dict.fromkeys(DEFAULT_PROBE_PATHS + list(args.probe_path)))
@@ -163,6 +229,9 @@ def _scan_single_target(
             observations=offline_observations,
         )
         result.product_confidence = infer_product_confidence(offline_observations, rules)
+        result.fingerprint_matches = infer_fingerprint_matches(
+            offline_observations, rules
+        )
         result.matched_versions = infer_versions(offline_observations, rules)
         result.vulnerability_matches = correlate_vulnerabilities(
             result.matched_versions, rules
@@ -185,6 +254,8 @@ def _scan_single_target(
             user_agent=user_agent,
             max_bytes=max_bytes,
         )
+        prefixed_errors = _prefix_candidate_errors(candidate, errors)
+        last_result.errors.extend(prefixed_errors)
 
         result = ScanResult(
             input_target=target.label,
@@ -192,9 +263,10 @@ def _scan_single_target(
             probed_base=candidate,
             metadata=target.metadata,
             observations=observations,
-            errors=errors,
+            errors=list(last_result.errors),
         )
         result.product_confidence = infer_product_confidence(observations, rules)
+        result.fingerprint_matches = infer_fingerprint_matches(observations, rules)
         result.matched_versions = infer_versions(observations, rules)
         result.vulnerability_matches = correlate_vulnerabilities(
             result.matched_versions, rules
@@ -312,6 +384,8 @@ def render_results(results: List[ScanResult], output_format: str) -> str:
         return json.dumps(serializable, indent=2, sort_keys=True)
     if output_format == "ndjson":
         return "\n".join(json.dumps(item, sort_keys=True) for item in serializable)
+    if output_format == "csv":
+        return _render_csv(results)
     return _render_pretty(results)
 
 
@@ -324,6 +398,18 @@ def _render_pretty(results: List[ScanResult]) -> str:
             f"Probed base: {result.probed_base or 'none'}",
             f"OpenClaw confidence: {result.product_confidence:.2f}",
         ]
+        if result.metadata.get("shodan_query"):
+            lines.append(f"Shodan query: {result.metadata['shodan_query']}")
+
+        if result.fingerprint_matches:
+            best_family = result.fingerprint_matches[0]
+            family_label = best_family.label or best_family.family
+            lines.append(
+                "Top fingerprint family: "
+                f"{family_label} (confidence {best_family.confidence:.2f}, source {best_family.source})"
+            )
+        else:
+            lines.append("Top fingerprint family: none")
 
         if result.matched_versions:
             best = result.matched_versions[0]
@@ -365,3 +451,103 @@ def _render_pretty(results: List[ScanResult]) -> str:
         blocks.append("\n".join(lines))
 
     return "\n\n".join(blocks) + "\n"
+
+
+def _render_csv(results: List[ScanResult]) -> str:
+    output = io.StringIO()
+    fieldnames = [
+        "input_target",
+        "source",
+        "probed_base",
+        "product_confidence",
+        "shodan_query",
+        "top_fingerprint_family",
+        "top_fingerprint_confidence",
+        "top_fingerprint_source",
+        "fingerprint_families",
+        "top_version",
+        "top_version_confidence",
+        "top_version_source",
+        "matched_versions",
+        "version_sources",
+        "top_vulnerability",
+        "top_vulnerability_severity",
+        "vulnerability_ids",
+        "vulnerability_count",
+        "observed_paths",
+        "markers",
+        "error_count",
+        "errors",
+    ]
+    writer = csv.DictWriter(output, fieldnames=fieldnames)
+    writer.writeheader()
+
+    for result in results:
+        top_fingerprint = (
+            result.fingerprint_matches[0] if result.fingerprint_matches else None
+        )
+        top_version = result.matched_versions[0] if result.matched_versions else None
+        top_vulnerability = (
+            result.vulnerability_matches[0] if result.vulnerability_matches else None
+        )
+        writer.writerow(
+            {
+                "input_target": result.input_target,
+                "source": result.source,
+                "probed_base": result.probed_base or "",
+                "product_confidence": f"{result.product_confidence:.2f}",
+                "shodan_query": result.metadata.get("shodan_query", ""),
+                "top_fingerprint_family": (
+                    top_fingerprint.family if top_fingerprint else ""
+                ),
+                "top_fingerprint_confidence": (
+                    f"{top_fingerprint.confidence:.2f}" if top_fingerprint else ""
+                ),
+                "top_fingerprint_source": (
+                    top_fingerprint.source if top_fingerprint else ""
+                ),
+                "fingerprint_families": ";".join(
+                    match.family for match in result.fingerprint_matches
+                ),
+                "top_version": top_version.version if top_version else "",
+                "top_version_confidence": (
+                    f"{top_version.confidence:.2f}" if top_version else ""
+                ),
+                "top_version_source": top_version.source if top_version else "",
+                "matched_versions": ";".join(
+                    match.version for match in result.matched_versions
+                ),
+                "version_sources": ";".join(
+                    match.source for match in result.matched_versions
+                ),
+                "top_vulnerability": top_vulnerability.id if top_vulnerability else "",
+                "top_vulnerability_severity": (
+                    top_vulnerability.severity if top_vulnerability else ""
+                ),
+                "vulnerability_ids": ";".join(
+                    vuln.id for vuln in result.vulnerability_matches
+                ),
+                "vulnerability_count": len(result.vulnerability_matches),
+                "observed_paths": ";".join(
+                    f"{path}={obs.status if obs.status is not None else 'ERR'}"
+                    for path, obs in result.observations.items()
+                ),
+                "markers": ";".join(
+                    sorted(
+                        {
+                            marker
+                            for observation in result.observations.values()
+                            for marker in observation.body_markers
+                        }
+                    )
+                ),
+                "error_count": len(result.errors),
+                "errors": " | ".join(result.errors),
+            }
+        )
+
+    return output.getvalue()
+
+
+def _prefix_candidate_errors(base_url: str, errors: List[str]) -> List[str]:
+    return [f"{base_url} {error}" for error in errors]

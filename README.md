@@ -3,8 +3,11 @@
 `openclaw_scanner` is a lightweight proof-of-concept for:
 
 - ingesting direct targets or Shodan export data
+- ingesting live Shodan search results through the Shodan REST API
 - probing common OpenClaw gateway HTTP endpoints
 - extracting stable fingerprint signals
+- classifying live responder behavior families such as UI-only 404 API gateways
+  or SPA-fallback API shells
 - inferring OpenClaw versions when a version hint or custom rule matches
 - mapping inferred versions to known OpenClaw vulnerabilities
 
@@ -19,13 +22,15 @@ For each target, the scanner:
    `/api/version`, `/api/health`, and a deliberate 404-style API path
 2. records headers, status codes, titles, JS asset paths, JSON key shapes,
    product markers, and version hints
-3. applies generic version extraction plus optional custom rules from a JSON
+3. applies family fingerprint rules plus version extraction rules from a JSON
    rule file
-4. compares the resulting version candidates against a seeded OpenClaw
+4. compares the resulting exact or approximate version candidates against a seeded OpenClaw
    vulnerability database
 
 The bundled rules are intentionally conservative:
 
+- behavior-family fingerprinting is supported out of the box for the live
+  port `18789` families observed so far
 - exact version extraction is supported out of the box
 - vulnerability correlation is supported out of the box
 - artifact-to-version fingerprinting is designed to be extended with your own
@@ -51,10 +56,40 @@ Scan a Shodan export:
 python3 -m openclaw_scanner --shodan-file shodan-results.json --format pretty
 ```
 
+Write a CSV triage file:
+
+```bash
+python3 -m openclaw_scanner --shodan-file shodan-results.json --format csv --output triage.csv
+```
+
+Write full records as NDJSON:
+
+```bash
+python3 -m openclaw_scanner --shodan-file shodan-results.json --format ndjson --output triage.ndjson
+```
+
+Run a live Shodan query:
+
+```bash
+SHODAN_API_KEY=... python3 -m openclaw_scanner \
+  --shodan-query 'product:"mDNS" "clawdbot-gw"' \
+  --shodan-pages 2 \
+  --format pretty
+```
+
 Actively re-probe each Shodan result instead of using the exported banner data:
 
 ```bash
 python3 -m openclaw_scanner --shodan-file shodan-results.json --rescan-shodan
+```
+
+Use the bundled demo data:
+
+```bash
+python3 -m openclaw_scanner \
+  --shodan-file openclaw_scanner/data/demo_18789-03-17-2026.json \
+  --rescan-shodan \
+  --format pretty
 ```
 
 Write JSON output to a file:
@@ -92,13 +127,66 @@ Useful fields include `ip_str`, `port`, `hostnames`, and `ssl`.
 By default, Shodan exports are analyzed offline from the JSON itself. Use
 `--rescan-shodan` if you want to actively probe each exported host.
 
+### Live Shodan search
+
+Use one or more `--shodan-query` values to fetch banners directly from the
+Shodan REST API. The scanner looks for the API key in this order:
+
+- `--shodan-key`
+- `SHODAN_API_KEY` in the current environment
+- `SHODAN_API_KEY=...` in `.env`
+
+Useful flags:
+
+- `--shodan-pages 3` to paginate through multiple result pages
+- `--shodan-fields ip_str,port,http.title,data` to request a narrower field set
+- `--shodan-minify` to use Shodan's smaller response mode
+- `--rescan-shodan` to actively probe the returned hosts after ingestion
+
+The live query path can consume Shodan query credits, especially if you use
+search filters or fetch pages beyond the first one.
+
 ## Custom fingerprint rules
 
 The bundled vulnerability intelligence lives in:
 
 - [`openclaw_scanner/data/openclaw_rules.json`](/Users/mhedhli/Documents/Codex/OpenClawScanner/openclaw_scanner/data/openclaw_rules.json)
 
-You can add custom version fingerprint rules under `version_rules`. Example:
+The rule file supports two layers:
+
+- `fingerprint_rules` for family or behavior classification
+- `version_rules` for exact or approximate version inference
+
+Example family rule:
+
+```json
+{
+  "id": "openclaw-ui-only-404-api",
+  "family": "openclaw_ui_only_404_api",
+  "label": "OpenClaw UI-only gateway with JSON /health and 404 API paths",
+  "confidence": 0.93,
+  "notes": "Observed on live port 18789 responders.",
+  "all": [
+    {
+      "type": "title_contains",
+      "path": "/",
+      "value": "OpenClaw Control"
+    },
+    {
+      "type": "path_status",
+      "path": "/api/version",
+      "statuses": [404]
+    },
+    {
+      "type": "json_key",
+      "path": "/health",
+      "value": "ok"
+    }
+  ]
+}
+```
+
+Example version rule:
 
 ```json
 {
@@ -131,11 +219,28 @@ Supported condition types:
 - `body_hash`
 - `version_hint_prefix`
 
+The bundled family rules currently recognize:
+
+- `openclaw_ui_only_404_api`
+- `openclaw_spa_fallback_all_200`
+- `clawdbot_spa_fallback_all_200`
+- `moltbot_spa_fallback_all_200`
+
+| Family | UI title | `/api` | `/api/version` | `/health` | Interpretation |
+| --- | --- | --- | --- | --- | --- |
+| `openclaw_ui_only_404_api` | `OpenClaw Control` | `404 text/plain` | `404 text/plain` | `200 application/json` with `ok,status` | UI is present, but API paths return a stable `Not Found` body and `/health` is a real JSON liveness endpoint. |
+| `openclaw_spa_fallback_all_200` | `OpenClaw Control` | `200 text/html` | `200 text/html` | `200 text/html` | API-looking routes fall back to the same SPA shell, so `200` here does not imply a real version endpoint. |
+| `clawdbot_spa_fallback_all_200` | `Clawdbot Control` | `200 text/html` | `200 text/html` | `200 text/html` | Same SPA-fallback pattern as OpenClaw, but branded as Clawdbot. |
+| `moltbot_spa_fallback_all_200` | `Moltbot Control` | `200 text/html` | `200 text/html` | `200 text/html` | Same SPA-fallback pattern as OpenClaw, but branded as Moltbot. |
+
+These family matches improve clustering and triage, but they do not create
+vulnerability hits unless an exact or approximate version is also inferred.
+
 ## Suggested workflow
 
 1. Run the scanner against targets or exported Shodan data.
-2. Review the raw features in the JSON output.
-3. Build artifact rules from your own lab captures.
+2. Review the raw features plus any family matches in the JSON or CSV output.
+3. Build artifact or behavior rules from your own lab captures.
 4. Re-run the scanner with the enriched rule file.
 5. Use the exact version or family match to prioritize vulnerability triage.
 
@@ -144,6 +249,14 @@ Supported condition types:
 - The vulnerability mapping is version-based. It does not prove exploitability.
 - Some bundled CVEs require auth, specific tool permissions, or local access.
 - Reverse proxies and custom dashboards can hide useful signals.
+- `--format csv` emits one summarized row per target for triage.
+- CSV output includes top fingerprint-family columns in addition to versions and
+  vulnerabilities.
+- `--format ndjson` emits one full JSON record per line for pipelines.
+- JSON and NDJSON outputs include `fingerprint_matches` alongside
+  `matched_versions`.
+- Demo datasets are bundled under
+  [`openclaw_scanner/data/`](/Users/mhedhli/Documents/Codex/OpenClawScanner/openclaw_scanner/data).
 - Large internet-scale use should respect rate limits and authorization.
 
 ## Tests
