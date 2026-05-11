@@ -9,6 +9,7 @@ from urllib.request import Request, urlopen
 
 API_BASE_URL = "https://api.shodan.io"
 DEFAULT_DOTENV_PATHS = (Path(".env"), Path("openclaw_scanner/.env"))
+DEFAULT_SECRET_FILE_PATHS = (Path(".shodanapi"), Path("openclaw_scanner/.shodanapi"))
 
 
 class ShodanAPIError(RuntimeError):
@@ -30,6 +31,10 @@ def resolve_shodan_api_key(
 
     for path in dotenv_paths or DEFAULT_DOTENV_PATHS:
         value = _read_dotenv_value(Path(path), "SHODAN_API_KEY")
+        if value:
+            return value
+    for path in DEFAULT_SECRET_FILE_PATHS:
+        value = _read_shodan_secret_file(Path(path))
         if value:
             return value
 
@@ -139,5 +144,29 @@ def _read_dotenv_value(path: Path, key: str) -> Optional[str]:
 
         cleaned = value.strip().strip("'").strip('"')
         return cleaned or None
+
+    return None
+
+
+def _read_shodan_secret_file(path: Path) -> Optional[str]:
+    if not path.exists():
+        return None
+
+    text = path.read_text(encoding="utf-8", errors="ignore").strip()
+    if not text:
+        return None
+
+    for raw_line in text.splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#"):
+            continue
+        if "=" in line:
+            candidate_key, value = line.split("=", 1)
+            candidate_key = candidate_key.strip().lower()
+            if candidate_key in {"key", "shodan_api_key"}:
+                cleaned = value.strip().strip("'").strip('"')
+                return cleaned or None
+            continue
+        return line
 
     return None

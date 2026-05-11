@@ -1,0 +1,30 @@
+[
+  {
+    "id": "CVE-2026-32014",
+    "summary": "Metadata spoofing in reconnect platform/deviceFamily fields bypasses platform-based node command policies",
+    "severity": "HIGH",
+    "cvss_estimate": 7.8,
+    "cwe": "CWE-290",
+    "attack_surface": "device_auth",
+    "affected_ranges": [
+      { "from": "0.0.0", "to": "2026.2.25" }
+    ],
+    "fixed_version": "2026.2.26",
+    "notes": "Requires paired node identity on trusted network. Reconnect metadata (platform, deviceFamily) not bound into device-auth signature, allowing spoofed reconnect to bypass platform-based command policies.",
+    "source": "https://www.redpacketsecurity.com/cve-alert-cve-2026-32014-openclaw-openclaw/"
+  },
+  {
+    "id": "CVE-2026-32061",
+    "summary": "Path traversal in $include directive allows reading arbitrary local files outside config directory",
+    "severity": "HIGH",
+    "cvss_estimate": 7.5,
+    "cwe": "CWE-22",
+    "attack_surface": "config_include",
+    "affected_ranges": [
+      { "from": "0.0.0", "to": "2026.2.16" }
+    ],
+    "fixed_version": "2026.2.17",
+    "notes": "The $include directive in OpenClaw config files resolves paths without proper boundary checking. Attackers with config modification privileges can use absolute paths, traversal sequences (../), or symlinks to read sensitive files (API keys, credentials) readable by the OpenClaw process user.",
+    "source": "https://nvd.nist.gov/vuln/detail/cve-2026-32061"
+  }
+]

@@ -23,6 +23,105 @@
   ],
   "fingerprint_rules": [
     {
+      "id": "claw-gateway-tools-invoke-auth-json",
+      "family": "claw_gateway_tools_invoke_auth_json",
+      "label": "Claw-family gateway with auth-gated /tools/invoke HTTP API",
+      "confidence": 0.91,
+      "notes": "Observed on live port 18789 responders and aligned to official gateway/security docs where /tools/invoke shares the main trusted-operator auth boundary.",
+      "all": [
+        {
+          "type": "method_status",
+          "path": "/tools/invoke",
+          "method": "POST",
+          "statuses": [
+            400,
+            401,
+            403,
+            429
+          ]
+        },
+        {
+          "type": "header_contains",
+          "path": "/tools/invoke",
+          "method": "POST",
+          "header": "content-type",
+          "value": "json"
+        },
+        {
+          "type": "json_key",
+          "path": "/tools/invoke",
+          "method": "POST",
+          "value": "error"
+        }
+      ],
+      "any": [
+        {
+          "type": "title_contains",
+          "path": "/",
+          "value": "OpenClaw Control"
+        },
+        {
+          "type": "title_contains",
+          "path": "/",
+          "value": "Clawdbot Control"
+        },
+        {
+          "type": "title_contains",
+          "path": "/",
+          "value": "Moltbot Control"
+        }
+      ]
+    },
+    {
+      "id": "openclaw-openai-chat-surface-enabled",
+      "family": "openclaw_openai_chat_surface_enabled",
+      "label": "OpenClaw gateway with auth-gated OpenAI-compatible chat surface",
+      "confidence": 0.88,
+      "notes": "Observed on live OpenClaw responders where POST /v1/chat/completions returns a structured auth error instead of 404 or 405, indicating the OpenAI-compatible chat route is active.",
+      "all": [
+        {
+          "type": "title_contains",
+          "path": "/",
+          "value": "OpenClaw Control"
+        },
+        {
+          "type": "method_status",
+          "path": "/v1/chat/completions",
+          "method": "POST",
+          "statuses": [
+            400,
+            401,
+            403,
+            429
+          ]
+        },
+        {
+          "type": "header_contains",
+          "path": "/v1/chat/completions",
+          "method": "POST",
+          "header": "content-type",
+          "value": "json"
+        },
+        {
+          "type": "json_key",
+          "path": "/v1/chat/completions",
+          "method": "POST",
+          "value": "error"
+        },
+        {
+          "type": "method_status",
+          "path": "/tools/invoke",
+          "method": "POST",
+          "statuses": [
+            400,
+            401,
+            403,
+            429
+          ]
+        }
+      ]
+    },
+    {
       "id": "openclaw-ui-only-404-api",
       "family": "openclaw_ui_only_404_api",
       "label": "OpenClaw UI-only gateway with JSON /health and 404 API paths",
@@ -37,12 +136,16 @@
         {
           "type": "path_status",
           "path": "/login",
-          "statuses": [200]
+          "statuses": [
+            200
+          ]
         },
         {
           "type": "path_status",
           "path": "/api",
-          "statuses": [404]
+          "statuses": [
+            404
+          ]
         },
         {
           "type": "header_contains",
@@ -58,7 +161,9 @@
         {
           "type": "path_status",
           "path": "/api/version",
-          "statuses": [404]
+          "statuses": [
+            404
+          ]
         },
         {
           "type": "body_hash",
@@ -68,7 +173,9 @@
         {
           "type": "path_status",
           "path": "/health",
-          "statuses": [200]
+          "statuses": [
+            200
+          ]
         },
         {
           "type": "header_contains",
@@ -108,7 +215,9 @@
         {
           "type": "path_status",
           "path": "/api",
-          "statuses": [200]
+          "statuses": [
+            200
+          ]
         },
         {
           "type": "title_contains",
@@ -118,7 +227,9 @@
         {
           "type": "path_status",
           "path": "/api/version",
-          "statuses": [200]
+          "statuses": [
+            200
+          ]
         },
         {
           "type": "title_contains",
@@ -128,7 +239,9 @@
         {
           "type": "path_status",
           "path": "/health",
-          "statuses": [200]
+          "statuses": [
+            200
+          ]
         },
         {
           "type": "title_contains",
@@ -164,7 +277,9 @@
         {
           "type": "path_status",
           "path": "/api",
-          "statuses": [200]
+          "statuses": [
+            200
+          ]
         },
         {
           "type": "title_contains",
@@ -174,7 +289,9 @@
         {
           "type": "path_status",
           "path": "/api/version",
-          "statuses": [200]
+          "statuses": [
+            200
+          ]
         },
         {
           "type": "title_contains",
@@ -184,7 +301,9 @@
         {
           "type": "path_status",
           "path": "/health",
-          "statuses": [200]
+          "statuses": [
+            200
+          ]
         },
         {
           "type": "title_contains",
@@ -220,7 +339,9 @@
         {
           "type": "path_status",
           "path": "/api",
-          "statuses": [200]
+          "statuses": [
+            200
+          ]
         },
         {
           "type": "title_contains",
@@ -230,7 +351,9 @@
         {
           "type": "path_status",
           "path": "/api/version",
-          "statuses": [200]
+          "statuses": [
+            200
+          ]
         },
         {
           "type": "title_contains",
@@ -240,7 +363,9 @@
         {
           "type": "path_status",
           "path": "/health",
-          "statuses": [200]
+          "statuses": [
+            200
+          ]
         },
         {
           "type": "title_contains",
@@ -487,6 +612,467 @@
       ],
       "references": [
         "https://nvd.nist.gov/vuln/detail/CVE-2026-32063"
+      ]
+    },
+    {
+      "id": "CVE-2026-25253",
+      "title": "1-Click RCE via auth token exfiltration through crafted gatewayUrl query string",
+      "severity": "HIGH",
+      "fixed_in": "2026.1.29",
+      "surface": [
+        "control_ui",
+        "gateway_ws"
+      ],
+      "requires_auth": false,
+      "affected_ranges": [
+        {
+          "lt": "2026.1.29"
+        }
+      ],
+      "references": [
+        "https://nvd.nist.gov/vuln/detail/CVE-2026-25253"
+      ]
+    },
+    {
+      "id": "CVE-2026-22176",
+      "title": "Command injection in Windows Scheduled Task script generation via unquoted set assignments in gateway.cmd",
+      "severity": "HIGH",
+      "fixed_in": "2026.2.19",
+      "surface": [
+        "service_install",
+        "gateway_host"
+      ],
+      "requires_auth": true,
+      "platform": "windows",
+      "affected_ranges": [
+        {
+          "lt": "2026.2.19"
+        }
+      ],
+      "references": [
+        "https://nvd.nist.gov/vuln/detail/CVE-2026-22176"
+      ]
+    },
+    {
+      "id": "CVE-2026-29607",
+      "title": "Authorization bypass in allow-always wrapper persistence enables RCE through pre-approved command reuse",
+      "severity": "HIGH",
+      "fixed_in": "2026.2.22",
+      "surface": [
+        "agent_runtime",
+        "tooling"
+      ],
+      "requires_auth": true,
+      "affected_ranges": [
+        {
+          "lt": "2026.2.22"
+        }
+      ],
+      "references": [
+        "https://nvd.nist.gov/vuln/detail/CVE-2026-29607"
+      ]
+    },
+    {
+      "id": "CVE-2026-32015",
+      "title": "Path hijacking in tools.exec.safeBins allows execution of trojan binaries with allowlisted names",
+      "severity": "HIGH",
+      "fixed_in": "2026.2.19",
+      "surface": [
+        "tooling",
+        "sandbox"
+      ],
+      "requires_auth": true,
+      "affected_ranges": [
+        {
+          "gte": "2026.1.21",
+          "lt": "2026.2.19"
+        }
+      ],
+      "references": [
+        "https://nvd.nist.gov/vuln/detail/CVE-2026-32015"
+      ]
+    },
+    {
+      "id": "CVE-2026-31995",
+      "title": "Command injection in Lobster extension Windows shell fallback via spawn failure path",
+      "severity": "MEDIUM",
+      "fixed_in": "2026.2.19",
+      "surface": [
+        "tooling"
+      ],
+      "requires_auth": true,
+      "platform": "windows",
+      "affected_ranges": [
+        {
+          "gte": "2026.1.21",
+          "lt": "2026.2.19"
+        }
+      ],
+      "references": [
+        "https://nvd.nist.gov/vuln/detail/CVE-2026-31995"
+      ]
+    },
+    {
+      "id": "CVE-2026-31994",
+      "title": "Local command injection in Windows scheduled task script generation via unsafe cmd metacharacter handling",
+      "severity": "MEDIUM",
+      "fixed_in": "2026.2.19",
+      "surface": [
+        "service_install"
+      ],
+      "requires_auth": true,
+      "platform": "windows",
+      "affected_ranges": [
+        {
+          "lt": "2026.2.19"
+        }
+      ],
+      "references": [
+        "https://nvd.nist.gov/vuln/detail/CVE-2026-31994"
+      ]
+    },
+    {
+      "id": "CVE-2026-31996",
+      "title": "Input validation bypass in tools.exec.safeBins allowing unintended filesystem operations through sort/grep flags",
+      "severity": "MEDIUM",
+      "fixed_in": "2026.2.19",
+      "surface": [
+        "tooling",
+        "sandbox"
+      ],
+      "requires_auth": true,
+      "affected_ranges": [
+        {
+          "lt": "2026.2.19"
+        }
+      ],
+      "references": [
+        "https://nvd.nist.gov/vuln/detail/CVE-2026-31996"
+      ]
+    },
+    {
+      "id": "CVE-2026-32000",
+      "title": "Command injection in Lobster extension tool execution using Windows shell fallback",
+      "severity": "HIGH",
+      "fixed_in": "2026.2.19",
+      "surface": [
+        "tooling"
+      ],
+      "requires_auth": true,
+      "platform": "windows",
+      "affected_ranges": [
+        {
+          "lt": "2026.2.19"
+        }
+      ],
+      "references": [
+        "https://nvd.nist.gov/vuln/detail/CVE-2026-32000"
+      ]
+    },
+    {
+      "id": "CVE-2026-31992",
+      "title": "Allowlist bypass in system.run guardrails via /usr/bin/env -S shell wrapper execution",
+      "severity": "HIGH",
+      "fixed_in": "2026.2.23",
+      "surface": [
+        "agent_runtime",
+        "tooling"
+      ],
+      "requires_auth": true,
+      "affected_ranges": [
+        {
+          "lt": "2026.2.23"
+        }
+      ],
+      "references": [
+        "https://nvd.nist.gov/vuln/detail/CVE-2026-31992"
+      ]
+    },
+    {
+      "id": "CVE-2026-32016",
+      "title": "Path validation bypass in exec-approval allowlist mode on macOS via basename-only entries",
+      "severity": "HIGH",
+      "fixed_in": "2026.2.22",
+      "surface": [
+        "tooling"
+      ],
+      "requires_auth": true,
+      "platform": "macos",
+      "affected_ranges": [
+        {
+          "lt": "2026.2.22"
+        }
+      ],
+      "references": [
+        "https://nvd.nist.gov/vuln/detail/CVE-2026-32016"
+      ]
+    },
+    {
+      "id": "CVE-2026-32025",
+      "title": "Authentication hardening gap in browser-origin WebSocket clients allows brute-force on loopback deployments",
+      "severity": "HIGH",
+      "fixed_in": "2026.2.25",
+      "surface": [
+        "gateway_ws",
+        "browser_control"
+      ],
+      "requires_auth": false,
+      "affected_ranges": [
+        {
+          "lt": "2026.2.25"
+        }
+      ],
+      "references": [
+        "https://nvd.nist.gov/vuln/detail/CVE-2026-32025"
+      ]
+    },
+    {
+      "id": "CVE-2026-32042",
+      "title": "Privilege escalation via unpaired device identities bypassing operator pairing to self-assign operator.admin",
+      "severity": "HIGH",
+      "fixed_in": "2026.2.25",
+      "surface": [
+        "gateway_ws",
+        "api"
+      ],
+      "requires_auth": false,
+      "affected_ranges": [
+        {
+          "gte": "2026.2.22",
+          "lt": "2026.2.25"
+        }
+      ],
+      "references": [
+        "https://nvd.nist.gov/vuln/detail/CVE-2026-32042"
+      ]
+    },
+    {
+      "id": "CVE-2026-32013",
+      "title": "Symlink traversal in agents.files.get and agents.files.set allows reading/writing files outside agent workspace",
+      "severity": "HIGH",
+      "fixed_in": "2026.2.25",
+      "surface": [
+        "agent_runtime",
+        "sandbox"
+      ],
+      "requires_auth": true,
+      "affected_ranges": [
+        {
+          "lt": "2026.2.25"
+        }
+      ],
+      "references": [
+        "https://nvd.nist.gov/vuln/detail/CVE-2026-32013"
+      ]
+    },
+    {
+      "id": "CVE-2026-32049",
+      "title": "Denial of service via inbound media byte limit enforcement failure causing elevated memory usage",
+      "severity": "MEDIUM",
+      "fixed_in": "2026.2.22",
+      "surface": [
+        "gateway_http",
+        "media_ingestion"
+      ],
+      "requires_auth": false,
+      "affected_ranges": [
+        {
+          "lt": "2026.2.22"
+        }
+      ],
+      "references": [
+        "https://nvd.nist.gov/vuln/detail/CVE-2026-32049"
+      ]
+    },
+    {
+      "id": "CVE-2026-32051",
+      "title": "Authorization mismatch allows operator.write callers to invoke owner-only tool surfaces through agent runs",
+      "severity": "HIGH",
+      "fixed_in": "2026.3.1",
+      "surface": [
+        "agent_runtime",
+        "api"
+      ],
+      "requires_auth": true,
+      "affected_ranges": [
+        {
+          "lt": "2026.3.1"
+        }
+      ],
+      "references": [
+        "https://nvd.nist.gov/vuln/detail/CVE-2026-32051"
+      ]
+    },
+    {
+      "id": "CVE-2026-32048",
+      "title": "Sandbox escape via cross-agent sessions_spawn creating unsandboxed child runtimes",
+      "severity": "HIGH",
+      "fixed_in": "2026.3.1",
+      "surface": [
+        "sandbox",
+        "agent_runtime"
+      ],
+      "requires_auth": true,
+      "affected_ranges": [
+        {
+          "lt": "2026.3.1"
+        }
+      ],
+      "references": [
+        "https://nvd.nist.gov/vuln/detail/CVE-2026-32048"
+      ]
+    },
+    {
+      "id": "CVE-2026-32064",
+      "title": "Unauthenticated VNC access in sandbox browser entrypoint via x11vnc launched without authentication",
+      "severity": "HIGH",
+      "fixed_in": "2026.2.21",
+      "surface": [
+        "sandbox",
+        "browser_tool"
+      ],
+      "requires_auth": false,
+      "affected_ranges": [
+        {
+          "lt": "2026.2.21"
+        }
+      ],
+      "references": [
+        "https://nvd.nist.gov/vuln/detail/CVE-2026-32064"
+      ]
+    },
+    {
+      "id": "CVE-2026-32011",
+      "title": "Denial of service in webhook handlers for BlueBubbles and Google Chat request body parsing",
+      "severity": "MEDIUM",
+      "fixed_in": "2026.3.2",
+      "surface": [
+        "gateway_http",
+        "webhook"
+      ],
+      "requires_auth": false,
+      "affected_ranges": [
+        {
+          "lt": "2026.3.2"
+        }
+      ],
+      "references": [
+        "https://nvd.nist.gov/vuln/detail/CVE-2026-32011"
+      ]
+    },
+    {
+      "id": "CVE-2026-31990",
+      "title": "Symlink traversal in stageSandboxMedia failing to validate destination symlinks during media operations",
+      "severity": "HIGH",
+      "fixed_in": "2026.3.2",
+      "surface": [
+        "sandbox",
+        "media_ingestion"
+      ],
+      "requires_auth": true,
+      "affected_ranges": [
+        {
+          "lt": "2026.3.2"
+        }
+      ],
+      "references": [
+        "https://nvd.nist.gov/vuln/detail/CVE-2026-31990"
+      ]
+    },
+    {
+      "id": "CVE-2026-32895",
+      "title": "Authorization bypass in system event handlers allows unauthorized Slack events to be enqueued",
+      "severity": "MEDIUM",
+      "fixed_in": "2026.2.26",
+      "surface": [
+        "chat_bridge",
+        "webhook"
+      ],
+      "requires_auth": true,
+      "affected_ranges": [
+        {
+          "lt": "2026.2.26"
+        }
+      ],
+      "references": [
+        "https://dailycve.com/openclaw-authorization-bypass-cve-2026-32895-medium/",
+        "https://cve.threatint.eu/CVE/CVE-2026-32895"
+      ]
+    },
+    {
+      "id": "CVE-2026-32896",
+      "title": "BlueBubbles plugin webhook authentication bypass via passwordless loopback fallback",
+      "severity": "MEDIUM",
+      "fixed_in": "2026.2.21",
+      "surface": [
+        "webhook",
+        "chat_bridge"
+      ],
+      "requires_auth": false,
+      "affected_ranges": [
+        {
+          "lt": "2026.2.21"
+        }
+      ],
+      "references": [
+        "https://dailycve.com/openclaw-authentication-bypass-cve-2026-32896-medium/",
+        "https://advisories.gitlab.com/pkg/npm/openclaw/GHSA-vh4c-j2xv-9pv9/"
+      ]
+    },
+    {
+      "id": "CVE-2026-32898",
+      "title": "ACP client auto-approves tool calls based on untrusted toolCall.kind metadata and permissive name heuristics",
+      "severity": "MEDIUM",
+      "fixed_in": "2026.2.23",
+      "surface": [
+        "agent_runtime",
+        "tooling"
+      ],
+      "requires_auth": true,
+      "affected_ranges": [
+        {
+          "lt": "2026.2.23"
+        }
+      ],
+      "references": [
+        "https://cve.threatint.eu/CVE/CVE-2026-32898",
+        "https://vulnerability.circl.lu/vuln/cve-2026-32898"
+      ]
+    },
+    {
+      "id": "CVE-2026-32014",
+      "title": "Metadata spoofing in reconnect platform/deviceFamily fields bypasses platform-based node command policies",
+      "severity": "HIGH",
+      "fixed_in": "2026.2.26",
+      "surface": [
+        "device_auth"
+      ],
+      "requires_auth": null,
+      "affected_ranges": [
+        {
+          "lt": "2026.2.26"
+        }
+      ],
+      "references": [
+        "https://www.redpacketsecurity.com/cve-alert-cve-2026-32014-openclaw-openclaw/"
+      ]
+    },
+    {
+      "id": "CVE-2026-32061",
+      "title": "Path traversal in $include directive allows reading arbitrary local files outside config directory",
+      "severity": "HIGH",
+      "fixed_in": "2026.2.17",
+      "surface": [
+        "config_include"
+      ],
+      "requires_auth": true,
+      "affected_ranges": [
+        {
+          "lt": "2026.2.17"
+        }
+      ],
+      "references": [
+        "https://nvd.nist.gov/vuln/detail/cve-2026-32061"
       ]
     }
   ]

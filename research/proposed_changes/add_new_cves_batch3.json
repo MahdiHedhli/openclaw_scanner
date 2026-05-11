@@ -1,0 +1,62 @@
+[
+  {
+    "id": "CVE-2026-32895",
+    "title": "Authorization bypass in system event handlers allows unauthorized Slack events to be enqueued",
+    "severity": "MEDIUM",
+    "fixed_in": "2026.2.26",
+    "surface": [
+      "chat_bridge",
+      "webhook"
+    ],
+    "requires_auth": true,
+    "affected_ranges": [
+      {
+        "lt": "2026.2.26"
+      }
+    ],
+    "references": [
+      "https://dailycve.com/openclaw-authorization-bypass-cve-2026-32895-medium/",
+      "https://cve.threatint.eu/CVE/CVE-2026-32895"
+    ]
+  },
+  {
+    "id": "CVE-2026-32896",
+    "title": "BlueBubbles plugin webhook authentication bypass via passwordless loopback fallback",
+    "severity": "MEDIUM",
+    "fixed_in": "2026.2.21",
+    "surface": [
+      "webhook",
+      "chat_bridge"
+    ],
+    "requires_auth": false,
+    "affected_ranges": [
+      {
+        "lt": "2026.2.21"
+      }
+    ],
+    "references": [
+      "https://dailycve.com/openclaw-authentication-bypass-cve-2026-32896-medium/",
+      "https://advisories.gitlab.com/pkg/npm/openclaw/GHSA-vh4c-j2xv-9pv9/"
+    ]
+  },
+  {
+    "id": "CVE-2026-32898",
+    "title": "ACP client auto-approves tool calls based on untrusted toolCall.kind metadata and permissive name heuristics",
+    "severity": "MEDIUM",
+    "fixed_in": "2026.2.23",
+    "surface": [
+      "agent_runtime",
+      "tooling"
+    ],
+    "requires_auth": true,
+    "affected_ranges": [
+      {
+        "lt": "2026.2.23"
+      }
+    ],
+    "references": [
+      "https://cve.threatint.eu/CVE/CVE-2026-32898",
+      "https://vulnerability.circl.lu/vuln/cve-2026-32898"
+    ]
+  }
+]

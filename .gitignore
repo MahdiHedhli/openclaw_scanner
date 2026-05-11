@@ -7,6 +7,8 @@
 Icon?
 .env
 .env.*
+.shodanapi
+.shodanapi.*
 __pycache__/
 *.py[cod]
 *.egg-info/

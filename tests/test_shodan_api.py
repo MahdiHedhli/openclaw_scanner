@@ -1,3 +1,4 @@
+import os
 import tempfile
 import unittest
 from pathlib import Path
@@ -28,6 +29,38 @@ class ShodanAPITests(unittest.TestCase):
             )
 
         self.assertEqual(key, "shodan-secret")
+
+    def test_resolve_shodan_api_key_from_shodanapi_key_value_file(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            previous_cwd = Path.cwd()
+            try:
+                os.chdir(tmpdir)
+                Path(".shodanapi").write_text("key=shodan-secret-file\n", encoding="utf-8")
+                key = resolve_shodan_api_key(
+                    explicit_key=None,
+                    env={},
+                    dotenv_paths=[],
+                )
+            finally:
+                os.chdir(previous_cwd)
+
+        self.assertEqual(key, "shodan-secret-file")
+
+    def test_resolve_shodan_api_key_from_shodanapi_raw_token_file(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            previous_cwd = Path.cwd()
+            try:
+                os.chdir(tmpdir)
+                Path(".shodanapi").write_text("raw-shodan-token\n", encoding="utf-8")
+                key = resolve_shodan_api_key(
+                    explicit_key=None,
+                    env={},
+                    dotenv_paths=[],
+                )
+            finally:
+                os.chdir(previous_cwd)
+
+        self.assertEqual(key, "raw-shodan-token")
 
     def test_search_shodan_paginates_and_annotates_matches(self):
         first_page = {

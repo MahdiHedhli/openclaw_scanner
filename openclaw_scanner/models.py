@@ -18,9 +18,12 @@ class ScanTarget:
 class ProbeObservation:
     path: str
     url: str
+    method: str = "GET"
     status: Optional[int] = None
     final_url: Optional[str] = None
+    response_time_ms: Optional[float] = None
     headers: Dict[str, str] = field(default_factory=dict)
+    header_order: List[str] = field(default_factory=list)
     content_type: Optional[str] = None
     body_length: int = 0
     body_sha256: Optional[str] = None
@@ -29,6 +32,9 @@ class ProbeObservation:
     json_keys: List[str] = field(default_factory=list)
     body_markers: List[str] = field(default_factory=list)
     version_hints: List[str] = field(default_factory=list)
+    error_text: Optional[str] = None
+    has_stack_trace: bool = False
+    favicon_hash: Optional[int] = None
     error: Optional[str] = None
 
     def to_dict(self) -> Dict[str, Any]:
@@ -60,6 +66,32 @@ class FingerprintMatch:
 
 
 @dataclass
+class ProxyDetection:
+    detected: bool = False
+    proxy_type: Optional[str] = None
+    confidence: float = 0.0
+    indicators: List[str] = field(default_factory=list)
+    notes: Optional[str] = None
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
+class HoneypotAssessment:
+    probable: bool = False
+    probability: float = 0.0
+    timing_cv: Optional[float] = None
+    uniform_timing: bool = False
+    known_signature: Optional[str] = None
+    signals: List[str] = field(default_factory=list)
+    notes: Optional[str] = None
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
 class VulnerabilityMatch:
     id: str
     title: str
@@ -68,6 +100,7 @@ class VulnerabilityMatch:
     reasoning: str
     fixed_in: Optional[str] = None
     severity: Optional[str] = None
+    platform: Optional[str] = None
     surface: List[str] = field(default_factory=list)
     requires_auth: Optional[bool] = None
     references: List[str] = field(default_factory=list)
@@ -84,6 +117,8 @@ class ScanResult:
     metadata: Dict[str, Any] = field(default_factory=dict)
     product_confidence: float = 0.0
     observations: Dict[str, ProbeObservation] = field(default_factory=dict)
+    proxy_detection: Optional[ProxyDetection] = None
+    honeypot_assessment: Optional[HoneypotAssessment] = None
     fingerprint_matches: List[FingerprintMatch] = field(default_factory=list)
     matched_versions: List[VersionMatch] = field(default_factory=list)
     vulnerability_matches: List[VulnerabilityMatch] = field(default_factory=list)
@@ -100,6 +135,14 @@ class ScanResult:
                 path: observation.to_dict()
                 for path, observation in self.observations.items()
             },
+            "proxy_detection": (
+                self.proxy_detection.to_dict() if self.proxy_detection else None
+            ),
+            "honeypot_assessment": (
+                self.honeypot_assessment.to_dict()
+                if self.honeypot_assessment
+                else None
+            ),
             "fingerprint_matches": [
                 match.to_dict() for match in self.fingerprint_matches
             ],

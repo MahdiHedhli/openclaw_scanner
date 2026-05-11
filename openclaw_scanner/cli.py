@@ -8,6 +8,13 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from typing import Iterable, List, Optional
 
+from .blackbox import (
+    build_capture_bundle,
+    generate_rule_suggestions,
+    load_capture_bundles,
+    render_rule_suggestions,
+)
+from .honeypot import assess_honeypot
 from .inference import (
     correlate_vulnerabilities,
     infer_fingerprint_matches,
@@ -16,7 +23,9 @@ from .inference import (
     load_rules,
 )
 from .models import ProbeObservation, ScanResult
-from .probe import DEFAULT_PROBE_PATHS, has_signal, probe_candidate
+from .probe import build_probe_configs, has_signal, probe_candidate
+from .proxy import detect_proxy
+from .shodan_meta import cross_reference_vulns
 from .shodan_api import ShodanAPIError, resolve_shodan_api_key, search_shodan
 from .sources import load_targets
 
@@ -30,6 +39,32 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--target", action="append", default=[], help="Target base URL or host.")
     parser.add_argument("--targets-file", help="Path to a newline-delimited target list.")
     parser.add_argument("--shodan-file", help="Path to a Shodan export JSON or JSONL file.")
+    parser.add_argument(
+        "--capture-output",
+        help="Write a black-box capture bundle JSON file with remote-visible signals from this scan.",
+    )
+    parser.add_argument(
+        "--capture-version",
+        help="Known version label for black-box calibration captures.",
+    )
+    parser.add_argument(
+        "--capture-name",
+        help="Optional human-readable name for a black-box capture bundle.",
+    )
+    parser.add_argument(
+        "--capture-notes",
+        help="Optional notes to include in a black-box capture bundle.",
+    )
+    parser.add_argument(
+        "--suggest-rules-from",
+        help="Path to a black-box capture bundle JSON file or directory of capture bundles.",
+    )
+    parser.add_argument(
+        "--max-rule-conditions",
+        type=int,
+        default=3,
+        help="Maximum number of conditions to include in each suggested version rule.",
+    )
     parser.add_argument(
         "--shodan-query",
         action="append",
@@ -113,6 +148,35 @@ def main(argv: Optional[List[str]] = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
 
+    scan_inputs_present = bool(
+        args.target
+        or args.targets_file
+        or args.shodan_file
+        or args.shodan_query
+    )
+
+    if args.suggest_rules_from:
+        if scan_inputs_present:
+            parser.error("Use --suggest-rules-from as a standalone mode without scan inputs.")
+        bundles = load_capture_bundles(args.suggest_rules_from)
+        report = generate_rule_suggestions(
+            bundles=bundles,
+            max_conditions=max(args.max_rule_conditions, 1),
+        )
+        rendered = render_rule_suggestions(report, args.format)
+        if args.output:
+            Path(args.output).write_text(rendered, encoding="utf-8")
+        else:
+            sys.stdout.write(rendered)
+            if not rendered.endswith("\n"):
+                sys.stdout.write("\n")
+        return 0
+
+    if (args.capture_version or args.capture_name or args.capture_notes) and not args.capture_output:
+        parser.error(
+            "--capture-version, --capture-name, and --capture-notes require --capture-output."
+        )
+
     shodan_records = []
     if args.shodan_query:
         api_key = resolve_shodan_api_key(args.shodan_key)
@@ -149,12 +213,16 @@ def main(argv: Optional[List[str]] = None) -> int:
         )
 
     rules = load_rules(args.rules_file)
-    probe_paths = list(dict.fromkeys(DEFAULT_PROBE_PATHS + list(args.probe_path)))
+    probe_configs = build_probe_configs(args.probe_path)
+    probe_labels = [
+        config.path if config.method == "GET" else f"{config.method} {config.path}"
+        for config in probe_configs
+    ]
 
     results = scan_targets(
         targets=targets,
         rules=rules,
-        probe_paths=probe_paths,
+        probe_configs=probe_configs,
         timeout=args.timeout,
         workers=max(args.workers, 1),
         max_bytes=max(args.max_bytes, 1024),
@@ -164,6 +232,18 @@ def main(argv: Optional[List[str]] = None) -> int:
     )
 
     rendered = render_results(results, args.format)
+    if args.capture_output:
+        capture_bundle = build_capture_bundle(
+            results=results,
+            probe_paths=probe_labels,
+            declared_version=args.capture_version,
+            capture_name=args.capture_name,
+            notes=args.capture_notes,
+        )
+        Path(args.capture_output).write_text(
+            json.dumps(capture_bundle, indent=2, sort_keys=True),
+            encoding="utf-8",
+        )
     if args.output:
         Path(args.output).write_text(rendered, encoding="utf-8")
     else:
@@ -177,7 +257,7 @@ def main(argv: Optional[List[str]] = None) -> int:
 def scan_targets(
     targets,
     rules,
-    probe_paths: Iterable[str],
+    probe_configs,
     timeout: float,
     workers: int,
     max_bytes: int,
@@ -193,7 +273,7 @@ def scan_targets(
                 _scan_single_target,
                 target,
                 rules,
-                probe_paths,
+                probe_configs,
                 timeout,
                 max_bytes,
                 verify_tls,
@@ -212,7 +292,7 @@ def scan_targets(
 def _scan_single_target(
     target,
     rules,
-    probe_paths: Iterable[str],
+    probe_configs,
     timeout: float,
     max_bytes: int,
     verify_tls: bool,
@@ -220,21 +300,33 @@ def _scan_single_target(
     rescan_shodan: bool,
 ) -> ScanResult:
     offline_observations = _observations_from_shodan_record(target.raw_record)
+    metadata = _annotate_result_metadata(target.metadata, rules)
     if offline_observations and not rescan_shodan:
         result = ScanResult(
             input_target=target.label,
             source=target.source,
             probed_base=None,
-            metadata=target.metadata,
+            metadata=metadata,
             observations=offline_observations,
         )
         result.product_confidence = infer_product_confidence(offline_observations, rules)
+        result.proxy_detection = detect_proxy(
+            offline_observations,
+            passive_waf=_passive_waf_from_metadata(metadata),
+        )
+        result.honeypot_assessment = assess_honeypot(
+            offline_observations,
+            metadata=metadata,
+        )
         result.fingerprint_matches = infer_fingerprint_matches(
             offline_observations, rules
         )
         result.matched_versions = infer_versions(offline_observations, rules)
         result.vulnerability_matches = correlate_vulnerabilities(
-            result.matched_versions, rules
+            result.matched_versions,
+            rules,
+            platform=_platform_from_metadata(result.metadata),
+            shodan_vulns=_shodan_vulns_from_metadata(result.metadata),
         )
         return result
 
@@ -242,13 +334,13 @@ def _scan_single_target(
         input_target=target.label,
         source=target.source,
         probed_base=None,
-        metadata=target.metadata,
+        metadata=metadata,
     )
 
     for candidate in target.candidates:
         observations, errors = probe_candidate(
             base_url=candidate,
-            paths=probe_paths,
+            probes=probe_configs,
             timeout=timeout,
             verify_tls=verify_tls,
             user_agent=user_agent,
@@ -261,15 +353,26 @@ def _scan_single_target(
             input_target=target.label,
             source=target.source,
             probed_base=candidate,
-            metadata=target.metadata,
+            metadata=metadata,
             observations=observations,
             errors=list(last_result.errors),
         )
         result.product_confidence = infer_product_confidence(observations, rules)
+        result.proxy_detection = detect_proxy(
+            observations,
+            passive_waf=_passive_waf_from_metadata(metadata),
+        )
+        result.honeypot_assessment = assess_honeypot(
+            observations,
+            metadata=metadata,
+        )
         result.fingerprint_matches = infer_fingerprint_matches(observations, rules)
         result.matched_versions = infer_versions(observations, rules)
         result.vulnerability_matches = correlate_vulnerabilities(
-            result.matched_versions, rules
+            result.matched_versions,
+            rules,
+            platform=_platform_from_metadata(result.metadata),
+            shodan_vulns=_shodan_vulns_from_metadata(result.metadata),
         )
 
         last_result = result
@@ -296,8 +399,10 @@ def _observations_from_shodan_record(raw_record) -> dict:
     observation = ProbeObservation(
         path="/__shodan__",
         url=f"shodan://{raw_record.get('ip_str', 'unknown')}:{raw_record.get('port', 'unknown')}",
+        method="GET",
         status=raw_record.get("http", {}).get("status") or (200 if body_text or title else None),
         headers=headers,
+        header_order=list(headers.keys()),
         content_type=headers.get("content-type"),
         body_length=len(body_text.encode("utf-8", errors="ignore")),
         body_sha256=None,
@@ -305,7 +410,10 @@ def _observations_from_shodan_record(raw_record) -> dict:
         js_files=_extract_shodan_scripts(body_text),
         json_keys=[],
         body_markers=_extract_shodan_markers(body_text),
-        version_hints=_extract_shodan_versions(body_text, headers),
+        version_hints=_extract_shodan_versions(raw_record, body_text, headers),
+        error_text=None,
+        has_stack_trace=False,
+        favicon_hash=_extract_shodan_favicon_hash(raw_record),
         error=None,
     )
     return {observation.path: observation}
@@ -315,6 +423,32 @@ def _normalize_shodan_headers(headers) -> dict:
     if isinstance(headers, dict):
         return {str(key).lower(): str(value) for key, value in headers.items()}
     return {}
+
+
+def _extract_shodan_favicon_hash(raw_record) -> Optional[int]:
+    http_data = raw_record.get("http") or {}
+    favicon = http_data.get("favicon")
+    candidates = []
+    if isinstance(favicon, dict):
+        candidates.extend(
+            [
+                favicon.get("hash"),
+                favicon.get("mmh3"),
+                favicon.get("murmurhash3"),
+            ]
+        )
+    else:
+        candidates.append(http_data.get("favicon_hash"))
+        candidates.append(favicon)
+
+    for value in candidates:
+        if value in (None, ""):
+            continue
+        try:
+            return int(value)
+        except (TypeError, ValueError):
+            continue
+    return None
 
 
 def _extract_shodan_scripts(html: str) -> List[str]:
@@ -338,9 +472,16 @@ def _extract_shodan_markers(html: str) -> List[str]:
     return sorted(set(markers))
 
 
-def _extract_shodan_versions(html: str, headers: dict) -> List[str]:
+def _extract_shodan_versions(raw_record, html: str, headers: dict) -> List[str]:
     versions = set()
-    haystacks = [html] + [str(value) for value in headers.values()]
+    haystacks = [
+        html,
+        str(raw_record.get("version") or ""),
+        str(raw_record.get("product") or ""),
+        str(raw_record.get("os") or ""),
+    ] + [str(value) for value in headers.values()]
+    for cpe in raw_record.get("cpe", []) or []:
+        haystacks.append(str(cpe))
     for haystack in haystacks:
         versions.update(VERSION_RE.findall(haystack))
     return sorted(versions)
@@ -348,16 +489,26 @@ def _extract_shodan_versions(html: str, headers: dict) -> List[str]:
 
 def _build_shodan_text(raw_record) -> str:
     parts = []
-    for key in ("product", "data"):
+    for key in ("product", "version", "os", "data"):
         value = raw_record.get(key)
         if isinstance(value, str) and value:
             parts.append(value)
 
+    for value in raw_record.get("cpe", []) or []:
+        parts.append(str(value))
+
     http_data = raw_record.get("http") or {}
-    for key in ("title", "html"):
+    for key in ("title", "html", "server"):
         value = http_data.get(key)
         if isinstance(value, str) and value:
             parts.append(value)
+    components = http_data.get("components") or {}
+    if isinstance(components, dict):
+        for name, meta in components.items():
+            parts.append(str(name))
+            if isinstance(meta, dict):
+                for subvalue in meta.values():
+                    parts.append(str(subvalue))
 
     mdns = raw_record.get("mdns") or {}
     services = mdns.get("services") or {}
@@ -376,6 +527,32 @@ def _build_shodan_text(raw_record) -> str:
             parts.extend(str(value) for value in records)
 
     return "\n".join(parts)
+
+
+def _annotate_result_metadata(metadata, rules) -> dict:
+    result = dict(metadata or {})
+    shodan_vulns = _shodan_vulns_from_metadata(result)
+    if shodan_vulns:
+        result["shodan_vuln_reference"] = cross_reference_vulns(
+            shodan_vulns,
+            rules.get("vulnerabilities", []),
+        )
+    return result
+
+
+def _platform_from_metadata(metadata) -> Optional[str]:
+    platform = (metadata or {}).get("platform")
+    return str(platform) if platform else None
+
+
+def _passive_waf_from_metadata(metadata) -> Optional[str]:
+    value = (metadata or {}).get("shodan_http_waf")
+    return str(value) if value else None
+
+
+def _shodan_vulns_from_metadata(metadata) -> List[str]:
+    values = (metadata or {}).get("shodan_vulns") or []
+    return [str(value) for value in values if value]
 
 
 def render_results(results: List[ScanResult], output_format: str) -> str:
@@ -400,6 +577,38 @@ def _render_pretty(results: List[ScanResult]) -> str:
         ]
         if result.metadata.get("shodan_query"):
             lines.append(f"Shodan query: {result.metadata['shodan_query']}")
+        if result.metadata.get("shodan_product") or result.metadata.get("shodan_version"):
+            product_bits = []
+            if result.metadata.get("shodan_product"):
+                product_bits.append(str(result.metadata["shodan_product"]))
+            if result.metadata.get("shodan_version"):
+                product_bits.append(f"version {result.metadata['shodan_version']}")
+            lines.append("Shodan banner: " + " ".join(product_bits))
+        if result.metadata.get("mdns_version"):
+            lines.append(f"mDNS version: {result.metadata['mdns_version']}")
+        if result.metadata.get("platform"):
+            lines.append(f"Platform: {result.metadata['platform']}")
+        pivot_queries = result.metadata.get("shodan_pivot_queries") or []
+        if pivot_queries:
+            lines.append("Pivot queries: " + "; ".join(pivot_queries[:4]))
+        vuln_reference = result.metadata.get("shodan_vuln_reference") or {}
+        if vuln_reference.get("confirmed") or vuln_reference.get("shodan_only"):
+            lines.append(
+                "Shodan CVE cross-check: "
+                f"confirmed={';'.join(vuln_reference.get('confirmed', [])[:6]) or 'none'} "
+                f"shodan_only={';'.join(vuln_reference.get('shodan_only', [])[:6]) or 'none'}"
+            )
+        if result.proxy_detection and result.proxy_detection.detected:
+            lines.append(
+                "Reverse proxy: "
+                f"{result.proxy_detection.proxy_type} "
+                f"(confidence {result.proxy_detection.confidence:.2f})"
+            )
+        if result.honeypot_assessment and result.honeypot_assessment.probable:
+            lines.append(
+                "Honeypot assessment: "
+                f"probable (confidence {result.honeypot_assessment.probability:.2f})"
+            )
 
         if result.fingerprint_matches:
             best_family = result.fingerprint_matches[0]
@@ -461,6 +670,18 @@ def _render_csv(results: List[ScanResult]) -> str:
         "probed_base",
         "product_confidence",
         "shodan_query",
+        "platform",
+        "shodan_product",
+        "mdns_version",
+        "shodan_pivot_queries",
+        "shodan_confirmed_vulns",
+        "shodan_only_vulns",
+        "proxy_detected",
+        "proxy_type",
+        "proxy_confidence",
+        "honeypot_probable",
+        "honeypot_probability",
+        "honeypot_signature",
         "top_fingerprint_family",
         "top_fingerprint_confidence",
         "top_fingerprint_source",
@@ -490,6 +711,7 @@ def _render_csv(results: List[ScanResult]) -> str:
         top_vulnerability = (
             result.vulnerability_matches[0] if result.vulnerability_matches else None
         )
+        vuln_reference = result.metadata.get("shodan_vuln_reference") or {}
         writer.writerow(
             {
                 "input_target": result.input_target,
@@ -497,6 +719,48 @@ def _render_csv(results: List[ScanResult]) -> str:
                 "probed_base": result.probed_base or "",
                 "product_confidence": f"{result.product_confidence:.2f}",
                 "shodan_query": result.metadata.get("shodan_query", ""),
+                "platform": result.metadata.get("platform", ""),
+                "shodan_product": result.metadata.get("shodan_product", ""),
+                "mdns_version": result.metadata.get("mdns_version", ""),
+                "shodan_pivot_queries": ";".join(
+                    result.metadata.get("shodan_pivot_queries", [])[:6]
+                ),
+                "shodan_confirmed_vulns": ";".join(
+                    vuln_reference.get("confirmed", [])[:12]
+                ),
+                "shodan_only_vulns": ";".join(
+                    vuln_reference.get("shodan_only", [])[:12]
+                ),
+                "proxy_detected": (
+                    "true"
+                    if result.proxy_detection and result.proxy_detection.detected
+                    else "false"
+                ),
+                "proxy_type": (
+                    result.proxy_detection.proxy_type
+                    if result.proxy_detection and result.proxy_detection.proxy_type
+                    else ""
+                ),
+                "proxy_confidence": (
+                    f"{result.proxy_detection.confidence:.2f}"
+                    if result.proxy_detection and result.proxy_detection.detected
+                    else ""
+                ),
+                "honeypot_probable": (
+                    "true"
+                    if result.honeypot_assessment and result.honeypot_assessment.probable
+                    else "false"
+                ),
+                "honeypot_probability": (
+                    f"{result.honeypot_assessment.probability:.2f}"
+                    if result.honeypot_assessment
+                    else ""
+                ),
+                "honeypot_signature": (
+                    result.honeypot_assessment.known_signature
+                    if result.honeypot_assessment and result.honeypot_assessment.known_signature
+                    else ""
+                ),
                 "top_fingerprint_family": (
                     top_fingerprint.family if top_fingerprint else ""
                 ),

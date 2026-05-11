@@ -6,10 +6,15 @@
 - ingesting live Shodan search results through the Shodan REST API
 - probing common OpenClaw gateway HTTP endpoints
 - extracting stable fingerprint signals
+- extracting passive Shodan banner metadata and pivot queries for offline hunting
+- extracting passive mDNS service metadata from Shodan banners for gateway triage
+- detecting likely reverse proxies and edge services from existing response data
+- annotating likely honeypot or decoy behavior conservatively from strong signatures and timing uniformity
 - classifying live responder behavior families such as UI-only 404 API gateways
   or SPA-fallback API shells
 - inferring OpenClaw versions when a version hint or custom rule matches
-- mapping inferred versions to known OpenClaw vulnerabilities
+- mapping inferred versions to known OpenClaw vulnerabilities with
+  platform-aware correlation when banner OS data is available
 
 The scanner avoids third-party Python dependencies so it can run with the stock
 `python3` that is already available on most systems.
@@ -19,18 +24,41 @@ The scanner avoids third-party Python dependencies so it can run with the stock
 For each target, the scanner:
 
 1. probes a small set of HTTP endpoints such as `/`, `/login`, `/api`,
-   `/api/version`, `/api/health`, and a deliberate 404-style API path
-2. records headers, status codes, titles, JS asset paths, JSON key shapes,
-   product markers, and version hints
-3. applies family fingerprint rules plus version extraction rules from a JSON
+   `/api/version`, `/api/health`, `/api/skills`, `/api/agents`, `/metrics`,
+   `/swagger.json`, `/robots.txt`, `/ws`, `/favicon.ico`, `/manifest.json`,
+   `/asset-manifest.json`, `/v1/models`, `/v1/models/openclaw/default`,
+   `POST /v1/embeddings`, `POST /v1/chat/completions`, `POST /v1/responses`,
+   `POST /tools/invoke`, and a deliberate method-aware 404-style API path
+2. records headers, header ordering, status codes, stripped error text, stack
+   trace hints, titles, favicon hashes, JS asset paths, JSON key shapes,
+   product markers, single-sample response timing, and version hints
+3. imports passive Shodan banner metadata such as product/version, hash pivots,
+   OS hints, favicon hashes, Shodan-reported CVEs, and structured mDNS gateway
+   metadata when that data exists
+4. detects likely reverse proxies or WAF edges from collected headers and
+   passive Shodan WAF hints
+5. applies family fingerprint rules plus version extraction rules from a JSON
    rule file
-4. compares the resulting exact or approximate version candidates against a seeded OpenClaw
-   vulnerability database
+6. compares the resulting exact or approximate version candidates against an
+   expanded OpenClaw vulnerability database
 
 The bundled rules are intentionally conservative:
 
 - behavior-family fingerprinting is supported out of the box for the live
   port `18789` families observed so far
+- gateway API surface fingerprinting is supported out of the box for
+  auth-gated `POST /tools/invoke` and selective OpenAI-compatible `POST /v1/*`
+  behavior on current live responders
+- richer external error-response and favicon/manifest signals are collected out
+  of the box for future rule enrichment
+- passive Shodan metadata extraction and pivot-query generation are supported
+  out of the box
+- passive mDNS metadata extraction is supported out of the box for Shodan
+  exports and live Shodan API ingestion
+- reverse-proxy detection is supported out of the box for both live probes and
+  passive Shodan HTTP metadata
+- conservative honeypot assessment is supported out of the box from strong
+  response signatures plus timing-uniformity heuristics
 - exact version extraction is supported out of the box
 - vulnerability correlation is supported out of the box
 - artifact-to-version fingerprinting is designed to be extended with your own
@@ -98,6 +126,35 @@ Write JSON output to a file:
 python3 -m openclaw_scanner --targets-file targets.txt --output results.json
 ```
 
+Create a black-box calibration capture bundle from known-version test nodes:
+
+```bash
+python3 -m openclaw_scanner \
+  --targets-file lab-targets-2026.2.13.txt \
+  --capture-version 2026.2.13 \
+  --capture-name openclaw-2026.2.13-lab \
+  --capture-output captures/openclaw-2026.2.13.json \
+  --format pretty
+```
+
+Generate candidate version rules from saved black-box capture bundles:
+
+```bash
+python3 -m openclaw_scanner \
+  --suggest-rules-from captures/ \
+  --format json \
+  --output candidate-version-rules.json
+```
+
+Provision disposable Oracle Cloud free-tier calibration nodes:
+
+```bash
+cp deploy/oracle_free_tier/terraform.tfvars.example deploy/oracle_free_tier/terraform.tfvars
+cd deploy/oracle_free_tier
+terraform init
+terraform apply
+```
+
 ## Input formats
 
 ### Direct targets
@@ -123,6 +180,11 @@ The scanner accepts these common forms:
 - newline-delimited JSON where each line is a Shodan match object
 
 Useful fields include `ip_str`, `port`, `hostnames`, and `ssl`.
+If a Shodan record includes a favicon hash, the scanner imports that passive
+signal into the offline observation model.
+The scanner also imports Shodan product/version, OS, CPE, hash pivots,
+`ssl.jarm`, Shodan-reported CVE IDs, and structured mDNS gateway metadata when
+those fields are present.
 
 By default, Shodan exports are analyzed offline from the JSON itself. Use
 `--rescan-shodan` if you want to actively probe each exported host.
@@ -135,6 +197,8 @@ Shodan REST API. The scanner looks for the API key in this order:
 - `--shodan-key`
 - `SHODAN_API_KEY` in the current environment
 - `SHODAN_API_KEY=...` in `.env`
+- `.shodanapi` in the repo root or `openclaw_scanner/.shodanapi`
+  Raw tokens and `key=...` / `SHODAN_API_KEY=...` formats are both supported.
 
 Useful flags:
 
@@ -145,6 +209,32 @@ Useful flags:
 
 The live query path can consume Shodan query credits, especially if you use
 search filters or fetch pages beyond the first one.
+
+## Black-Box Calibration Workflow
+
+The scanner stays focused on external discovery. The black-box workflow is only
+for generating better remote fingerprint rules from controlled test nodes.
+
+The intended loop is:
+
+1. Stand up one or more known-version test gateways.
+2. Scan them with `openclaw_scanner` and write a capture bundle using
+   `--capture-output` plus `--capture-version`.
+3. Repeat for other versions.
+4. Run `--suggest-rules-from` across the saved bundles.
+5. Review the generated candidate `version_rules` before promoting them into
+   [`openclaw_scanner/data/openclaw_rules.json`](/Users/mhedhli/Documents/Codex/OpenClawScanner/openclaw_scanner/data/openclaw_rules.json).
+
+Important scope guardrails:
+
+- Capture bundles store only remote-visible signals such as path/status pairs,
+  method/status pairs, titles, content types, header order, stripped error
+  text, favicon hashes, JSON keys, JS asset names, and body hashes.
+- The version label is out-of-band metadata for calibration only.
+- The scanner does not depend on host-side files, processes, or local config to
+  fingerprint a remote target.
+- Oracle Cloud free-tier deployment scripts for known-version calibration nodes
+  live in [`deploy/oracle_free_tier/README.md`](/Users/mhedhli/Documents/Codex/OpenClawScanner/deploy/oracle_free_tier/README.md).
 
 ## Custom fingerprint rules
 
@@ -211,16 +301,36 @@ Example version rule:
 Supported condition types:
 
 - `path_status`
+- `path_status_not`
+- `method_status`
 - `title_contains`
 - `marker_present`
 - `script_contains`
 - `header_contains`
 - `json_key`
 - `body_hash`
+- `body_contains`
+- `error_pattern`
+- `header_order`
+- `has_stack_trace`
+- `favicon_hash`
 - `version_hint_prefix`
+
+Useful passive metadata fields surfaced in results include:
+
+- `mdns_version`
+- `mdns_service_types`
+- `mdns_instance_names`
+- `mdns_txt_records`
+- `mdns_advertised_ports`
+- `mdns_product_markers`
+- `proxy_detection`
+- `honeypot_assessment`
 
 The bundled family rules currently recognize:
 
+- `claw_gateway_tools_invoke_auth_json`
+- `openclaw_openai_chat_surface_enabled`
 - `openclaw_ui_only_404_api`
 - `openclaw_spa_fallback_all_200`
 - `clawdbot_spa_fallback_all_200`
@@ -236,6 +346,23 @@ The bundled family rules currently recognize:
 These family matches improve clustering and triage, but they do not create
 vulnerability hits unless an exact or approximate version is also inferred.
 
+## Changelog-Derived Gateway Signals
+
+Current official OpenClaw docs and release notes make the gateway HTTP surface
+more useful for external fingerprinting than it was in early March 2026.
+
+| Signal | Probe | Interpretation |
+| --- | --- | --- |
+| Auth-gated tools API | `POST /tools/invoke` returns `400/401/403/429` with JSON `error` | Strong Claw-family gateway signal. This endpoint is part of the current trusted-operator HTTP API surface, so a structured auth failure is more informative than a plain dashboard fetch. |
+| OpenAI-compatible chat surface enabled | `POST /v1/chat/completions` returns `400/401/403/429` with JSON `error` | Treat as a feature-generation signal, not an exact version. It is consistent with newer OpenAI-compatible gateway behavior and indicates the chat route is active rather than absent or method-blocked. |
+| Models path is real JSON | `GET /v1/models` or `GET /v1/models/openclaw/default` returns JSON | Potentially high-value when it happens, especially if the response contains `data`, `object`, or `id`. |
+| Models path is only SPA fallback | `GET /v1/models` returns `200 text/html` with the control title | Do not treat this as a real models API. On current live targets this often mirrors the same dashboard shell as `/`. |
+
+The scanner now treats these as gateway-surface signals rather than exact
+version fingerprints. They are useful for product confirmation, behavior
+clustering, and lower-bound feature dating, but not yet for exact vuln mapping
+without an additional version hint.
+
 ## Suggested workflow
 
 1. Run the scanner against targets or exported Shodan data.
@@ -247,17 +374,48 @@ vulnerability hits unless an exact or approximate version is also inferred.
 ## Notes
 
 - The vulnerability mapping is version-based. It does not prove exploitability.
+- GHSA-only advisories discovered during the final research sweep are tracked in
+  the research notes but are not bundled into default vuln matching until they
+  are normalized into stable scanner data.
+- The bundled vulnerability data now includes additional March 2026 advisories
+  with fixes extending through `2026.3.2`, plus curated lower-risk additions
+  from later research batches up to `2026.2.26`.
+- A larger March 2026 research batch is still documented under
+  [`research/proposed_changes/`](/Users/mhedhli/Documents/Codex/OpenClawScanner/research/proposed_changes),
+  but entries explicitly marked as needing verification are not bundled into
+  default vuln matching yet.
+- Platform-specific CVEs are filtered when banner OS data clearly mismatches and
+  are marked more tentatively when the target platform is unknown.
 - Some bundled CVEs require auth, specific tool permissions, or local access.
 - Reverse proxies and custom dashboards can hide useful signals.
+- Honeypot assessment is intentionally conservative and should be treated as a
+  triage hint, not proof that a target is fake.
+- Default live probing stays low-impact: the scanner uses GET requests plus a
+  small set of empty-body or `{}` JSON POST probes for method-aware error
+  fingerprinting, including `POST /api/doesnotexist`, `POST /tools/invoke`,
+  and the OpenAI-compatible `POST /v1/*` paths, along with a broader discovery
+  path set for API, metrics, schema, config, and WebSocket-adjacent surfaces.
 - `--format csv` emits one summarized row per target for triage.
 - CSV output includes top fingerprint-family columns in addition to versions and
-  vulnerabilities.
+  vulnerabilities, plus passive Shodan product/platform/pivot columns, mDNS
+  version, reverse-proxy columns, and honeypot assessment columns when
+  available.
 - `--format ndjson` emits one full JSON record per line for pipelines.
 - JSON and NDJSON outputs include `fingerprint_matches` alongside
-  `matched_versions`.
+  `matched_versions`, `proxy_detection`, `honeypot_assessment`, and
+  Shodan-derived metadata includes passive pivot queries, mDNS fields, and
+  Shodan-vs-scanner CVE cross-reference data when applicable.
 - Demo datasets are bundled under
   [`openclaw_scanner/data/`](/Users/mhedhli/Documents/Codex/OpenClawScanner/openclaw_scanner/data).
 - Large internet-scale use should respect rate limits and authorization.
+
+## Future Scope
+
+- Host-side scanning may be added later, but it is intentionally out of scope
+  for the current external discovery tool.
+- A future GitHub Pages exposure checker may let users enter their own public IP
+  for testing, with rate limiting, a CAPTCHA, and an authorization warning
+  before scanning.
 
 ## Tests
 

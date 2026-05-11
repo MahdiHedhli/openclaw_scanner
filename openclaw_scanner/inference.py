@@ -39,6 +39,15 @@ def infer_product_confidence(
         score += 0.10
     if any(obs.version_hints for obs in observations.values()):
         score += 0.20
+    if _has_json_auth_surface(observations, "/tools/invoke", method="POST"):
+        score += 0.35
+    if any(
+        _has_json_auth_surface(observations, path, method="POST")
+        for path in ("/v1/embeddings", "/v1/chat/completions", "/v1/responses")
+    ):
+        score += 0.15
+    if _has_openai_models_surface(observations):
+        score += 0.10
 
     return min(score, 1.0)
 
@@ -122,9 +131,13 @@ def infer_fingerprint_matches(
 
 
 def correlate_vulnerabilities(
-    versions: Sequence[VersionMatch], rules: Dict[str, Any]
+    versions: Sequence[VersionMatch],
+    rules: Dict[str, Any],
+    platform: Optional[str] = None,
+    shodan_vulns: Optional[Sequence[str]] = None,
 ) -> List[VulnerabilityMatch]:
     vulns: List[VulnerabilityMatch] = []
+    shodan_vuln_ids = {str(value) for value in shodan_vulns or [] if value}
 
     for version_match in versions:
         for vuln in rules.get("vulnerabilities", []):
@@ -132,8 +145,16 @@ def correlate_vulnerabilities(
             if not affected:
                 continue
 
+            applicable, platform_reason, confidence_cap = _platform_matches(vuln, platform)
+            if not applicable:
+                continue
+
             confidence = 0.95 if version_match.exact else min(version_match.confidence, 0.75)
-            reasoning = f"{reasoning} Version source: {version_match.source}."
+            confidence = min(confidence, confidence_cap)
+            reasoning = f"{reasoning} {platform_reason} Version source: {version_match.source}.".strip()
+            if vuln["id"] in shodan_vuln_ids:
+                confidence = min(0.99, confidence + 0.03)
+                reasoning = f"{reasoning} Shodan also flagged this CVE."
             vulns.append(
                 VulnerabilityMatch(
                     id=vuln["id"],
@@ -143,6 +164,7 @@ def correlate_vulnerabilities(
                     reasoning=reasoning,
                     fixed_in=vuln.get("fixed_in"),
                     severity=vuln.get("severity"),
+                    platform=vuln.get("platform"),
                     surface=list(vuln.get("surface", [])),
                     requires_auth=vuln.get("requires_auth"),
                     references=list(vuln.get("references", [])),
@@ -161,6 +183,27 @@ def correlate_vulnerabilities(
     )
 
 
+def _platform_matches(
+    vuln: Dict[str, Any],
+    platform: Optional[str],
+) -> Tuple[bool, str, float]:
+    expected = vuln.get("platform")
+    if not expected:
+        return True, "", 1.0
+
+    if not platform:
+        return (
+            True,
+            f"Platform-specific advisory for {expected}; target platform is unknown so this match is tentative.",
+            0.55,
+        )
+
+    if str(platform).lower() != str(expected).lower():
+        return False, "", 0.0
+
+    return True, f"Target platform {platform} matches the advisory scope.", 1.0
+
+
 def _collect_version_hints(observations: Iterable[ProbeObservation]) -> List[str]:
     hints = set()
     for observation in observations:
@@ -172,6 +215,57 @@ def _collect_version_hints(observations: Iterable[ProbeObservation]) -> List[str
             if "version" in key.lower():
                 hints.update(_extract_versions_from_string(value))
     return sorted(hints, key=_version_sort_key, reverse=True)
+
+
+def _get_observation(
+    observations: Dict[str, ProbeObservation],
+    path: str,
+    method: str = "GET",
+) -> Optional[ProbeObservation]:
+    normalized_path = path if path.startswith("/") else f"/{path}"
+    normalized_method = method.upper()
+    key = normalized_path if normalized_method == "GET" else f"{normalized_method} {normalized_path}"
+    return observations.get(key)
+
+
+def _has_json_auth_surface(
+    observations: Dict[str, ProbeObservation],
+    path: str,
+    method: str = "GET",
+) -> bool:
+    observation = _get_observation(observations, path=path, method=method)
+    if not observation or observation.status not in {400, 401, 403, 429}:
+        return False
+
+    content_type = (observation.content_type or "").lower()
+    if "json" not in content_type and not observation.json_keys:
+        return False
+
+    error_text = (observation.error_text or "").lower()
+    if any(
+        needle in error_text
+        for needle in ("unauthor", "forbidden", "auth", "token", "rate", "too many")
+    ):
+        return True
+
+    return any(str(key).lower() == "error" for key in observation.json_keys)
+
+
+def _has_openai_models_surface(observations: Dict[str, ProbeObservation]) -> bool:
+    for path in ("/v1/models", "/v1/models/openclaw/default"):
+        observation = _get_observation(observations, path=path, method="GET")
+        if not observation or observation.status not in {200, 401, 403, 429}:
+            continue
+
+        content_type = (observation.content_type or "").lower()
+        if "json" in content_type:
+            return True
+
+        json_keys = {str(key).lower() for key in observation.json_keys}
+        if {"data", "object"} & json_keys or "id" in json_keys:
+            return True
+
+    return False
 
 
 def _extract_versions_from_string(value: str) -> List[str]:
@@ -208,14 +302,23 @@ def _condition_matches(
 ) -> bool:
     condition_type = condition["type"]
     target_path = condition.get("path")
-    if target_path:
-        candidate_observations = (
-            [observations[target_path]] if target_path in observations else []
-        )
-    else:
-        candidate_observations = list(observations.values())
+    target_method = str(condition.get("method") or "").upper() or None
+    candidate_observations = [
+        observation
+        for observation in observations.values()
+        if (target_path is None or observation.path == target_path)
+        and (target_method is None or observation.method.upper() == target_method)
+    ]
 
     if condition_type == "path_status":
+        statuses = {int(value) for value in condition.get("statuses", [])}
+        return any(obs.status in statuses for obs in candidate_observations)
+
+    if condition_type == "path_status_not":
+        statuses = {int(value) for value in condition.get("statuses", [])}
+        return any(obs.status is not None and obs.status not in statuses for obs in candidate_observations)
+
+    if condition_type == "method_status":
         statuses = {int(value) for value in condition.get("statuses", [])}
         return any(obs.status in statuses for obs in candidate_observations)
 
@@ -253,6 +356,36 @@ def _condition_matches(
             obs.body_sha256 and obs.body_sha256.lower() == expected
             for obs in candidate_observations
         )
+
+    if condition_type == "body_contains":
+        needle = condition["value"].lower()
+        return any(
+            obs.error_text and needle in obs.error_text.lower()
+            for obs in candidate_observations
+        )
+
+    if condition_type == "error_pattern":
+        pattern = re.compile(condition["value"], re.IGNORECASE)
+        return any(
+            obs.error_text and pattern.search(obs.error_text)
+            for obs in candidate_observations
+        )
+
+    if condition_type == "header_order":
+        expected = [
+            part.strip().lower()
+            for part in str(condition["value"]).split("|")
+            if part.strip()
+        ]
+        return any(obs.header_order == expected for obs in candidate_observations)
+
+    if condition_type == "has_stack_trace":
+        expected = bool(condition.get("value", True))
+        return any(obs.has_stack_trace == expected for obs in candidate_observations)
+
+    if condition_type == "favicon_hash":
+        expected = int(condition["value"])
+        return any(obs.favicon_hash == expected for obs in candidate_observations)
 
     if condition_type == "version_hint_prefix":
         prefix = condition["value"]

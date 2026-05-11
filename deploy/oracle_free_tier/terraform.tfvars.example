@@ -1,0 +1,36 @@
+region           = "us-phoenix-1"
+compartment_ocid = "ocid1.compartment.oc1..replace_me"
+availability_domain = "Uocm:PHX-AD-1"
+
+# Oracle recommends pinning a region-specific image OCID rather than using a
+# dynamic image lookup. Choose an Ubuntu image that is Always Free eligible in
+# your home region.
+image_ocid = "ocid1.image.oc1.phx.replace_me"
+
+ssh_authorized_keys = <<EOF
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI... replace-me
+EOF
+
+ssh_ingress_cidrs     = ["0.0.0.0/0"]
+gateway_ingress_cidrs = ["0.0.0.0/0"]
+
+instances = {
+  openclaw-2026-2-13 = {
+    openclaw_version = "2026.2.13"
+    ocpus            = 1
+    memory_in_gbs    = 6
+    gateway_port     = 18789
+  }
+  openclaw-2026-2-14 = {
+    openclaw_version = "2026.2.14"
+    ocpus            = 1
+    memory_in_gbs    = 6
+    gateway_port     = 18789
+  }
+  clawdbot-2026-1-24-3 = {
+    openclaw_version = "2026.1.24-3"
+    ocpus            = 1
+    memory_in_gbs    = 6
+    gateway_port     = 18789
+  }
+}

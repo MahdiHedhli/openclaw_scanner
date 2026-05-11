@@ -7,7 +7,9 @@ from openclaw_scanner.cli import _observations_from_shodan_record, _scan_single_
 from openclaw_scanner.inference import correlate_vulnerabilities, infer_versions, load_rules
 from openclaw_scanner.models import (
     FingerprintMatch,
+    HoneypotAssessment,
     ProbeObservation,
+    ProxyDetection,
     ScanResult,
     ScanTarget,
     VersionMatch,
@@ -20,6 +22,7 @@ class CliTests(unittest.TestCase):
         shodan_record = {
             "ip_str": "203.0.113.50",
             "port": 443,
+            "version": "2026.2.13",
             "http": {
                 "title": "OpenClaw Gateway",
                 "headers": {
@@ -43,6 +46,46 @@ class CliTests(unittest.TestCase):
 
         self.assertTrue(any(match.version == "2026.2.13" for match in versions))
         self.assertTrue(any(vuln.id == "CVE-2026-26329" for vuln in vulns))
+
+    def test_scan_single_target_adds_shodan_vuln_cross_reference(self):
+        rules = load_rules(None)
+        shodan_record = {
+            "ip_str": "203.0.113.51",
+            "port": 18789,
+            "version": "2026.3.0",
+            "product": "OpenClaw Gateway",
+            "os": "Windows",
+            "vulns": {"CVE-2026-32051": {}},
+            "http": {
+                "title": "OpenClaw Control",
+                "html": "OpenClaw version 2026.3.0",
+            },
+        }
+        target = ScanTarget(
+            label="203.0.113.51:18789",
+            source="shodan",
+            candidates=["https://203.0.113.51:18789"],
+            metadata={
+                "platform": "windows",
+                "shodan_vulns": ["CVE-2026-32051"],
+                "shodan_product": "OpenClaw Gateway",
+            },
+            raw_record=shodan_record,
+        )
+
+        result = _scan_single_target(
+            target=target,
+            rules=rules,
+            probe_configs=["/"],
+            timeout=1.0,
+            max_bytes=1024,
+            verify_tls=False,
+            user_agent="openclaw-scanner/test",
+            rescan_shodan=False,
+        )
+
+        self.assertIn("shodan_vuln_reference", result.metadata)
+        self.assertIn("CVE-2026-32051", result.metadata["shodan_vuln_reference"]["confirmed"])
 
     def test_offline_mdns_observation_extracts_gateway_version_suffix(self):
         shodan_record = {
@@ -69,6 +112,22 @@ class CliTests(unittest.TestCase):
 
         self.assertTrue(any(match.version == "2026.1.24-3" for match in versions))
         self.assertGreaterEqual(observations["/__shodan__"].status, 200)
+
+    def test_offline_shodan_observation_extracts_favicon_hash(self):
+        shodan_record = {
+            "ip_str": "203.0.113.70",
+            "port": 18789,
+            "http": {
+                "title": "OpenClaw Control",
+                "headers": {"content-type": "text/html"},
+                "favicon": {"hash": "-1205140012"},
+                "html": "<html><head><title>OpenClaw Control</title></head></html>",
+            },
+        }
+
+        observations = _observations_from_shodan_record(shodan_record)
+
+        self.assertEqual(observations["/__shodan__"].favicon_hash, -1205140012)
 
     def test_scan_single_target_keeps_errors_for_all_candidate_schemes(self):
         rules = load_rules(None)
@@ -97,7 +156,7 @@ class CliTests(unittest.TestCase):
             result = _scan_single_target(
                 target=target,
                 rules=rules,
-                probe_paths=["/"],
+                probe_configs=["/"],
                 timeout=1.0,
                 max_bytes=1024,
                 verify_tls=False,
@@ -118,7 +177,10 @@ class CliTests(unittest.TestCase):
             input_target="203.0.113.10:18789",
             source="shodan",
             probed_base="https://203.0.113.10:18789",
-            metadata={"shodan_query": 'product:"mDNS" "clawdbot-gw"'},
+            metadata={
+                "shodan_query": 'product:"mDNS" "clawdbot-gw"',
+                "mdns_version": "2026.3.7",
+            },
             product_confidence=0.75,
             observations={
                 "/": ProbeObservation(
@@ -128,6 +190,18 @@ class CliTests(unittest.TestCase):
                     body_markers=["openclaw"],
                 )
             },
+            proxy_detection=ProxyDetection(
+                detected=True,
+                proxy_type="cloudflare",
+                confidence=0.95,
+                indicators=["/: cf-ray=abc123-IAD"],
+            ),
+            honeypot_assessment=HoneypotAssessment(
+                probable=True,
+                probability=0.91,
+                known_signature="cowrie",
+                signals=["matched known honeypot signature: cowrie"],
+            ),
             fingerprint_matches=[
                 FingerprintMatch(
                     family="openclaw_ui_only_404_api",
@@ -166,6 +240,10 @@ class CliTests(unittest.TestCase):
         self.assertEqual(rows[0]["top_fingerprint_family"], "openclaw_ui_only_404_api")
         self.assertEqual(rows[0]["top_version"], "2026.1.24-3")
         self.assertEqual(rows[0]["top_vulnerability"], "CVE-2026-24763")
+        self.assertEqual(rows[0]["mdns_version"], "2026.3.7")
+        self.assertEqual(rows[0]["proxy_type"], "cloudflare")
+        self.assertEqual(rows[0]["honeypot_probable"], "true")
+        self.assertEqual(rows[0]["honeypot_signature"], "cowrie")
         self.assertEqual(rows[0]["markers"], "openclaw")
         self.assertIn("timed out", rows[0]["errors"])
 

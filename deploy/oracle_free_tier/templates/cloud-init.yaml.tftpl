@@ -1,0 +1,63 @@
+#cloud-config
+package_update: true
+package_upgrade: false
+packages:
+  - curl
+  - ca-certificates
+  - gnupg
+  - jq
+
+write_files:
+  - path: /usr/local/bin/bootstrap-openclaw-gateway.sh
+    permissions: "0755"
+    owner: "root:root"
+    content: |
+      #!/usr/bin/env bash
+      set -euxo pipefail
+      export DEBIAN_FRONTEND=noninteractive
+
+      install_node() {
+        if command -v node >/dev/null 2>&1; then
+          if node --version | grep -Eq '^v(22|23|24|25)\.'; then
+            return 0
+          fi
+        fi
+
+        mkdir -p /etc/apt/keyrings
+        curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key \
+          | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
+        echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_22.x nodistro main" \
+          > /etc/apt/sources.list.d/nodesource.list
+        apt-get update
+        apt-get install -y nodejs
+      }
+
+      install_node
+      loginctl enable-linger ${ssh_username} || true
+
+      install -d -m 0755 -o ${ssh_username} -g ${ssh_username} /home/${ssh_username}/.openclaw
+      cat > /home/${ssh_username}/.openclaw/openclaw.json <<'JSON'
+      {
+        "gateway": {
+          "mode": "local",
+          "bind": "lan",
+          "port": ${gateway_port},
+          "auth": {
+            "mode": "token",
+            "token": "${gateway_token}"
+          }
+        }
+      }
+      JSON
+      chown ${ssh_username}:${ssh_username} /home/${ssh_username}/.openclaw/openclaw.json
+
+      npm install -g "openclaw@${openclaw_version}"
+      sudo -u ${ssh_username} bash -lc 'openclaw --version'
+      sudo -u ${ssh_username} bash -lc 'openclaw gateway install --force --json'
+      sudo -u ${ssh_username} bash -lc 'openclaw gateway start --json || true'
+      sleep 5
+      sudo -u ${ssh_username} bash -lc 'openclaw gateway status --json || true'
+      ss -ltn | grep ":${gateway_port} " || true
+
+runcmd:
+  - [bash, -lc, "/usr/local/bin/bootstrap-openclaw-gateway.sh | tee /var/log/openclaw-bootstrap.log"]

@@ -3,6 +3,7 @@ import unittest
 from openclaw_scanner.inference import (
     correlate_vulnerabilities,
     infer_fingerprint_matches,
+    infer_product_confidence,
     infer_versions,
     load_rules,
 )
@@ -48,6 +49,46 @@ class InferenceTests(unittest.TestCase):
         vulns = correlate_vulnerabilities(versions, rules)
         vuln_ids = {vuln.id for vuln in vulns}
         self.assertIn("CVE-2026-32063", vuln_ids)
+
+    def test_platform_specific_vulnerabilities_are_filtered_when_platform_mismatches(self):
+        rules = load_rules(None)
+        observations = {
+            "/api/version": ProbeObservation(
+                path="/api/version",
+                url="https://example.test/api/version",
+                status=200,
+                version_hints=["2026.2.18"],
+            )
+        }
+
+        versions = infer_versions(observations, rules)
+        linux_vulns = correlate_vulnerabilities(versions, rules, platform="linux")
+        unknown_vulns = correlate_vulnerabilities(versions, rules, platform=None)
+
+        linux_ids = {vuln.id for vuln in linux_vulns}
+        unknown_matches = {vuln.id: vuln for vuln in unknown_vulns}
+
+        self.assertNotIn("CVE-2026-22176", linux_ids)
+        self.assertIn("CVE-2026-22176", unknown_matches)
+        self.assertLessEqual(unknown_matches["CVE-2026-22176"].confidence, 0.55)
+
+    def test_recent_cve_batch_entries_map_to_matching_versions(self):
+        rules = load_rules(None)
+        observations = {
+            "/api/version": ProbeObservation(
+                path="/api/version",
+                url="https://example.test/api/version",
+                status=200,
+                version_hints=["2026.2.16"],
+            )
+        }
+
+        versions = infer_versions(observations, rules)
+        vulns = correlate_vulnerabilities(versions, rules)
+        vuln_ids = {vuln.id for vuln in vulns}
+
+        self.assertIn("CVE-2026-32896", vuln_ids)
+        self.assertIn("CVE-2026-32061", vuln_ids)
 
     def test_infers_ui_only_fingerprint_family(self):
         rules = load_rules(None)
@@ -124,6 +165,184 @@ class InferenceTests(unittest.TestCase):
         matches = infer_fingerprint_matches(observations, rules)
 
         self.assertEqual(matches, [])
+
+    def test_method_aware_error_conditions_can_match(self):
+        rules = {
+            "fingerprint_rules": [
+                {
+                    "id": "post-error-family",
+                    "family": "openclaw_post_error_family",
+                    "confidence": 0.88,
+                    "all": [
+                        {
+                            "type": "method_status",
+                            "path": "/api/doesnotexist",
+                            "method": "POST",
+                            "statuses": [404],
+                        },
+                        {
+                            "type": "body_contains",
+                            "path": "/api/doesnotexist",
+                            "method": "POST",
+                            "value": "cannot post",
+                        },
+                        {
+                            "type": "error_pattern",
+                            "path": "/api/doesnotexist",
+                            "method": "POST",
+                            "value": r"cannot post\s+/api/doesnotexist",
+                        },
+                        {
+                            "type": "header_order",
+                            "path": "/api/doesnotexist",
+                            "method": "POST",
+                            "value": "x-powered-by|content-type|content-length",
+                        },
+                    ],
+                }
+            ]
+        }
+        observations = {
+            "POST /api/doesnotexist": ProbeObservation(
+                path="/api/doesnotexist",
+                url="http://example.test/api/doesnotexist",
+                method="POST",
+                status=404,
+                header_order=["x-powered-by", "content-type", "content-length"],
+                error_text="Cannot POST /api/doesnotexist",
+            )
+        }
+
+        matches = infer_fingerprint_matches(observations, rules)
+
+        self.assertEqual(len(matches), 1)
+        self.assertEqual(matches[0].family, "openclaw_post_error_family")
+
+    def test_path_status_not_condition_matches_non_404_endpoint(self):
+        rules = {
+            "fingerprint_rules": [
+                {
+                    "id": "openclaw-endpoint-exists",
+                    "family": "openclaw_non_404_endpoint",
+                    "confidence": 0.7,
+                    "all": [
+                        {
+                            "type": "path_status_not",
+                            "path": "/api/skills",
+                            "statuses": [404],
+                        }
+                    ],
+                }
+            ]
+        }
+        observations = {
+            "/api/skills": ProbeObservation(
+                path="/api/skills",
+                url="http://example.test/api/skills",
+                status=401,
+            )
+        }
+
+        matches = infer_fingerprint_matches(observations, rules)
+
+        self.assertEqual(len(matches), 1)
+        self.assertEqual(matches[0].family, "openclaw_non_404_endpoint")
+
+    def test_favicon_hash_rule_matches(self):
+        rules = {
+            "fingerprint_rules": [
+                {
+                    "id": "favicon-default",
+                    "family": "openclaw_default_favicon",
+                    "confidence": 0.84,
+                    "all": [
+                        {
+                            "type": "favicon_hash",
+                            "path": "/favicon.ico",
+                            "value": 123456789,
+                        }
+                    ],
+                }
+            ]
+        }
+        observations = {
+            "/favicon.ico": ProbeObservation(
+                path="/favicon.ico",
+                url="http://example.test/favicon.ico",
+                status=200,
+                favicon_hash=123456789,
+            )
+        }
+
+        matches = infer_fingerprint_matches(observations, rules)
+
+        self.assertEqual(len(matches), 1)
+        self.assertEqual(matches[0].family, "openclaw_default_favicon")
+
+    def test_tools_invoke_auth_json_is_treated_as_gateway_signal(self):
+        rules = load_rules(None)
+        observations = {
+            "/": ProbeObservation(
+                path="/",
+                url="http://example.test/",
+                status=200,
+                title="OpenClaw Control",
+            ),
+            "POST /tools/invoke": ProbeObservation(
+                path="/tools/invoke",
+                url="http://example.test/tools/invoke",
+                method="POST",
+                status=401,
+                headers={"content-type": "application/json; charset=utf-8"},
+                content_type="application/json; charset=utf-8",
+                json_keys=["error"],
+                error_text='{"error":{"message":"Unauthorized","type":"unauthorized"}}',
+            ),
+        }
+
+        confidence = infer_product_confidence(observations, rules)
+        matches = infer_fingerprint_matches(observations, rules)
+        families = {match.family for match in matches}
+
+        self.assertGreaterEqual(confidence, 0.60)
+        self.assertIn("claw_gateway_tools_invoke_auth_json", families)
+
+    def test_openai_chat_surface_rule_matches_structured_auth_response(self):
+        rules = load_rules(None)
+        observations = {
+            "/": ProbeObservation(
+                path="/",
+                url="http://example.test/",
+                status=200,
+                title="OpenClaw Control",
+                body_markers=["openclaw"],
+            ),
+            "POST /v1/chat/completions": ProbeObservation(
+                path="/v1/chat/completions",
+                url="http://example.test/v1/chat/completions",
+                method="POST",
+                status=401,
+                headers={"content-type": "application/json; charset=utf-8"},
+                content_type="application/json; charset=utf-8",
+                json_keys=["error"],
+                error_text='{"error":{"message":"Unauthorized","type":"unauthorized"}}',
+            ),
+            "POST /tools/invoke": ProbeObservation(
+                path="/tools/invoke",
+                url="http://example.test/tools/invoke",
+                method="POST",
+                status=401,
+                headers={"content-type": "application/json; charset=utf-8"},
+                content_type="application/json; charset=utf-8",
+                json_keys=["error"],
+                error_text='{"error":{"message":"Unauthorized","type":"unauthorized"}}',
+            ),
+        }
+
+        matches = infer_fingerprint_matches(observations, rules)
+        families = {match.family for match in matches}
+
+        self.assertIn("openclaw_openai_chat_surface_enabled", families)
 
 
 if __name__ == "__main__":
