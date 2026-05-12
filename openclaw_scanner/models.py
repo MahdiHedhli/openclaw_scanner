@@ -19,6 +19,7 @@ class ProbeObservation:
     path: str
     url: str
     method: str = "GET"
+    probe_name: Optional[str] = None
     status: Optional[int] = None
     final_url: Optional[str] = None
     response_time_ms: Optional[float] = None

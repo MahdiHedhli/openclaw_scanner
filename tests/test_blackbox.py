@@ -40,6 +40,17 @@ class BlackboxTests(unittest.TestCase):
                     status=404,
                     error_text="Cannot POST /api/doesnotexist",
                 ),
+                "WS-UPGRADE /ws": ProbeObservation(
+                    path="/ws",
+                    url="http://198.51.100.10:18789/ws",
+                    method="GET",
+                    probe_name="ws-upgrade",
+                    status=101,
+                    headers={
+                        "sec-websocket-protocol": "openclaw-gateway",
+                        "sec-websocket-extensions": "permessage-deflate",
+                    },
+                ),
                 "/health": ProbeObservation(
                     path="/health",
                     url="http://198.51.100.10:18789/health",
@@ -66,6 +77,10 @@ class BlackboxTests(unittest.TestCase):
         self.assertIn("header_contains|/health|content-type|application/json", signals)
         self.assertIn("favicon_hash|/favicon.ico|-1205140012", signals)
         self.assertIn("method_status|POST|/api/doesnotexist|404", signals)
+        self.assertIn("ws_upgrade_status|/ws|101", signals)
+        self.assertIn("ws_upgrade_supported|/ws|true", signals)
+        self.assertIn("ws_subprotocol_contains|/ws|openclaw-gateway", signals)
+        self.assertIn("ws_extension_contains|/ws|permessage-deflate", signals)
 
     def test_generate_rule_suggestions_prefers_unique_stable_signals(self):
         version_a_bundle = {
@@ -76,6 +91,7 @@ class BlackboxTests(unittest.TestCase):
                     "signals": [
                         "title_contains|/|OpenClaw Control",
                         "script_contains|/|/static/dashboard.2026.2.13.js",
+                        "ws_upgrade_status|/ws|101",
                         "path_status|/api/version|404",
                     ]
                 },
@@ -83,6 +99,7 @@ class BlackboxTests(unittest.TestCase):
                     "signals": [
                         "title_contains|/|OpenClaw Control",
                         "script_contains|/|/static/dashboard.2026.2.13.js",
+                        "ws_upgrade_status|/ws|101",
                         "path_status|/api/version|404",
                     ]
                 },
@@ -96,6 +113,7 @@ class BlackboxTests(unittest.TestCase):
                     "signals": [
                         "title_contains|/|OpenClaw Control",
                         "script_contains|/|/static/dashboard.2026.2.14.js",
+                        "ws_upgrade_status|/ws|403",
                         "path_status|/api/version|200",
                     ]
                 },
@@ -103,6 +121,7 @@ class BlackboxTests(unittest.TestCase):
                     "signals": [
                         "title_contains|/|OpenClaw Control",
                         "script_contains|/|/static/dashboard.2026.2.14.js",
+                        "ws_upgrade_status|/ws|403",
                         "path_status|/api/version|200",
                     ]
                 },
@@ -122,6 +141,13 @@ class BlackboxTests(unittest.TestCase):
         self.assertTrue(any(
             condition["type"] == "script_contains"
             and condition["value"] == "/static/dashboard.2026.2.13.js"
+            for condition in rule["all"]
+        ))
+        self.assertTrue(any(
+            condition["type"] == "ws_upgrade_status"
+            and condition["path"] == "/ws"
+            and condition["statuses"] == [101]
+            and condition["probe_name"] == "ws-upgrade"
             for condition in rule["all"]
         ))
 

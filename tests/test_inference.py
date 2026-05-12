@@ -279,6 +279,61 @@ class InferenceTests(unittest.TestCase):
         self.assertEqual(len(matches), 1)
         self.assertEqual(matches[0].family, "openclaw_default_favicon")
 
+    def test_websocket_upgrade_conditions_match_upgrade_probe(self):
+        rules = {
+            "fingerprint_rules": [
+                {
+                    "id": "ws-upgrade-family",
+                    "family": "openclaw_ws_gateway",
+                    "confidence": 0.86,
+                    "all": [
+                        {
+                            "type": "ws_upgrade_supported",
+                            "path": "/ws",
+                            "probe_name": "ws-upgrade",
+                            "value": True,
+                        },
+                        {
+                            "type": "ws_upgrade_status",
+                            "path": "/ws",
+                            "probe_name": "ws-upgrade",
+                            "statuses": [101],
+                        },
+                        {
+                            "type": "ws_subprotocol_contains",
+                            "path": "/ws",
+                            "probe_name": "ws-upgrade",
+                            "value": "openclaw",
+                        },
+                        {
+                            "type": "ws_extension_contains",
+                            "path": "/ws",
+                            "probe_name": "ws-upgrade",
+                            "value": "permessage-deflate",
+                        },
+                    ],
+                }
+            ]
+        }
+        observations = {
+            "WS-UPGRADE /ws": ProbeObservation(
+                path="/ws",
+                url="http://example.test/ws",
+                method="GET",
+                probe_name="ws-upgrade",
+                status=101,
+                headers={
+                    "sec-websocket-protocol": "openclaw-gateway-v1",
+                    "sec-websocket-extensions": "permessage-deflate",
+                },
+            )
+        }
+
+        matches = infer_fingerprint_matches(observations, rules)
+
+        self.assertEqual(len(matches), 1)
+        self.assertEqual(matches[0].family, "openclaw_ws_gateway")
+
     def test_tools_invoke_auth_json_is_treated_as_gateway_signal(self):
         rules = load_rules(None)
         observations = {

@@ -35,6 +35,23 @@ as a lower-bound feature/config signal rather than an exact version fingerprint.
 
 ---
 
+## Post-Research Addendum (2026-05-12)
+
+- The scanner now includes safe HTTP upgrade-handshake probes on `/ws` and
+  `/socket.io/` in addition to the existing plain GET checks.
+- Upgrade responses are preserved as separate observations so black-box capture
+  bundles can derive WebSocket-specific candidate rules without overwriting the
+  plain path fetches.
+- Candidate rule generation now supports WebSocket upgrade conditions:
+  `ws_upgrade_supported`, `ws_upgrade_status`, `ws_subprotocol_contains`, and
+  `ws_extension_contains`.
+
+**Scanner implication:** WebSocket behavior can now contribute directly to
+behavior-family classification and future version-specific rule generation while
+staying within the remote-only, unauthenticated scanning boundary.
+
+---
+
 ## Research Coverage
 
 | # | Topic | Status | Date |

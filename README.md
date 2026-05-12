@@ -28,7 +28,8 @@ For each target, the scanner:
    `/swagger.json`, `/robots.txt`, `/ws`, `/favicon.ico`, `/manifest.json`,
    `/asset-manifest.json`, `/v1/models`, `/v1/models/openclaw/default`,
    `POST /v1/embeddings`, `POST /v1/chat/completions`, `POST /v1/responses`,
-   `POST /tools/invoke`, and a deliberate method-aware 404-style API path
+   `POST /tools/invoke`, a deliberate method-aware 404-style API path, and
+   WebSocket upgrade handshakes on `/ws` and `/socket.io/`
 2. records headers, header ordering, status codes, stripped error text, stack
    trace hints, titles, favicon hashes, JS asset paths, JSON key shapes,
    product markers, single-sample response timing, and version hints
@@ -49,8 +50,8 @@ The bundled rules are intentionally conservative:
 - gateway API surface fingerprinting is supported out of the box for
   auth-gated `POST /tools/invoke` and selective OpenAI-compatible `POST /v1/*`
   behavior on current live responders
-- richer external error-response and favicon/manifest signals are collected out
-  of the box for future rule enrichment
+- richer external error-response, favicon/manifest, and WebSocket-handshake
+  signals are collected out of the box for future rule enrichment
 - passive Shodan metadata extraction and pivot-query generation are supported
   out of the box
 - passive mDNS metadata extraction is supported out of the box for Shodan
@@ -314,6 +315,10 @@ Supported condition types:
 - `header_order`
 - `has_stack_trace`
 - `favicon_hash`
+- `ws_upgrade_supported`
+- `ws_upgrade_status`
+- `ws_subprotocol_contains`
+- `ws_extension_contains`
 - `version_hint_prefix`
 
 Useful passive metadata fields surfaced in results include:
@@ -395,6 +400,9 @@ without an additional version hint.
   fingerprinting, including `POST /api/doesnotexist`, `POST /tools/invoke`,
   and the OpenAI-compatible `POST /v1/*` paths, along with a broader discovery
   path set for API, metrics, schema, config, and WebSocket-adjacent surfaces.
+  WebSocket checks only send HTTP upgrade headers and record the visible
+  handshake response; the scanner does not establish a full authenticated
+  session.
 - `--format csv` emits one summarized row per target for triage.
 - CSV output includes top fingerprint-family columns in addition to versions and
   vulnerabilities, plus passive Shodan product/platform/pivot columns, mDNS

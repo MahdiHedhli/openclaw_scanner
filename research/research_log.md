@@ -2,6 +2,41 @@
 
 ---
 
+## 2026-05-12 — Safe WebSocket Upgrade Handshake Fingerprinting
+
+**Topic:** Follow-up implementation on #12 WebSocket endpoint probing
+
+The scanner previously issued only plain `GET /ws` and `GET /socket.io/`
+requests, which captured whether those paths existed but missed the stronger
+remote-visible signal in the HTTP upgrade handshake itself. This update adds a
+second non-destructive probe variant for those same paths that sends standard
+RFC 6455 upgrade headers, records the HTTP response, and preserves it as a
+distinct observation so the plain GET and handshake probe can coexist in the
+same scan result.
+
+**Signals now captured for controlled black-box calibration and live scans:**
+
+- upgrade success vs denial (`101`, `400`, `401`, `403`, `404`, etc.)
+- negotiated `Sec-WebSocket-Protocol`
+- negotiated `Sec-WebSocket-Extensions`
+- upgrade-specific rule conditions and candidate-rule generation support
+
+**Why this fits scope:**
+
+- It remains unauthenticated and non-destructive.
+- It does not establish or use a full WebSocket session.
+- It improves behavior-family classification and future exact-version rule
+  generation for gateway-style deployments without adding host-side scanning.
+
+**Operational note:**
+
+Upgrade probes use a fixed RFC 6455-style key so repeated calibration captures
+stay deterministic across runs. Successful `101 Switching Protocols` responses
+are treated as handshake observations only; the scanner does not try to read a
+WebSocket message body after the upgrade.
+
+---
+
 ## 2026-03-19 — JARM TLS Fingerprinting & Favicon/Static Asset Hashing
 
 **Topics:** #7 JARM fingerprinting, #6 Favicon and static asset hashing

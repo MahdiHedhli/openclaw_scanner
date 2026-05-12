@@ -199,18 +199,31 @@ def _capture_entry(result: ScanResult) -> Dict[str, object]:
 
 def _signals_from_result(result: ScanResult) -> Set[str]:
     signals: Set[str] = set()
-    for path, observation in result.observations.items():
-        signals.update(_signals_from_observation(path, observation))
+    for observation in result.observations.values():
+        signals.update(_signals_from_observation(observation))
     return signals
 
 
-def _signals_from_observation(path: str, observation: ProbeObservation) -> Set[str]:
+def _signals_from_observation(observation: ProbeObservation) -> Set[str]:
     signals: Set[str] = set()
+    path = observation.path
     if observation.status is not None:
         signals.add(f"path_status|{path}|{observation.status}")
         signals.add(
             f"method_status|{observation.method.upper()}|{observation.path}|{observation.status}"
         )
+    if observation.probe_name == "ws-upgrade":
+        if observation.status is not None:
+            signals.add(f"ws_upgrade_status|{path}|{observation.status}")
+            signals.add(
+                f"ws_upgrade_supported|{path}|{str(observation.status == 101).lower()}"
+            )
+        subprotocol = observation.headers.get("sec-websocket-protocol")
+        if subprotocol:
+            signals.add(f"ws_subprotocol_contains|{path}|{subprotocol}")
+        extensions = observation.headers.get("sec-websocket-extensions")
+        if extensions:
+            signals.add(f"ws_extension_contains|{path}|{extensions}")
     if observation.title:
         title = observation.title.strip()
         if title:
@@ -276,7 +289,11 @@ def _signal_rank(signal: str, capture_count: int) -> int:
         "json_key": 90,
         "body_hash": 80 if capture_count > 1 else 35,
         "header_contains": 70,
+        "ws_extension_contains": 68,
+        "ws_subprotocol_contains": 67,
         "title_contains": 60,
+        "ws_upgrade_status": 58,
+        "ws_upgrade_supported": 57,
         "method_status": 55,
         "path_status": 50,
         "marker_present": 25,
@@ -356,6 +373,38 @@ def _signal_to_condition(signal: str) -> Dict[str, object]:
     if signal_type == "favicon_hash":
         _, path, value = parts
         return {"type": "favicon_hash", "path": path, "value": int(value)}
+    if signal_type == "ws_upgrade_status":
+        _, path, status = parts
+        return {
+            "type": "ws_upgrade_status",
+            "path": path,
+            "probe_name": "ws-upgrade",
+            "statuses": [int(status)],
+        }
+    if signal_type == "ws_upgrade_supported":
+        _, path, value = parts
+        return {
+            "type": "ws_upgrade_supported",
+            "path": path,
+            "probe_name": "ws-upgrade",
+            "value": value.lower() == "true",
+        }
+    if signal_type == "ws_subprotocol_contains":
+        _, path, value = parts
+        return {
+            "type": "ws_subprotocol_contains",
+            "path": path,
+            "probe_name": "ws-upgrade",
+            "value": value,
+        }
+    if signal_type == "ws_extension_contains":
+        _, path, value = parts
+        return {
+            "type": "ws_extension_contains",
+            "path": path,
+            "probe_name": "ws-upgrade",
+            "value": value,
+        }
     raise ValueError(f"Unsupported signal: {signal}")
 
 

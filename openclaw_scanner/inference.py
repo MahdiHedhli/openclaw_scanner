@@ -303,11 +303,16 @@ def _condition_matches(
     condition_type = condition["type"]
     target_path = condition.get("path")
     target_method = str(condition.get("method") or "").upper() or None
+    target_probe = str(condition.get("probe_name") or "").strip().lower() or None
     candidate_observations = [
         observation
         for observation in observations.values()
         if (target_path is None or observation.path == target_path)
         and (target_method is None or observation.method.upper() == target_method)
+        and (
+            target_probe is None
+            or (observation.probe_name or "").strip().lower() == target_probe
+        )
     ]
 
     if condition_type == "path_status":
@@ -386,6 +391,28 @@ def _condition_matches(
     if condition_type == "favicon_hash":
         expected = int(condition["value"])
         return any(obs.favicon_hash == expected for obs in candidate_observations)
+
+    if condition_type == "ws_upgrade_supported":
+        expected = bool(condition.get("value", True))
+        return any((obs.status == 101) == expected for obs in candidate_observations)
+
+    if condition_type == "ws_upgrade_status":
+        statuses = {int(value) for value in condition.get("statuses", [])}
+        return any(obs.status in statuses for obs in candidate_observations)
+
+    if condition_type == "ws_subprotocol_contains":
+        needle = condition["value"].lower()
+        return any(
+            needle in obs.headers.get("sec-websocket-protocol", "").lower()
+            for obs in candidate_observations
+        )
+
+    if condition_type == "ws_extension_contains":
+        needle = condition["value"].lower()
+        return any(
+            needle in obs.headers.get("sec-websocket-extensions", "").lower()
+            for obs in candidate_observations
+        )
 
     if condition_type == "version_hint_prefix":
         prefix = condition["value"]

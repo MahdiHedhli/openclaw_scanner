@@ -7,7 +7,7 @@ import time
 from dataclasses import dataclass, field
 from typing import Dict, Iterable, List, Optional, Tuple, Union
 from urllib.error import HTTPError, URLError
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse
 from urllib.request import Request, urlopen
 
 from .models import ProbeObservation
@@ -17,6 +17,8 @@ from .models import ProbeObservation
 class ProbeConfig:
     path: str
     method: str = "GET"
+    probe_name: Optional[str] = None
+    websocket_upgrade: bool = False
     headers: Dict[str, str] = field(default_factory=dict)
     body: Optional[bytes] = None
 
@@ -50,6 +52,8 @@ DEFAULT_PROBE_CONFIGS = [
     ProbeConfig(path="/debug/pprof/"),
     ProbeConfig(path="/ws"),
     ProbeConfig(path="/socket.io/"),
+    ProbeConfig(path="/ws", probe_name="ws-upgrade", websocket_upgrade=True),
+    ProbeConfig(path="/socket.io/", probe_name="ws-upgrade", websocket_upgrade=True),
     ProbeConfig(path="/api/doesnotexist"),
     ProbeConfig(path="/favicon.ico"),
     ProbeConfig(path="/manifest.json"),
@@ -149,7 +153,7 @@ def probe_candidate(
     errors: List[str] = []
 
     for config in _coerce_probe_configs(probes):
-        key = _observation_key(config.path, config.method)
+        key = _observation_key(config.path, config.method, config.probe_name)
         observation = _fetch(
             base_url=base_url,
             config=config,
@@ -186,6 +190,8 @@ def _fetch(
     path = _normalize_probe_path(config.path)
     url = urljoin(base_url.rstrip("/") + "/", path.lstrip("/"))
     request_headers = {"User-Agent": user_agent}
+    if config.websocket_upgrade:
+        request_headers.update(_build_websocket_upgrade_headers(url))
     request_headers.update(config.headers)
     request_data = config.body
     if request_data is None and method in {"POST", "PUT", "PATCH"}:
@@ -211,7 +217,8 @@ def _fetch(
             headers = _normalize_headers(header_items)
             header_order = _extract_header_order(header_items)
             final_url = response.geturl()
-            raw_body = response.read(max_bytes + 1)[:max_bytes]
+            if _should_read_response_body(config, status):
+                raw_body = response.read(max_bytes + 1)[:max_bytes]
         response_time_ms = (time.perf_counter() - started) * 1000.0
     except HTTPError as exc:
         header_items = list(exc.headers.items())
@@ -219,7 +226,8 @@ def _fetch(
         headers = _normalize_headers(header_items)
         header_order = _extract_header_order(header_items)
         final_url = exc.geturl()
-        raw_body = exc.read(max_bytes + 1)[:max_bytes]
+        if _should_read_response_body(config, status):
+            raw_body = exc.read(max_bytes + 1)[:max_bytes]
         response_time_ms = (time.perf_counter() - started) * 1000.0
     except URLError as exc:
         error = str(exc.reason)
@@ -238,6 +246,7 @@ def _fetch(
         path=path,
         url=url,
         method=method,
+        probe_name=config.probe_name,
         status=status,
         final_url=final_url,
         response_time_ms=round(response_time_ms, 3) if response_time_ms is not None else None,
@@ -437,7 +446,8 @@ def _dedupe_probe_configs(configs: Iterable[ProbeConfig]) -> List[ProbeConfig]:
     for config in configs:
         method = config.method.upper()
         path = _normalize_probe_path(config.path)
-        key = (method, path)
+        probe_name = (config.probe_name or "").strip().lower() or None
+        key = (method, path, probe_name, bool(config.websocket_upgrade))
         if key in seen:
             continue
         seen.add(key)
@@ -445,6 +455,8 @@ def _dedupe_probe_configs(configs: Iterable[ProbeConfig]) -> List[ProbeConfig]:
             ProbeConfig(
                 path=path,
                 method=method,
+                probe_name=config.probe_name,
+                websocket_upgrade=bool(config.websocket_upgrade),
                 headers=dict(config.headers),
                 body=config.body,
             )
@@ -459,9 +471,27 @@ def _normalize_probe_path(path: str) -> str:
     return path
 
 
-def _observation_key(path: str, method: str) -> str:
+def _observation_key(path: str, method: str, probe_name: Optional[str] = None) -> str:
     normalized_path = _normalize_probe_path(path)
     normalized_method = method.upper()
+    prefix = f"{probe_name.upper()} " if probe_name else ""
     if normalized_method == "GET":
-        return normalized_path
-    return f"{normalized_method} {normalized_path}"
+        return f"{prefix}{normalized_path}".strip()
+    return f"{prefix}{normalized_method} {normalized_path}".strip()
+
+
+def _build_websocket_upgrade_headers(url: str) -> Dict[str, str]:
+    parsed = urlparse(url)
+    origin_scheme = "https" if parsed.scheme == "https" else "http"
+    host = parsed.netloc
+    return {
+        "Upgrade": "websocket",
+        "Connection": "Upgrade",
+        "Sec-WebSocket-Key": "dGhlIHNhbXBsZSBub25jZQ==",
+        "Sec-WebSocket-Version": "13",
+        "Origin": f"{origin_scheme}://{host}",
+    }
+
+
+def _should_read_response_body(config: ProbeConfig, status: Optional[int]) -> bool:
+    return not (config.websocket_upgrade and status == 101)
