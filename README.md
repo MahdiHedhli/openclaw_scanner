@@ -127,6 +127,10 @@ Write JSON output to a file:
 python3 -m openclaw_scanner --targets-file targets.txt --output results.json
 ```
 
+Project planning lives in [`docs/roadmap.md`](/Users/mhedhli/Documents/Codex/OpenClawScanner/docs/roadmap.md).
+The Proxmox-backed known-version corpus workflow lives in
+[`docs/corpus-workflow.md`](/Users/mhedhli/Documents/Codex/OpenClawScanner/docs/corpus-workflow.md).
+
 Create a black-box calibration capture bundle from known-version test nodes:
 
 ```bash

@@ -1,0 +1,53 @@
+{
+  "run_id": "YYYY-MM-DD-openclaw-corpus",
+  "created_at": "YYYY-MM-DDTHH:MM:SSZ",
+  "owner_thread": "019cfbe9-834e-7381-b2d2-a3c3f6163560",
+  "homelab_docs_read": [
+    "/Users/mhedhli/Documents/Coding/Projects/homelab/docs/infrastructure.md",
+    "/Users/mhedhli/Documents/Coding/Projects/homelab/docs/vlans.md",
+    "/Users/mhedhli/Documents/Coding/Projects/homelab/docs/security.md",
+    "/Users/mhedhli/Documents/Coding/Projects/homelab/docs/todo.md"
+  ],
+  "security_gate": {
+    "credential_rotation_confirmed": false,
+    "public_exposure": false,
+    "tailscale_serve": false,
+    "host_side_scanning": false
+  },
+  "defaults": {
+    "vlan": 30,
+    "vcpu": 2,
+    "memory_mb": 4096,
+    "disk_gb": 40,
+    "destroy_after_capture": true
+  },
+  "vms": [
+    {
+      "vm_id": null,
+      "vm_name": "openclaw-corpus-<version>-01",
+      "product_family": "openclaw",
+      "version": "<known-version>",
+      "ip_or_hostname": null,
+      "port": 18789,
+      "vlan": 30,
+      "auth_mode": "unknown",
+      "deployment_method": "proxmox-vm",
+      "created_at": null,
+      "started_at": null,
+      "stopped_at": null,
+      "deleted_at": null,
+      "scanner_command": null,
+      "scan_artifact": "artifacts/lab/YYYY-MM-DD/<product>-<version>/scan.json",
+      "capture_artifact": "artifacts/lab/YYYY-MM-DD/<product>-<version>/capture.json",
+      "notes": null
+    }
+  ],
+  "vm_inventory": {
+    "created": 0,
+    "reused": 0,
+    "shut_down": 0,
+    "destroyed": 0,
+    "still_running": 0,
+    "next_cleanup_deadline": null
+  }
+}
