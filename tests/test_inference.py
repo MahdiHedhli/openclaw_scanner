@@ -33,6 +33,95 @@ class InferenceTests(unittest.TestCase):
         self.assertIn("CVE-2026-26322", vuln_ids)
         self.assertNotIn("CVE-2026-32063", vuln_ids)
 
+    def test_direct_version_hint_accepts_dotted_prerelease_suffix(self):
+        rules = load_rules(None)
+        observations = {
+            "/": ProbeObservation(
+                path="/",
+                url="https://example.test/",
+                status=200,
+                js_files=["/static/openclaw-2026.5.19-beta.1.js"],
+            )
+        }
+
+        versions = infer_versions(observations, rules)
+
+        self.assertTrue(any(
+            match.version == "2026.5.19-beta.1"
+            and match.source == "direct_version_hint"
+            and match.exact
+            for match in versions
+        ))
+
+    def test_lab_promoted_version_rules_match_bundled_assets(self):
+        rules = load_rules(None)
+        cases = [
+            ("2026.5.7", "./assets/index-NYVkUQrq.js"),
+            ("2026.5.18", "./assets/index-quv2B8bV.js"),
+            ("2026.5.19-beta.1", "./assets/index-B9aIykxh.js"),
+            ("2026.5.20", "./assets/index-DIlhMoR6.js"),
+        ]
+
+        for expected_version, asset_name in cases:
+            with self.subTest(version=expected_version):
+                observations = {
+                    "/": ProbeObservation(
+                        path="/",
+                        url="http://example.test/",
+                        status=200,
+                        js_files=[asset_name],
+                    ),
+                    "/ws": ProbeObservation(
+                        path="/ws",
+                        url="http://example.test/ws",
+                        status=200,
+                        js_files=[asset_name],
+                    ),
+                    "/v1/models": ProbeObservation(
+                        path="/v1/models",
+                        url="http://example.test/v1/models",
+                        status=200,
+                        js_files=[asset_name],
+                    ),
+                }
+
+                versions = infer_versions(observations, rules)
+
+                self.assertTrue(any(
+                    match.version == expected_version
+                    and match.source == f"lab-capture-{expected_version.replace('.', '-').replace('-beta-', '-beta-')}"
+                    and match.exact
+                    for match in versions
+                ))
+
+    def test_lab_promoted_2026_5_22_rule_matches_stable_signals(self):
+        rules = load_rules(None)
+        asset_name = "./assets/index-BtIuF4zW.js"
+        observations = {
+            "/": ProbeObservation(
+                path="/",
+                url="http://example.test/",
+                status=200,
+                js_files=[asset_name],
+                body_sha256="c329016b3319a0ab0eaa9315b4413197823adcd0b5c21126d67d83ea34431dff",
+            ),
+            "/login": ProbeObservation(
+                path="/login",
+                url="http://example.test/login",
+                status=200,
+                js_files=[asset_name],
+            ),
+        }
+
+        versions = infer_versions(observations, rules)
+
+        self.assertTrue(any(
+            match.version == "2026.5.22"
+            and match.source == "lab-capture-2026-5-22"
+            and match.exact
+            for match in versions
+        ))
+
     def test_range_with_hyphenated_version(self):
         rules = load_rules(None)
         observations = {

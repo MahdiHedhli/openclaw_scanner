@@ -1,13 +1,14 @@
 import json
 import re
-from collections import defaultdict
+from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, Iterable, List, Optional, Sequence, Set, Tuple
 
 from .models import ProbeObservation, ScanResult
 
-EXACT_VERSION_RE = re.compile(r"^20\d{2}\.\d+\.\d+(?:-[A-Za-z0-9]+)?$")
+EXACT_VERSION_RE = re.compile(r"^20\d{2}\.\d+\.\d+(?:-[0-9A-Za-z][0-9A-Za-z-]*(?:\.\d+)*)?$")
+SKIPPED_INPUT_PRETTY_LIMIT = 12
 
 
 def build_capture_bundle(
@@ -31,21 +32,50 @@ def build_capture_bundle(
 
 
 def load_capture_bundles(path_value: str) -> List[Dict[str, object]]:
+    bundles, _ = load_capture_bundle_inputs(path_value)
+    return bundles
+
+
+def load_capture_bundle_inputs(path_value: str) -> Tuple[List[Dict[str, object]], List[Dict[str, object]]]:
     path = Path(path_value)
     if path.is_dir():
         bundles: List[Dict[str, object]] = []
-        for item in sorted(path.glob("*.json")):
-            bundles.extend(_load_capture_file(item))
-        return bundles
+        skipped_inputs: List[Dict[str, object]] = []
+        for item in sorted(path.rglob("*.json")):
+            try:
+                loaded = _load_capture_file(item)
+            except json.JSONDecodeError as exc:
+                skipped_inputs.append(
+                    {
+                        "path": _display_path(item, path),
+                        "reason": f"invalid JSON: {exc.msg}",
+                    }
+                )
+                continue
+            capture_bundles = [
+                bundle for bundle in loaded if _is_capture_bundle(bundle)
+            ]
+            if capture_bundles:
+                bundles.extend(capture_bundles)
+            else:
+                skipped_inputs.append(
+                    {
+                        "path": _display_path(item, path),
+                        "reason": "not an openclaw_blackbox_capture bundle",
+                    }
+                )
+        return bundles, skipped_inputs
 
-    return _load_capture_file(path)
+    return _load_capture_file(path), []
 
 
 def generate_rule_suggestions(
     bundles: Sequence[Dict[str, object]],
     max_conditions: int = 3,
+    skipped_inputs: Optional[Sequence[Dict[str, object]]] = None,
 ) -> Dict[str, object]:
     bundle_entries = []
+    diagnostics_by_version: Dict[str, List[Dict[str, object]]] = defaultdict(list)
     skipped = []
 
     for bundle in bundles:
@@ -68,6 +98,15 @@ def generate_rule_suggestions(
                 for value in capture.get("signals", [])
                 if isinstance(value, str) and value
             }
+            capture_index = len(diagnostics_by_version[declared_version]) + 1
+            diagnostics_by_version[declared_version].append(
+                _capture_diagnostics(
+                    capture,
+                    capture_name=bundle.get("capture_name"),
+                    capture_index=capture_index,
+                    signals=signals,
+                )
+            )
             bundle_entries.append(
                 {
                     "declared_version": declared_version,
@@ -91,6 +130,8 @@ def generate_rule_suggestions(
             stable &= signal_set
         stable_by_version[version] = stable
 
+    similarity_by_version = _build_similarity_report(versions, stable_by_version)
+
     suggestions = []
     for version in sorted(stable_by_version.keys(), key=_version_sort_key, reverse=True):
         stable_signals = stable_by_version[version]
@@ -108,6 +149,7 @@ def generate_rule_suggestions(
             capture_count=len(versions[version]),
             max_conditions=max(max_conditions, 1),
         )
+        similarity = similarity_by_version.get(version, {})
 
         candidate_rule = _build_candidate_rule(
             version=version,
@@ -123,6 +165,14 @@ def generate_rule_suggestions(
                 "stable_signals": sorted(stable_signals),
                 "unique_signals": sorted(unique_signals),
                 "selected_signals": selected_signals,
+                "capture_diagnostics": diagnostics_by_version.get(version, []),
+                "similarity": similarity,
+                "promotion": _build_promotion_readiness(
+                    capture_count=len(versions[version]),
+                    unique_signal_count=len(unique_signals),
+                    selected_signal_count=len(selected_signals),
+                    similarity=similarity,
+                ),
                 "candidate_rule": candidate_rule,
             }
         )
@@ -135,6 +185,8 @@ def generate_rule_suggestions(
         "capture_entry_count": len(bundle_entries),
         "versions": suggestions,
         "skipped_bundles": skipped,
+        "skipped_input_summary": _summarize_skipped_inputs(skipped_inputs or []),
+        "skipped_inputs": list(skipped_inputs or []),
     }
 
 
@@ -159,6 +211,26 @@ def render_rule_suggestions(report: Dict[str, object], output_format: str) -> st
             lines.append(
                 f"    unique signals={item['unique_signal_count']} stable signals={item['stable_signal_count']}"
             )
+            similarity = item.get("similarity") or {}
+            if similarity:
+                lines.append(
+                    "    similarity: "
+                    f"intra_avg={_format_score(similarity.get('intra_version_avg_jaccard'))} "
+                    f"intra_min={_format_score(similarity.get('intra_version_min_jaccard'))} "
+                    f"nearest_other={similarity.get('nearest_other_version') or 'none'} "
+                    f"jaccard={_format_score(similarity.get('nearest_other_jaccard'))}"
+                )
+            promotion = item.get("promotion") or {}
+            if promotion:
+                status = promotion.get("status") or "unknown"
+                ready = "yes" if promotion.get("ready_for_review") else "no"
+                lines.append(f"    promotion: {status} ready_for_review={ready}")
+                reasons = promotion.get("reasons") or []
+                if reasons:
+                    lines.append("    promotion reasons: " + "; ".join(reasons))
+                blockers = promotion.get("blockers") or []
+                if blockers:
+                    lines.append("    promotion blockers: " + "; ".join(blockers))
             if candidate_rule:
                 lines.append(
                     "    rule: "
@@ -168,6 +240,22 @@ def render_rule_suggestions(report: Dict[str, object], output_format: str) -> st
                 lines.append(
                     "    selected: " + "; ".join(item["selected_signals"])
                 )
+            diagnostics = item.get("capture_diagnostics") or []
+            noisy_diagnostics = [
+                entry for entry in diagnostics
+                if entry.get("error_count") or entry.get("timeout_error_count")
+            ]
+            if noisy_diagnostics:
+                lines.append(
+                    "    capture diagnostics: "
+                    + "; ".join(
+                        "#"
+                        + str(entry.get("capture_index"))
+                        + f" signals={entry.get('signal_count')} observations={entry.get('observation_count')}"
+                        + f" errors={entry.get('error_count')} timeouts={entry.get('timeout_error_count')}"
+                        for entry in noisy_diagnostics
+                    )
+                )
 
     skipped = report.get("skipped_bundles") or []
     if skipped:
@@ -176,6 +264,24 @@ def render_rule_suggestions(report: Dict[str, object], output_format: str) -> st
             lines.append(
                 f"  - {item.get('capture_name') or 'unnamed'}: {item.get('reason')}"
             )
+
+    skipped_inputs = report.get("skipped_inputs") or []
+    if skipped_inputs:
+        skipped_input_summary = report.get("skipped_input_summary") or _summarize_skipped_inputs(skipped_inputs)
+        if skipped_input_summary:
+            lines.append("Skipped input summary:")
+            for item in skipped_input_summary:
+                lines.append(
+                    f"  - {item.get('count', 0)} file(s): {item.get('reason') or 'unknown'}"
+                )
+        lines.append("Skipped input files:")
+        for item in skipped_inputs[:SKIPPED_INPUT_PRETTY_LIMIT]:
+            lines.append(
+                f"  - {item.get('path') or 'unknown'}: {item.get('reason')}"
+            )
+        remaining = len(skipped_inputs) - SKIPPED_INPUT_PRETTY_LIMIT
+        if remaining > 0:
+            lines.append(f"  - ... {remaining} more skipped input file(s)")
 
     return "\n".join(lines) + "\n"
 
@@ -195,6 +301,64 @@ def _capture_entry(result: ScanResult) -> Dict[str, object]:
         "errors": list(result.errors),
         "signals": sorted(_signals_from_result(result)),
     }
+
+
+def _summarize_skipped_inputs(skipped_inputs: Sequence[Dict[str, object]]) -> List[Dict[str, object]]:
+    counts = Counter(str(item.get("reason") or "unknown") for item in skipped_inputs)
+    return [
+        {
+            "reason": reason,
+            "count": count,
+        }
+        for reason, count in sorted(
+            counts.items(),
+            key=lambda item: (-item[1], item[0]),
+        )
+    ]
+
+
+def _capture_diagnostics(
+    capture: Dict[str, object],
+    *,
+    capture_name: object,
+    capture_index: int,
+    signals: Set[str],
+) -> Dict[str, object]:
+    observations = capture.get("observations")
+    observation_count = len(observations) if isinstance(observations, dict) else 0
+    errors = [
+        str(error)
+        for error in capture.get("errors", [])
+        if isinstance(error, str) and error
+    ]
+    timeout_paths = sorted(
+        {
+            label
+            for error in errors
+            if _is_timeout_error(error)
+            for label in [_error_probe_label(error)]
+            if label
+        }
+    )
+    return {
+        "capture_index": capture_index,
+        "capture_name": capture_name,
+        "signal_count": len(signals),
+        "observation_count": observation_count,
+        "error_count": len(errors),
+        "timeout_error_count": sum(1 for error in errors if _is_timeout_error(error)),
+        "timeout_probe_labels": timeout_paths,
+    }
+
+
+def _is_timeout_error(error: str) -> bool:
+    normalized = error.lower()
+    return "timed out" in normalized or "timeout" in normalized
+
+
+def _error_probe_label(error: str) -> str:
+    without_url = re.sub(r"^https?://\S+\s+", "", error.strip())
+    return (without_url.split(":", 1)[0].strip() or "unknown")[:120]
 
 
 def _signals_from_result(result: ScanResult) -> Set[str]:
@@ -250,6 +414,165 @@ def _normalize_content_type(value: Optional[str]) -> Optional[str]:
     return value.split(";", 1)[0].strip().lower() or None
 
 
+def _build_similarity_report(
+    versions: Dict[str, List[Set[str]]],
+    stable_by_version: Dict[str, Set[str]],
+) -> Dict[str, Dict[str, object]]:
+    report: Dict[str, Dict[str, object]] = {}
+    for version, signal_sets in versions.items():
+        intra = _pairwise_jaccard_stats(signal_sets)
+        nearest_version = None
+        nearest_score = None
+        stable_nearest_version = None
+        stable_nearest_score = None
+
+        for other_version, other_signal_sets in versions.items():
+            if other_version == version:
+                continue
+
+            for signal_set in signal_sets:
+                for other_signal_set in other_signal_sets:
+                    score = _jaccard(signal_set, other_signal_set)
+                    if nearest_score is None or score > nearest_score:
+                        nearest_version = other_version
+                        nearest_score = score
+
+            stable_score = _jaccard(
+                stable_by_version.get(version, set()),
+                stable_by_version.get(other_version, set()),
+            )
+            if stable_nearest_score is None or stable_score > stable_nearest_score:
+                stable_nearest_version = other_version
+                stable_nearest_score = stable_score
+
+        report[version] = {
+            "intra_version_pair_count": intra["pair_count"],
+            "intra_version_min_jaccard": intra["min_jaccard"],
+            "intra_version_avg_jaccard": intra["avg_jaccard"],
+            "nearest_other_version": nearest_version,
+            "nearest_other_jaccard": _round_score(nearest_score),
+            "stable_nearest_other_version": stable_nearest_version,
+            "stable_nearest_other_jaccard": _round_score(stable_nearest_score),
+        }
+    return report
+
+
+def _build_promotion_readiness(
+    capture_count: int,
+    unique_signal_count: int,
+    selected_signal_count: int,
+    similarity: Dict[str, object],
+) -> Dict[str, object]:
+    reasons = []
+    blockers = []
+
+    if capture_count < 2:
+        blockers.append("needs at least two captures for same-version stability")
+    else:
+        reasons.append("has at least two same-version captures")
+
+    if selected_signal_count <= 0:
+        blockers.append("no selected rule signals")
+
+    if unique_signal_count <= 0:
+        blockers.append("no stable signals unique to this version")
+    else:
+        reasons.append(f"{unique_signal_count} stable unique signal(s)")
+
+    intra_min = similarity.get("intra_version_min_jaccard")
+    if capture_count > 1 and isinstance(intra_min, (int, float)):
+        if float(intra_min) < 0.85:
+            if (
+                float(intra_min) >= 0.75
+                and unique_signal_count > 0
+                and selected_signal_count > 0
+            ):
+                reasons.append(
+                    "intra-version surface varied "
+                    f"({float(intra_min):.4f}); selected stable unique signals remained"
+                )
+            else:
+                blockers.append(f"intra-version Jaccard is low ({float(intra_min):.4f})")
+        else:
+            reasons.append(f"intra-version Jaccard is stable ({float(intra_min):.4f})")
+
+    nearest_other = similarity.get("nearest_other_jaccard")
+    if isinstance(nearest_other, (int, float)):
+        if float(nearest_other) >= 0.5:
+            if unique_signal_count <= 0 or selected_signal_count <= 0:
+                blockers.append(
+                    f"nearest other version is too similar ({float(nearest_other):.4f})"
+                )
+            else:
+                reasons.append(
+                    "nearest other version has a similar overall surface "
+                    f"({float(nearest_other):.4f}); selected stable unique signals distinguish it"
+                )
+        else:
+            reasons.append(
+                f"nearest other version is distinct ({float(nearest_other):.4f})"
+            )
+
+    if blockers:
+        return {
+            "ready_for_review": False,
+            "status": "needs_more_evidence",
+            "reasons": reasons,
+            "blockers": blockers,
+        }
+
+    return {
+        "ready_for_review": True,
+        "status": "review_candidate",
+        "reasons": reasons,
+        "blockers": [],
+    }
+
+
+def _pairwise_jaccard_stats(signal_sets: Sequence[Set[str]]) -> Dict[str, object]:
+    scores = []
+    for index, signal_set in enumerate(signal_sets):
+        for other_signal_set in signal_sets[index + 1:]:
+            scores.append(_jaccard(signal_set, other_signal_set))
+
+    if not scores:
+        return {
+            "pair_count": 0,
+            "min_jaccard": None,
+            "avg_jaccard": None,
+        }
+
+    return {
+        "pair_count": len(scores),
+        "min_jaccard": _round_score(min(scores)),
+        "avg_jaccard": _round_score(sum(scores) / len(scores)),
+    }
+
+
+def _jaccard(left: Set[str], right: Set[str]) -> float:
+    if not left and not right:
+        return 1.0
+    union = left | right
+    if not union:
+        return 0.0
+    return len(left & right) / len(union)
+
+
+def _round_score(value: Optional[float]) -> Optional[float]:
+    if value is None:
+        return None
+    return round(value, 4)
+
+
+def _format_score(value: object) -> str:
+    if value is None:
+        return "n/a"
+    try:
+        return f"{float(value):.4f}"
+    except (TypeError, ValueError):
+        return "n/a"
+
+
 def _load_capture_file(path: Path) -> List[Dict[str, object]]:
     data = json.loads(path.read_text(encoding="utf-8"))
     if isinstance(data, list):
@@ -257,6 +580,17 @@ def _load_capture_file(path: Path) -> List[Dict[str, object]]:
     if isinstance(data, dict):
         return [data]
     return []
+
+
+def _is_capture_bundle(value: Dict[str, object]) -> bool:
+    return value.get("bundle_type") == "openclaw_blackbox_capture"
+
+
+def _display_path(path: Path, root: Path) -> str:
+    try:
+        return str(path.relative_to(root))
+    except ValueError:
+        return str(path)
 
 
 def _select_rule_signals(

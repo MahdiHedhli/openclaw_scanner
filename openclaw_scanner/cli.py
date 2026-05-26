@@ -11,7 +11,7 @@ from typing import Iterable, List, Optional
 from .blackbox import (
     build_capture_bundle,
     generate_rule_suggestions,
-    load_capture_bundles,
+    load_capture_bundle_inputs,
     render_rule_suggestions,
 )
 from .honeypot import assess_honeypot
@@ -158,10 +158,11 @@ def main(argv: Optional[List[str]] = None) -> int:
     if args.suggest_rules_from:
         if scan_inputs_present:
             parser.error("Use --suggest-rules-from as a standalone mode without scan inputs.")
-        bundles = load_capture_bundles(args.suggest_rules_from)
+        bundles, skipped_inputs = load_capture_bundle_inputs(args.suggest_rules_from)
         report = generate_rule_suggestions(
             bundles=bundles,
             max_conditions=max(args.max_rule_conditions, 1),
+            skipped_inputs=skipped_inputs,
         )
         rendered = render_rule_suggestions(report, args.format)
         if args.output:
@@ -468,6 +469,21 @@ def _extract_shodan_markers(html: str) -> List[str]:
     markers = []
     for marker in ("openclaw", "claw gateway", "clawdbot", "moltbot", "gateway token"):
         if marker in haystack:
+            markers.append(marker)
+    mdns_markers = {
+        "openclaw-gw": "mdns_openclaw_gw",
+        "_openclaw-gw._tcp.local": "mdns_openclaw_gw",
+        "clawdbot-gw": "mdns_clawdbot_gw",
+        "_clawdbot-gw._tcp.local": "mdns_clawdbot_gw",
+        "moltbot": "mdns_moltbot",
+        "_moltbot": "mdns_moltbot",
+        "role=gateway": "mdns_role_gateway",
+        "transport=gateway": "mdns_transport_gateway",
+        "gatewayport=18789": "mdns_gateway_port_18789",
+        "lanhost=openclaw.local": "mdns_lanhost_openclaw_local",
+    }
+    for needle, marker in mdns_markers.items():
+        if needle in haystack:
             markers.append(marker)
     return sorted(set(markers))
 

@@ -1,0 +1,303 @@
+{
+  "allowed_subnet": "10.0.30.0/24",
+  "artifact": "artifacts/lab/2026-05-18/template-diagnostics/proxmox-template-diagnostic-12-qga-template.json",
+  "attempt_id": "12-qga-template",
+  "checked_at": "2026-05-19T12:26:28Z",
+  "deployment_method": "proxmox-template-diagnostic-vm",
+  "diagnostic_type": "template_network_validation",
+  "ip": "10.0.30.143",
+  "l2_capture": {
+    "duration_seconds": 180,
+    "interface": "eth0",
+    "mac_digest": "b0518a78076de45b",
+    "returncode": 255,
+    "started": true,
+    "stderr_excerpt": "tcpdump: verbose output suppressed, use -v[v]... for full protocol decode\nlistening on eth0, link-type EN10MB (Ethernet), snapshot length 262144 bytes\n",
+    "summary": {
+      "arp_seen": true,
+      "arp_tell_ipv4_candidates": [
+        "10.0.30.143"
+      ],
+      "dhcp_seen": true,
+      "excerpt": [
+        "08:27:41.717885 bc:24:11:d9:e9:88 > ff:ff:ff:ff:ff:ff, ethertype IPv4 (0x0800), length 360: 0.0.0.0.68 > 255.255.255.255.67: BOOTP/DHCP, Request from bc:24:11:d9:e9:88, length 318",
+        "08:27:41.977378 bc:24:11:d9:e9:88 > ff:ff:ff:ff:ff:ff, ethertype IPv4 (0x0800), length 370: 0.0.0.0.68 > 255.255.255.255.67: BOOTP/DHCP, Request from bc:24:11:d9:e9:88, length 328",
+        "08:27:46.921456 bc:24:11:d9:e9:88 > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 42: Request who-has 10.0.30.254 tell 10.0.30.143, length 28"
+      ],
+      "line_count": 3,
+      "mac_line_count": 3
+    },
+    "target": "claude@10.0.30.10",
+    "terminated_by_helper": true
+  },
+  "lifecycle": {
+    "created_at": "2026-05-19T12:26:43Z",
+    "deleted_at": "2026-05-19T12:27:19Z",
+    "started_at": "2026-05-19T12:26:46Z",
+    "stopped_at": "2026-05-19T12:27:18Z"
+  },
+  "mac": "bc:24:11:d9:e9:88",
+  "mac_digest": "b0518a78076de45b",
+  "network_facts": {
+    "bridge": "vmbr0",
+    "device": "net0",
+    "mac": "bc:24:11:d9:e9:88",
+    "mac_digest": "b0518a78076de45b",
+    "ok": true,
+    "reason": null,
+    "vlan": "30"
+  },
+  "outcome": "template_network_validated",
+  "port": null,
+  "preflight": {
+    "blockers": [],
+    "checked_at": "2026-05-19T12:26:28Z",
+    "vm_lifecycle_allowed": true
+  },
+  "product_family": "proxmox-template",
+  "reason": null,
+  "scanner_capture_attempted": false,
+  "schema_version": 1,
+  "secret_values_recorded": false,
+  "ssh_template_diagnostics": {
+    "attempts": 1,
+    "commands": {
+      "cloud_init_status": {
+        "ok": true,
+        "returncode": 0,
+        "stderr_excerpt": "",
+        "stdout_excerpt": "status: done\nextended_status: degraded done\nboot_status_code: enabled-by-generator\nlast_update: Thu, 01 Jan 1970 00:00:17 +0000\ndetail: DataSourceNoCloud [seed=/dev/sr0]\nerrors: []\nrecoverable_errors:\nDEPRECATED:\n\t- 'user' of type string is deprecated in 22.2 and scheduled to be removed in 27.2. Use 'users' list instead.\n\t- 'user' of type string is deprecated in 22.2 and scheduled to be removed in 27.2. Use 'users' list instead.\n"
+      },
+      "ip_brief_addr": {
+        "ok": true,
+        "returncode": 0,
+        "stderr_excerpt": "",
+        "stdout_excerpt": "lo               UNKNOWN        127.0.0.1/8 ::1/128 \neth0             UP             10.0.30.143/24 metric 100 fe80::be24:11ff:fed9:e988/64 \n"
+      },
+      "ip_brief_link": {
+        "ok": true,
+        "returncode": 0,
+        "stderr_excerpt": "",
+        "stdout_excerpt": "lo               UNKNOWN        00:00:00:00:00:00 <LOOPBACK,UP,LOWER_UP> \neth0             UP             bc:24:11:d9:e9:88 <BROADCAST,MULTICAST,UP,LOWER_UP> \n"
+      },
+      "ip_route": {
+        "ok": true,
+        "returncode": 0,
+        "stderr_excerpt": "",
+        "stdout_excerpt": "default via 10.0.30.254 dev eth0 proto dhcp src 10.0.30.143 metric 100 \n1.1.1.1 via 10.0.30.254 dev eth0 proto dhcp src 10.0.30.143 metric 100 \n8.8.8.8 via 10.0.30.254 dev eth0 proto dhcp src 10.0.30.143 metric 100 \n9.9.9.9 via 10.0.30.254 dev eth0 proto dhcp src 10.0.30.143 metric 100 \n10.0.0.254 via 10.0.30.254 dev eth0 proto dhcp src 10.0.30.143 metric 100 \n10.0.30.0/24 dev eth0 proto kernel scope link src 10.0.30.143 metric 100 \n10.0.30.254 dev eth0 proto dhcp scope link src 10.0.30.143 metric 100 \n"
+      },
+      "qemu_guest_agent_active": {
+        "ok": true,
+        "returncode": 0,
+        "stderr_excerpt": "",
+        "stdout_excerpt": "active\n"
+      },
+      "qemu_guest_agent_binary": {
+        "ok": true,
+        "returncode": 0,
+        "stderr_excerpt": "",
+        "stdout_excerpt": "/usr/sbin/qemu-ga\n"
+      },
+      "qemu_guest_agent_enabled": {
+        "ok": true,
+        "returncode": 0,
+        "stderr_excerpt": "",
+        "stdout_excerpt": "static\n"
+      },
+      "qemu_guest_agent_package": {
+        "ok": true,
+        "returncode": 0,
+        "stderr_excerpt": "",
+        "stdout_excerpt": "ii  1:8.2.2+ds-0ubuntu1.16\n"
+      },
+      "qemu_guest_agent_socket": {
+        "ok": true,
+        "returncode": 0,
+        "stderr_excerpt": "",
+        "stdout_excerpt": "missing\n"
+      },
+      "qemu_guest_agent_state": {
+        "ok": true,
+        "returncode": 0,
+        "stderr_excerpt": "",
+        "stdout_excerpt": "LoadState=loaded\nActiveState=active\nSubState=running\nFragmentPath=/usr/lib/systemd/system/qemu-guest-agent.service\nUnitFileState=static\n"
+      }
+    },
+    "ok": true,
+    "qga_summary": {
+      "active": true,
+      "enabled": false,
+      "installed": true,
+      "reason": "qemu_guest_agent_not_enabled",
+      "systemd_state_excerpt": "LoadState=loaded\nActiveState=active\nSubState=running\nFragmentPath=/usr/lib/systemd/system/qemu-guest-agent.service\nUnitFileState=static",
+      "virtio_socket_present": false
+    },
+    "target": "claude@10.0.30.143"
+  },
+  "steps": [
+    {
+      "exitstatus": "OK",
+      "http_status": 200,
+      "name": "clone",
+      "ok": true,
+      "task_status": "stopped",
+      "upid_redacted": true
+    },
+    {
+      "http_status": 200,
+      "name": "config:resources",
+      "ok": true
+    },
+    {
+      "http_status": 200,
+      "name": "config:network",
+      "ok": true
+    },
+    {
+      "http_status": 200,
+      "name": "config:cloudinit_identity",
+      "ok": true
+    },
+    {
+      "http_status": 200,
+      "name": "config:cloudinit",
+      "ok": true
+    },
+    {
+      "exitstatus": "OK",
+      "http_status": 200,
+      "name": "resize:scsi0",
+      "ok": true,
+      "task_status": "stopped",
+      "upid_redacted": true
+    },
+    {
+      "exitstatus": "OK",
+      "http_status": 200,
+      "name": "start",
+      "ok": true,
+      "task_status": "stopped",
+      "upid_redacted": true
+    },
+    {
+      "exitstatus": "OK",
+      "http_status": 200,
+      "name": "stop",
+      "ok": true,
+      "task_status": "stopped",
+      "upid_redacted": true
+    },
+    {
+      "exitstatus": "OK",
+      "http_status": 200,
+      "name": "delete",
+      "ok": true,
+      "task_status": "stopped",
+      "upid_redacted": true
+    }
+  ],
+  "template_diagnostics": {
+    "attempts": [
+      {
+        "attempt": 1,
+        "checked_at": "2026-05-19T12:26:52Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 2,
+        "checked_at": "2026-05-19T12:27:00Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 200,
+          "ok": true
+        },
+        "guest_commands_collected": true,
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 3,
+        "checked_at": "2026-05-19T12:27:06Z",
+        "guest_agent_interface_count": 2,
+        "guest_agent_ipv4": "10.0.30.143",
+        "guest_agent_network_http_status": 200,
+        "guest_agent_ping": {
+          "http_status": 200,
+          "ok": true
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      }
+    ],
+    "cloud_init": {
+      "http_status": 403,
+      "ok": false,
+      "reason": "exec_unavailable"
+    },
+    "guest_agent_healthy": true,
+    "guest_agent_network_ipv4": "10.0.30.143",
+    "guest_commands": {
+      "cloud_init_status": {
+        "http_status": 403,
+        "ok": false,
+        "reason": "exec_unavailable"
+      },
+      "ip_brief_addr": {
+        "http_status": 403,
+        "ok": false,
+        "reason": "exec_unavailable"
+      },
+      "ip_brief_link": {
+        "http_status": 403,
+        "ok": false,
+        "reason": "exec_unavailable"
+      },
+      "ip_route": {
+        "http_status": 403,
+        "ok": false,
+        "reason": "exec_unavailable"
+      },
+      "qemu_guest_agent_active": {
+        "http_status": 403,
+        "ok": false,
+        "reason": "exec_unavailable"
+      },
+      "qemu_guest_agent_enabled": {
+        "http_status": 403,
+        "ok": false,
+        "reason": "exec_unavailable"
+      }
+    },
+    "l2_ipv4": "10.0.30.143",
+    "method": "template-diagnostics",
+    "network_facts": {
+      "bridge": "vmbr0",
+      "device": "net0",
+      "mac": "bc:24:11:d9:e9:88",
+      "mac_digest": "b0518a78076de45b",
+      "ok": true,
+      "vlan": "30"
+    },
+    "ok": true,
+    "outcome": "template_network_validated",
+    "passive_ipv4": null,
+    "ssh_qga_summary": {
+      "active": true,
+      "enabled": false,
+      "installed": true,
+      "reason": "qemu_guest_agent_not_enabled",
+      "systemd_state_excerpt": "LoadState=loaded\nActiveState=active\nSubState=running\nFragmentPath=/usr/lib/systemd/system/qemu-guest-agent.service\nUnitFileState=static",
+      "virtio_socket_present": false
+    }
+  },
+  "version": "template-validation",
+  "vlan": 30,
+  "vm_name": "openclaw-template-diag-12-qga-template",
+  "vmid": 101
+}

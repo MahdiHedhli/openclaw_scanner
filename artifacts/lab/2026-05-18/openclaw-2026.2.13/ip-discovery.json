@@ -1,0 +1,178 @@
+{
+  "attempts": 18,
+  "evidence": [
+    {
+      "attempt": 1,
+      "guest_agent_http_status": 500
+    },
+    {
+      "attempt": 1,
+      "mac_digest": "f96fd07ded21eae7",
+      "passive_sources_checked": 2
+    },
+    {
+      "attempt": 2,
+      "guest_agent_http_status": 500
+    },
+    {
+      "attempt": 2,
+      "mac_digest": "f96fd07ded21eae7",
+      "passive_sources_checked": 2
+    },
+    {
+      "attempt": 3,
+      "guest_agent_http_status": 500
+    },
+    {
+      "attempt": 3,
+      "mac_digest": "f96fd07ded21eae7",
+      "passive_sources_checked": 2
+    },
+    {
+      "attempt": 4,
+      "guest_agent_http_status": 500
+    },
+    {
+      "attempt": 4,
+      "mac_digest": "f96fd07ded21eae7",
+      "passive_sources_checked": 2
+    },
+    {
+      "attempt": 5,
+      "guest_agent_http_status": 500
+    },
+    {
+      "attempt": 5,
+      "mac_digest": "f96fd07ded21eae7",
+      "passive_sources_checked": 2
+    },
+    {
+      "attempt": 6,
+      "guest_agent_http_status": 500
+    },
+    {
+      "attempt": 6,
+      "mac_digest": "f96fd07ded21eae7",
+      "passive_sources_checked": 2
+    },
+    {
+      "attempt": 7,
+      "guest_agent_http_status": 500
+    },
+    {
+      "attempt": 7,
+      "mac_digest": "f96fd07ded21eae7",
+      "passive_sources_checked": 2
+    },
+    {
+      "attempt": 8,
+      "guest_agent_http_status": 500
+    },
+    {
+      "attempt": 8,
+      "mac_digest": "f96fd07ded21eae7",
+      "passive_sources_checked": 2
+    },
+    {
+      "attempt": 9,
+      "guest_agent_http_status": 500
+    },
+    {
+      "attempt": 9,
+      "mac_digest": "f96fd07ded21eae7",
+      "passive_sources_checked": 2
+    },
+    {
+      "attempt": 10,
+      "guest_agent_http_status": 500
+    },
+    {
+      "attempt": 10,
+      "mac_digest": "f96fd07ded21eae7",
+      "passive_sources_checked": 2
+    },
+    {
+      "attempt": 11,
+      "guest_agent_http_status": 500
+    },
+    {
+      "attempt": 11,
+      "mac_digest": "f96fd07ded21eae7",
+      "passive_sources_checked": 2
+    },
+    {
+      "attempt": 12,
+      "guest_agent_http_status": 500
+    },
+    {
+      "attempt": 12,
+      "mac_digest": "f96fd07ded21eae7",
+      "passive_sources_checked": 2
+    },
+    {
+      "attempt": 13,
+      "guest_agent_http_status": 500
+    },
+    {
+      "attempt": 13,
+      "mac_digest": "f96fd07ded21eae7",
+      "passive_sources_checked": 2
+    },
+    {
+      "attempt": 14,
+      "guest_agent_http_status": 500
+    },
+    {
+      "attempt": 14,
+      "mac_digest": "f96fd07ded21eae7",
+      "passive_sources_checked": 2
+    },
+    {
+      "attempt": 15,
+      "guest_agent_http_status": 500
+    },
+    {
+      "attempt": 15,
+      "mac_digest": "f96fd07ded21eae7",
+      "passive_sources_checked": 2
+    },
+    {
+      "attempt": 16,
+      "guest_agent_http_status": 500
+    },
+    {
+      "attempt": 16,
+      "mac_digest": "f96fd07ded21eae7",
+      "passive_sources_checked": 2
+    },
+    {
+      "attempt": 17,
+      "guest_agent_http_status": 500
+    },
+    {
+      "attempt": 17,
+      "mac_digest": "f96fd07ded21eae7",
+      "passive_sources_checked": 2
+    },
+    {
+      "attempt": 18,
+      "guest_agent_http_status": 500
+    },
+    {
+      "attempt": 18,
+      "mac_digest": "f96fd07ded21eae7",
+      "passive_sources_checked": 2
+    }
+  ],
+  "method": "mac-driven-discovery",
+  "network_facts": {
+    "bridge": "vmbr0",
+    "device": "net0",
+    "mac": "bc:24:11:03:27:dc",
+    "mac_digest": "f96fd07ded21eae7",
+    "ok": true,
+    "vlan": "30"
+  },
+  "ok": false,
+  "reason": "no_ip_discovered"
+}

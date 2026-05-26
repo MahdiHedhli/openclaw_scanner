@@ -1,0 +1,431 @@
+{
+  "allowed_subnet": "10.0.30.0/24",
+  "artifact": "artifacts/lab/2026-05-18/template-diagnostics/proxmox-template-diagnostic-11.json",
+  "attempt_id": "11",
+  "checked_at": "2026-05-19T10:10:18Z",
+  "deployment_method": "proxmox-template-diagnostic-vm",
+  "diagnostic_type": "template_network_validation",
+  "ip": "10.0.30.181",
+  "l2_capture": {
+    "duration_seconds": 240,
+    "interface": "eth0",
+    "mac_digest": "7f25607d010c914d",
+    "returncode": 124,
+    "started": true,
+    "stderr_excerpt": "tcpdump: verbose output suppressed, use -v[v]... for full protocol decode\nlistening on eth0, link-type EN10MB (Ethernet), snapshot length 262144 bytes\n5 packets captured\n5 packets received by filter\n0 packets dropped by kernel\n",
+    "summary": {
+      "arp_seen": true,
+      "arp_tell_ipv4_candidates": [
+        "10.0.30.181"
+      ],
+      "dhcp_seen": true,
+      "excerpt": [
+        "06:11:25.567303 bc:24:11:9f:44:69 > ff:ff:ff:ff:ff:ff, ethertype IPv4 (0x0800), length 335: 0.0.0.0.68 > 255.255.255.255.67: BOOTP/DHCP, Request from bc:24:11:9f:44:69, length 293",
+        "06:11:25.915522 bc:24:11:9f:44:69 > ff:ff:ff:ff:ff:ff, ethertype IPv4 (0x0800), length 345: 0.0.0.0.68 > 255.255.255.255.67: BOOTP/DHCP, Request from bc:24:11:9f:44:69, length 303",
+        "06:12:34.537899 bc:24:11:9f:44:69 > ff:ff:ff:ff:ff:ff, ethertype IPv4 (0x0800), length 354: 0.0.0.0.68 > 255.255.255.255.67: BOOTP/DHCP, Request from bc:24:11:9f:44:69, length 312",
+        "06:12:34.548847 bc:24:11:9f:44:69 > ff:ff:ff:ff:ff:ff, ethertype IPv4 (0x0800), length 364: 0.0.0.0.68 > 255.255.255.255.67: BOOTP/DHCP, Request from bc:24:11:9f:44:69, length 322",
+        "06:12:35.759578 bc:24:11:9f:44:69 > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 42: Request who-has 10.0.30.254 tell 10.0.30.181, length 28"
+      ],
+      "line_count": 5,
+      "mac_line_count": 5
+    },
+    "target": "claude@10.0.30.10"
+  },
+  "lifecycle": {
+    "created_at": "2026-05-19T10:10:23Z",
+    "deleted_at": "2026-05-19T10:15:17Z",
+    "started_at": "2026-05-19T10:10:29Z",
+    "stopped_at": "2026-05-19T10:15:16Z"
+  },
+  "mac": "bc:24:11:9f:44:69",
+  "mac_digest": "7f25607d010c914d",
+  "network_facts": {
+    "bridge": "vmbr0",
+    "device": "net0",
+    "mac": "bc:24:11:9f:44:69",
+    "mac_digest": "7f25607d010c914d",
+    "ok": true,
+    "reason": null,
+    "vlan": "30"
+  },
+  "outcome": "dhcp_observed_guest_agent_unhealthy",
+  "port": null,
+  "preflight": {
+    "blockers": [],
+    "checked_at": "2026-05-19T10:10:18Z",
+    "vm_lifecycle_allowed": true
+  },
+  "product_family": "proxmox-template",
+  "reason": "qemu_guest_agent_not_installed",
+  "scanner_capture_attempted": false,
+  "schema_version": 1,
+  "secret_values_recorded": false,
+  "ssh_template_diagnostics": {
+    "attempts": 1,
+    "commands": {
+      "cloud_init_status": {
+        "ok": true,
+        "returncode": 0,
+        "stderr_excerpt": "",
+        "stdout_excerpt": "error: a subcommand is required\n\nusage: /usr/bin/cloud-init [-h] [--version] [--debug] [--force] [--all-stages]\n                           {init,modules,single,query,features,analyze,devel,collect-logs,clean,status,schema}\n                           ...\n\noptions:\n  -h, --help            show this help message and exit\n  --version, -v         Show program's version number and exit.\n  --debug, -d           Show additional pre-action logging (default: False).\n  --force               Force running even if no datasource is found (use at\n                        your own risk).\n  --all-stages          Run cloud-init's stages under a single process using a\n                        syncronization protocol. This is not intended for CLI\n                        usage.\n\nSubcommands:\n  {init,modules,sing"
+      },
+      "ip_brief_addr": {
+        "ok": true,
+        "returncode": 0,
+        "stderr_excerpt": "",
+        "stdout_excerpt": "Usage: ip [ OPTIONS ] OBJECT { COMMAND | help }\n       ip [ -force ] -batch filename\nwhere  OBJECT := { address | addrlabel | amt | fou | help | ila | ioam | l2tp |\n                   link | macsec | maddress | monitor | mptcp | mroute | mrule |\n                   neighbor | neighbour | netconf | netns | nexthop | ntable |\n                   ntbl | route | rule | sr | tap | tcpmetrics |\n                   token | tunnel | tuntap | vrf | xfrm }\n       OPTIONS := { -V[ersion] | -s[tatistics] | -d[etails] | -r[esolve] |\n                    -h[uman-readable] | -iec | -j[son] | -p[retty] |\n                    -f[amily] { inet | inet6 | mpls | bridge | link } |\n                    -4 | -6 | -M | -B | -0 |\n                    -l[oops] { maximum-addr-flush-attempts } | -br[ief] |\n                 "
+      },
+      "ip_brief_link": {
+        "ok": true,
+        "returncode": 0,
+        "stderr_excerpt": "",
+        "stdout_excerpt": "Usage: ip [ OPTIONS ] OBJECT { COMMAND | help }\n       ip [ -force ] -batch filename\nwhere  OBJECT := { address | addrlabel | amt | fou | help | ila | ioam | l2tp |\n                   link | macsec | maddress | monitor | mptcp | mroute | mrule |\n                   neighbor | neighbour | netconf | netns | nexthop | ntable |\n                   ntbl | route | rule | sr | tap | tcpmetrics |\n                   token | tunnel | tuntap | vrf | xfrm }\n       OPTIONS := { -V[ersion] | -s[tatistics] | -d[etails] | -r[esolve] |\n                    -h[uman-readable] | -iec | -j[son] | -p[retty] |\n                    -f[amily] { inet | inet6 | mpls | bridge | link } |\n                    -4 | -6 | -M | -B | -0 |\n                    -l[oops] { maximum-addr-flush-attempts } | -br[ief] |\n                 "
+      },
+      "ip_route": {
+        "ok": true,
+        "returncode": 0,
+        "stderr_excerpt": "",
+        "stdout_excerpt": "Usage: ip [ OPTIONS ] OBJECT { COMMAND | help }\n       ip [ -force ] -batch filename\nwhere  OBJECT := { address | addrlabel | amt | fou | help | ila | ioam | l2tp |\n                   link | macsec | maddress | monitor | mptcp | mroute | mrule |\n                   neighbor | neighbour | netconf | netns | nexthop | ntable |\n                   ntbl | route | rule | sr | tap | tcpmetrics |\n                   token | tunnel | tuntap | vrf | xfrm }\n       OPTIONS := { -V[ersion] | -s[tatistics] | -d[etails] | -r[esolve] |\n                    -h[uman-readable] | -iec | -j[son] | -p[retty] |\n                    -f[amily] { inet | inet6 | mpls | bridge | link } |\n                    -4 | -6 | -M | -B | -0 |\n                    -l[oops] { maximum-addr-flush-attempts } | -br[ief] |\n                 "
+      },
+      "qemu_guest_agent_active": {
+        "ok": true,
+        "returncode": 0,
+        "stderr_excerpt": "",
+        "stdout_excerpt": "  UNIT                                                                                                      LOAD   ACTIVE SUB       DESCRIPTION\n  proc-sys-fs-binfmt_misc.automount                                                                         loaded active running   Arbitrary Executable File Formats File System Automount Point\n  sys-devices-pci0000:00-0000:00:01.1-ata2-host2-target2:0:0-2:0:0:0-block-sr0.device                       loaded active plugged   QEMU_DVD-ROM cidata\n  sys-devices-pci0000:00-0000:00:05.0-0000:01:01.0-virtio3-host0-target0:0:0-0:0:0:0-block-sda-sda1.device  loaded active plugged   QEMU_HARDDISK cloudimg-rootfs\n  sys-devices-pci0000:00-0000:00:05.0-0000:01:01.0-virtio3-host0-target0:0:0-0:0:0:0-block-sda-sda14.device loaded active plugged   QEMU_HARDDISK 14"
+      },
+      "qemu_guest_agent_binary": {
+        "ok": true,
+        "returncode": 0,
+        "stderr_excerpt": "",
+        "stdout_excerpt": ""
+      },
+      "qemu_guest_agent_enabled": {
+        "ok": true,
+        "returncode": 0,
+        "stderr_excerpt": "",
+        "stdout_excerpt": "  UNIT                                                                                                      LOAD   ACTIVE SUB       DESCRIPTION\n  proc-sys-fs-binfmt_misc.automount                                                                         loaded active running   Arbitrary Executable File Formats File System Automount Point\n  sys-devices-pci0000:00-0000:00:01.1-ata2-host2-target2:0:0-2:0:0:0-block-sr0.device                       loaded active plugged   QEMU_DVD-ROM cidata\n  sys-devices-pci0000:00-0000:00:05.0-0000:01:01.0-virtio3-host0-target0:0:0-0:0:0:0-block-sda-sda1.device  loaded active plugged   QEMU_HARDDISK cloudimg-rootfs\n  sys-devices-pci0000:00-0000:00:05.0-0000:01:01.0-virtio3-host0-target0:0:0-0:0:0:0-block-sda-sda14.device loaded active plugged   QEMU_HARDDISK 14"
+      },
+      "qemu_guest_agent_package": {
+        "ok": true,
+        "returncode": 0,
+        "stderr_excerpt": "",
+        "stdout_excerpt": "dpkg-query: error: need an action option\n\nUse --help for help about querying packages.\n"
+      },
+      "qemu_guest_agent_socket": {
+        "ok": true,
+        "returncode": 0,
+        "stderr_excerpt": "",
+        "stdout_excerpt": "missing\n"
+      },
+      "qemu_guest_agent_state": {
+        "ok": true,
+        "returncode": 0,
+        "stderr_excerpt": "",
+        "stdout_excerpt": "  UNIT                                                                                                      LOAD   ACTIVE SUB       DESCRIPTION\n  proc-sys-fs-binfmt_misc.automount                                                                         loaded active running   Arbitrary Executable File Formats File System Automount Point\n  sys-devices-pci0000:00-0000:00:01.1-ata2-host2-target2:0:0-2:0:0:0-block-sr0.device                       loaded active plugged   QEMU_DVD-ROM cidata\n  sys-devices-pci0000:00-0000:00:05.0-0000:01:01.0-virtio3-host0-target0:0:0-0:0:0:0-block-sda-sda1.device  loaded active plugged   QEMU_HARDDISK cloudimg-rootfs\n  sys-devices-pci0000:00-0000:00:05.0-0000:01:01.0-virtio3-host0-target0:0:0-0:0:0:0-block-sda-sda14.device loaded active plugged   QEMU_HARDDISK 14"
+      }
+    },
+    "ok": true,
+    "qga_summary": {
+      "active": false,
+      "enabled": false,
+      "installed": false,
+      "reason": "qemu_guest_agent_not_installed",
+      "systemd_state_excerpt": "UNIT                                                                                                      LOAD   ACTIVE SUB       DESCRIPTION\n  proc-sys-fs-binfmt_misc.automount                                                                         loaded active running   Arbitrary Executable File Formats File System Automount Point\n  sys-devices-pci0000:00",
+      "virtio_socket_present": false
+    },
+    "target": "claude@10.0.30.181"
+  },
+  "steps": [
+    {
+      "exitstatus": "OK",
+      "http_status": 200,
+      "name": "clone",
+      "ok": true,
+      "task_status": "stopped",
+      "upid_redacted": true
+    },
+    {
+      "http_status": 200,
+      "name": "config:resources",
+      "ok": true
+    },
+    {
+      "http_status": 200,
+      "name": "config:network",
+      "ok": true
+    },
+    {
+      "http_status": 200,
+      "name": "config:cloudinit_identity",
+      "ok": true
+    },
+    {
+      "http_status": 200,
+      "name": "config:cloudinit",
+      "ok": true
+    },
+    {
+      "exitstatus": "OK",
+      "http_status": 200,
+      "name": "resize:scsi0",
+      "ok": true,
+      "task_status": "stopped",
+      "upid_redacted": true
+    },
+    {
+      "exitstatus": "OK",
+      "http_status": 200,
+      "name": "start",
+      "ok": true,
+      "task_status": "stopped",
+      "upid_redacted": true
+    },
+    {
+      "exitstatus": "OK",
+      "http_status": 200,
+      "name": "stop",
+      "ok": true,
+      "task_status": "stopped",
+      "upid_redacted": true
+    },
+    {
+      "exitstatus": "OK",
+      "http_status": 200,
+      "name": "delete",
+      "ok": true,
+      "task_status": "stopped",
+      "upid_redacted": true
+    }
+  ],
+  "template_diagnostics": {
+    "attempts": [
+      {
+        "attempt": 1,
+        "checked_at": "2026-05-19T10:10:35Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 2,
+        "checked_at": "2026-05-19T10:10:51Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 3,
+        "checked_at": "2026-05-19T10:11:07Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 4,
+        "checked_at": "2026-05-19T10:11:23Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 5,
+        "checked_at": "2026-05-19T10:11:39Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 6,
+        "checked_at": "2026-05-19T10:11:55Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 7,
+        "checked_at": "2026-05-19T10:12:12Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 8,
+        "checked_at": "2026-05-19T10:12:28Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 9,
+        "checked_at": "2026-05-19T10:12:44Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 10,
+        "checked_at": "2026-05-19T10:13:00Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 11,
+        "checked_at": "2026-05-19T10:13:16Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 12,
+        "checked_at": "2026-05-19T10:13:33Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 13,
+        "checked_at": "2026-05-19T10:13:49Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 14,
+        "checked_at": "2026-05-19T10:14:05Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 15,
+        "checked_at": "2026-05-19T10:14:21Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 16,
+        "checked_at": "2026-05-19T10:14:37Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 17,
+        "checked_at": "2026-05-19T10:14:54Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 18,
+        "checked_at": "2026-05-19T10:15:10Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      }
+    ],
+    "cloud_init": null,
+    "guest_agent_healthy": false,
+    "guest_agent_network_ipv4": null,
+    "l2_ipv4": "10.0.30.181",
+    "method": "template-diagnostics",
+    "network_facts": {
+      "bridge": "vmbr0",
+      "device": "net0",
+      "mac": "bc:24:11:9f:44:69",
+      "mac_digest": "7f25607d010c914d",
+      "ok": true,
+      "vlan": "30"
+    },
+    "ok": false,
+    "outcome": "no_ip_discovered",
+    "passive_ipv4": null,
+    "reason": "no_guest_or_passive_vlan30_ip",
+    "ssh_qga_summary": {
+      "active": false,
+      "enabled": false,
+      "installed": false,
+      "reason": "qemu_guest_agent_not_installed",
+      "systemd_state_excerpt": "UNIT                                                                                                      LOAD   ACTIVE SUB       DESCRIPTION\n  proc-sys-fs-binfmt_misc.automount                                                                         loaded active running   Arbitrary Executable File Formats File System Automount Point\n  sys-devices-pci0000:00",
+      "virtio_socket_present": false
+    }
+  },
+  "version": "template-validation",
+  "vlan": 30,
+  "vm_name": "openclaw-template-diag-11",
+  "vmid": 100
+}

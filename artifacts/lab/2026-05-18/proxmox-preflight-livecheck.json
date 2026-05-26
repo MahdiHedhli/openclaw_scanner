@@ -1,0 +1,95 @@
+{
+  "blockers": [
+    "running OpenClaw/corpus VM(s) require cleanup before new lifecycle work: 100:openclaw-template-diag-08"
+  ],
+  "checked_at": "2026-05-19T04:27:16Z",
+  "checks": [
+    {
+      "name": "api_version",
+      "ok": true,
+      "status": 200,
+      "version": "9.1.9"
+    },
+    {
+      "name": "corpus_vm_inventory",
+      "ok": true,
+      "openclaw_related_vms": 1,
+      "openclaw_running_vms": 1,
+      "status": 200,
+      "vms": [
+        {
+          "name": "openclaw-template-diag-08",
+          "status": "running",
+          "vmid": 100
+        }
+      ]
+    },
+    {
+      "agent_enabled": true,
+      "boot_order": "order=scsi0",
+      "cloudinit_attached": true,
+      "is_template": true,
+      "name": "template_readiness",
+      "ok": true,
+      "serial_console": true,
+      "status": 200,
+      "template_name": "ubuntu-2404-cloudinit",
+      "template_vmid": "9000"
+    },
+    {
+      "name": "permission",
+      "ok": true,
+      "path": "/nodes/pve01",
+      "permission": "Sys.Audit",
+      "present": true,
+      "propagates": false,
+      "status": 200
+    },
+    {
+      "name": "permission",
+      "ok": true,
+      "path": "/pool/openclaw-scanner",
+      "permission": "VM.Clone",
+      "present": true,
+      "propagates": true,
+      "status": 200
+    },
+    {
+      "name": "permission",
+      "ok": true,
+      "path": "/vms/9000",
+      "permission": "VM.Clone",
+      "present": true,
+      "propagates": false,
+      "status": 200
+    },
+    {
+      "name": "permission",
+      "ok": true,
+      "path": "/sdn/zones/localnetwork/vmbr0",
+      "permission": "SDN.Use",
+      "present": true,
+      "propagates": true,
+      "status": 200
+    },
+    {
+      "name": "permission",
+      "ok": true,
+      "path": "/sdn/zones/localnetwork/vmbr0/30",
+      "permission": "SDN.Use",
+      "present": true,
+      "propagates": false,
+      "status": 200
+    }
+  ],
+  "schema_version": 1,
+  "vm_inventory": {
+    "created": 0,
+    "destroyed": 0,
+    "next_cleanup_deadline": null,
+    "reused": 0,
+    "shut_down": 0,
+    "still_running": 1
+  },
+  "vm_lifecycle_allowed": false
+}

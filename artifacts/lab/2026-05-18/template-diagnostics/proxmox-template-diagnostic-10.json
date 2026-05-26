@@ -1,0 +1,66 @@
+{
+  "allowed_subnet": "10.0.30.0/24",
+  "artifact": "artifacts/lab/2026-05-18/template-diagnostics/proxmox-template-diagnostic-10.json",
+  "attempt_id": "10",
+  "checked_at": "2026-05-19T10:07:54Z",
+  "deployment_method": "proxmox-template-diagnostic-vm",
+  "diagnostic_type": "template_network_validation",
+  "ip": null,
+  "lifecycle": {
+    "created_at": "2026-05-19T10:08:00Z",
+    "deleted_at": "2026-05-19T10:08:01Z",
+    "started_at": null,
+    "stopped_at": null
+  },
+  "mac": "bc:24:11:9d:f0:3d",
+  "mac_digest": "fb664847320b0f68",
+  "outcome": "create_failed",
+  "port": null,
+  "preflight": {
+    "blockers": [],
+    "checked_at": "2026-05-19T10:07:54Z",
+    "vm_lifecycle_allowed": true
+  },
+  "product_family": "proxmox-template",
+  "reason": "config_cloudinit_identity_failed",
+  "scanner_capture_attempted": false,
+  "schema_version": 1,
+  "secret_values_recorded": false,
+  "steps": [
+    {
+      "exitstatus": "OK",
+      "http_status": 200,
+      "name": "clone",
+      "ok": true,
+      "task_status": "stopped",
+      "upid_redacted": true
+    },
+    {
+      "http_status": 200,
+      "name": "config:resources",
+      "ok": true
+    },
+    {
+      "http_status": 200,
+      "name": "config:network",
+      "ok": true
+    },
+    {
+      "http_status": 400,
+      "name": "config:cloudinit_identity",
+      "ok": false
+    },
+    {
+      "exitstatus": "OK",
+      "http_status": 200,
+      "name": "delete",
+      "ok": true,
+      "task_status": "stopped",
+      "upid_redacted": true
+    }
+  ],
+  "version": "template-validation",
+  "vlan": 30,
+  "vm_name": "openclaw-template-diag-10",
+  "vmid": 100
+}

@@ -7,6 +7,10 @@
 Icon?
 .env
 .env.*
+.local/
+OPENCLAW_PROXMOX_CREDENTIALS.local.md
+*.local.md
+*.local.json
 .shodanapi
 .shodanapi.*
 __pycache__/

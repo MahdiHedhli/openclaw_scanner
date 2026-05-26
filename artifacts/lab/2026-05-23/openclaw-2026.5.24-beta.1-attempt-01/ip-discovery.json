@@ -1,0 +1,26 @@
+{
+  "attempts": 3,
+  "evidence": [
+    {
+      "attempt": 1,
+      "guest_agent_http_status": 500
+    },
+    {
+      "attempt": 1,
+      "mac_digest": "55f32bf83674fe18",
+      "passive_sources_checked": 2
+    },
+    {
+      "attempt": 2,
+      "guest_agent_http_status": 500
+    },
+    {
+      "attempt": 2,
+      "mac_digest": "55f32bf83674fe18",
+      "passive_sources_checked": 2
+    }
+  ],
+  "ip": "10.0.30.109",
+  "method": "guest-agent",
+  "ok": true
+}

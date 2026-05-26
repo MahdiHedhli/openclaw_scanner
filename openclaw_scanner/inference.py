@@ -5,7 +5,11 @@ from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple
 
 from .models import FingerprintMatch, ProbeObservation, VersionMatch, VulnerabilityMatch
 
-VERSION_RE = re.compile(r"(?<![0-9A-Za-z])(20\d{2}\.\d+\.\d+(?:-[A-Za-z0-9]+)?)(?=$|[^0-9A-Za-z])")
+VERSION_RE = re.compile(
+    r"(?<![0-9A-Za-z])"
+    r"(20\d{2}\.\d+\.\d+(?:-[A-Za-z][0-9A-Za-z-]*(?:\.\d+)*)?)"
+    r"(?=$|[^0-9A-Za-z])"
+)
 
 
 def load_rules(rules_file: Optional[str]) -> Dict[str, Any]:

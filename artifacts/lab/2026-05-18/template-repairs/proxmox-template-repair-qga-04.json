@@ -1,0 +1,345 @@
+{
+  "allowed_subnet": "10.0.30.0/24",
+  "artifact": "artifacts/lab/2026-05-18/template-repairs/proxmox-template-repair-qga-04.json",
+  "attempt_id": "qga-04",
+  "checked_at": "2026-05-19T12:14:12Z",
+  "deployment_method": "proxmox-template-repair-vm",
+  "diagnostic_type": "template_qga_repair",
+  "ip": "10.0.30.176",
+  "l2_capture": {
+    "duration_seconds": 300,
+    "interface": "eth0",
+    "mac_digest": "3375a6b7a56326f9",
+    "returncode": 255,
+    "started": true,
+    "stderr_excerpt": "tcpdump: verbose output suppressed, use -v[v]... for full protocol decode\nlistening on eth0, link-type EN10MB (Ethernet), snapshot length 262144 bytes\n",
+    "summary": {
+      "arp_seen": true,
+      "arp_tell_ipv4_candidates": [
+        "10.0.30.176"
+      ],
+      "dhcp_seen": true,
+      "excerpt": [
+        "08:15:17.891456 bc:24:11:46:6c:bd > ff:ff:ff:ff:ff:ff, ethertype IPv4 (0x0800), length 335: 0.0.0.0.68 > 255.255.255.255.67: BOOTP/DHCP, Request from bc:24:11:46:6c:bd, length 293",
+        "08:15:18.238615 bc:24:11:46:6c:bd > ff:ff:ff:ff:ff:ff, ethertype IPv4 (0x0800), length 345: 0.0.0.0.68 > 255.255.255.255.67: BOOTP/DHCP, Request from bc:24:11:46:6c:bd, length 303",
+        "08:15:22.449602 bc:24:11:46:6c:bd > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 42: Request who-has 10.0.30.254 tell 10.0.30.176, length 28",
+        "08:16:21.287843 bc:24:11:46:6c:bd > ff:ff:ff:ff:ff:ff, ethertype IPv4 (0x0800), length 360: 0.0.0.0.68 > 255.255.255.255.67: BOOTP/DHCP, Request from bc:24:11:46:6c:bd, length 318",
+        "08:16:21.300266 bc:24:11:46:6c:bd > ff:ff:ff:ff:ff:ff, ethertype IPv4 (0x0800), length 370: 0.0.0.0.68 > 255.255.255.255.67: BOOTP/DHCP, Request from bc:24:11:46:6c:bd, length 328",
+        "08:16:22.427539 bc:24:11:46:6c:bd > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 42: Request who-has 10.0.30.254 tell 10.0.30.176, length 28"
+      ],
+      "line_count": 6,
+      "mac_line_count": 6
+    },
+    "target": "claude@10.0.30.10",
+    "terminated_by_helper": true
+  },
+  "lifecycle": {
+    "converted_to_template_at": null,
+    "created_at": "2026-05-19T12:14:18Z",
+    "deleted_at": "2026-05-19T12:18:55Z",
+    "started_at": "2026-05-19T12:14:21Z",
+    "stopped_at": "2026-05-19T12:18:54Z"
+  },
+  "mac": "bc:24:11:46:6c:bd",
+  "mac_digest": "3375a6b7a56326f9",
+  "network_facts": {
+    "bridge": "vmbr0",
+    "device": "net0",
+    "mac": "bc:24:11:46:6c:bd",
+    "mac_digest": "3375a6b7a56326f9",
+    "ok": true,
+    "reason": null,
+    "vlan": "30"
+  },
+  "new_template_name": "ubuntu-2404-cloudinit-qga",
+  "outcome": "template_repair_failed",
+  "port": null,
+  "preflight": {
+    "blockers": [],
+    "checked_at": "2026-05-19T12:14:12Z",
+    "vm_lifecycle_allowed": true
+  },
+  "product_family": "proxmox-template",
+  "reason": "qga_guest_side_verification_failed",
+  "scanner_capture_attempted": false,
+  "schema_version": 1,
+  "secret_values_recorded": false,
+  "source_template_vmid": "9000",
+  "ssh_qga_repair": {
+    "commands": {
+      "apt_update": {
+        "ok": true,
+        "returncode": 0,
+        "stderr_excerpt": "",
+        "stdout_excerpt": "apt_update_ok\n"
+      },
+      "cloud_init_wait": {
+        "ok": true,
+        "returncode": 0,
+        "stderr_excerpt": "Warning: Permanently added '10.0.30.176' (ED25519) to the list of known hosts.\n",
+        "stdout_excerpt": "cloud_init_checked\n"
+      },
+      "enable_qga": {
+        "ok": true,
+        "returncode": 0,
+        "stderr_excerpt": "",
+        "stdout_excerpt": "qga_enabled\n"
+      },
+      "install_qga": {
+        "ok": true,
+        "returncode": 0,
+        "stderr_excerpt": "",
+        "stdout_excerpt": "qga_install_ok\n"
+      },
+      "qga_status": {
+        "ok": true,
+        "returncode": 0,
+        "stderr_excerpt": "",
+        "stdout_excerpt": "ii  1:8.2.2+ds-0ubuntu1.16\nstatic\nactive\nsocket_missing\n"
+      }
+    },
+    "ok": false,
+    "reason": "qga_guest_side_verification_failed"
+  },
+  "steps": [
+    {
+      "exitstatus": "OK",
+      "http_status": 200,
+      "name": "clone",
+      "ok": true,
+      "task_status": "stopped",
+      "upid_redacted": true
+    },
+    {
+      "http_status": 200,
+      "name": "config:resources",
+      "ok": true
+    },
+    {
+      "http_status": 200,
+      "name": "config:network",
+      "ok": true
+    },
+    {
+      "http_status": 200,
+      "name": "config:cloudinit_identity",
+      "ok": true
+    },
+    {
+      "http_status": 200,
+      "name": "config:cloudinit",
+      "ok": true
+    },
+    {
+      "exitstatus": "OK",
+      "http_status": 200,
+      "name": "resize:scsi0",
+      "ok": true,
+      "task_status": "stopped",
+      "upid_redacted": true
+    },
+    {
+      "exitstatus": "OK",
+      "http_status": 200,
+      "name": "start",
+      "ok": true,
+      "task_status": "stopped",
+      "upid_redacted": true
+    },
+    {
+      "exitstatus": "OK",
+      "http_status": 200,
+      "name": "stop",
+      "ok": true,
+      "task_status": "stopped",
+      "upid_redacted": true
+    },
+    {
+      "exitstatus": "OK",
+      "http_status": 200,
+      "name": "delete_failed_repair_vm",
+      "ok": true,
+      "task_status": "stopped",
+      "upid_redacted": true
+    }
+  ],
+  "template_diagnostics": {
+    "attempts": [
+      {
+        "attempt": 1,
+        "checked_at": "2026-05-19T12:14:27Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 2,
+        "checked_at": "2026-05-19T12:14:44Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 3,
+        "checked_at": "2026-05-19T12:15:00Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 4,
+        "checked_at": "2026-05-19T12:15:16Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 5,
+        "checked_at": "2026-05-19T12:15:33Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 6,
+        "checked_at": "2026-05-19T12:15:49Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 7,
+        "checked_at": "2026-05-19T12:16:05Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 8,
+        "checked_at": "2026-05-19T12:16:21Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 9,
+        "checked_at": "2026-05-19T12:16:37Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 10,
+        "checked_at": "2026-05-19T12:16:53Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 11,
+        "checked_at": "2026-05-19T12:17:09Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 12,
+        "checked_at": "2026-05-19T12:17:26Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 13,
+        "checked_at": "2026-05-19T12:17:42Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 14,
+        "checked_at": "2026-05-19T12:17:58Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      }
+    ],
+    "cloud_init": null,
+    "guest_agent_healthy": false,
+    "guest_agent_network_ipv4": null,
+    "l2_ipv4": "10.0.30.176",
+    "method": "template-diagnostics",
+    "network_facts": {
+      "bridge": "vmbr0",
+      "device": "net0",
+      "mac": "bc:24:11:46:6c:bd",
+      "mac_digest": "3375a6b7a56326f9",
+      "ok": true,
+      "vlan": "30"
+    },
+    "ok": false,
+    "outcome": "no_ip_discovered",
+    "passive_ipv4": null,
+    "reason": "no_guest_or_passive_vlan30_ip"
+  },
+  "version": "template-qga-repair",
+  "vlan": 30,
+  "vm_name": "openclaw-template-repair-qga-04",
+  "vmid": 100
+}

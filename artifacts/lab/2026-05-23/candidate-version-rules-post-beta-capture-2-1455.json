@@ -1,0 +1,2514 @@
+{
+  "bundle_count": 14,
+  "bundle_type": "openclaw_blackbox_rule_suggestions",
+  "capture_entry_count": 14,
+  "generated_at": "2026-05-24T15:08:00.653507+00:00",
+  "schema_version": 1,
+  "skipped_bundles": [],
+  "skipped_input_summary": [
+    {
+      "count": 174,
+      "reason": "not an openclaw_blackbox_capture bundle"
+    }
+  ],
+  "skipped_inputs": [
+    {
+      "path": "2026-05-18/manifest.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-18/openclaw-2026.2.13/codex-acl-observation.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-18/openclaw-2026.2.13/ip-discovery.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-18/openclaw-2026.2.13/proxmox-attempt-02.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-18/openclaw-2026.2.13/proxmox-attempt-03.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-18/openclaw-2026.2.13/proxmox-attempt-04.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-18/openclaw-2026.2.13/proxmox-attempt-05.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-18/openclaw-2026.2.13/proxmox-create.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-18/openclaw-2026.2.13/proxmox-lifecycle.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-18/proxmox-preflight-livecheck.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-18/proxmox-preflight.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-18/template-diagnostics/proxmox-template-diagnostic-06.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-18/template-diagnostics/proxmox-template-diagnostic-07.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-18/template-diagnostics/proxmox-template-diagnostic-08.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-18/template-diagnostics/proxmox-template-diagnostic-09.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-18/template-diagnostics/proxmox-template-diagnostic-10.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-18/template-diagnostics/proxmox-template-diagnostic-11.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-18/template-diagnostics/proxmox-template-diagnostic-12-qga-template.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-18/template-repairs/proxmox-template-repair-qga-01.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-18/template-repairs/proxmox-template-repair-qga-02.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-18/template-repairs/proxmox-template-repair-qga-03.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-18/template-repairs/proxmox-template-repair-qga-04.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-18/template-repairs/proxmox-template-repair-qga-05.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/candidate-version-rules.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/manifest.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.18/deploy-command-validation.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.18/ip-discovery.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.18/proxmox-attempt-01.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.18/scan.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.18-attempt-02/ip-discovery.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.18-attempt-02/proxmox-attempt-02.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.18-attempt-02/scan.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.19-beta.1/deploy-command-validation.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.19-beta.1/ip-discovery.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.19-beta.1/proxmox-attempt-01.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.19-beta.1/scan.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.19-beta.1-attempt-02/ip-discovery.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.19-beta.1-attempt-02/proxmox-attempt-02.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.19-beta.1-attempt-02/scan.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.7/deploy-command-validation-02.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.7/deploy-command-validation-03.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.7/deploy-command-validation-04.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.7/deploy-command-validation.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.7/ip-discovery.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.7/proxmox-attempt-01.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.7/proxmox-attempt-02.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.7/proxmox-attempt-03.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.7/proxmox-attempt-04.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.7/scan.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.7-attempt-05/ip-discovery.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.7-attempt-05/proxmox-attempt-05.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.7-attempt-05/scan.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/proxmox-preflight-after-2026.5.18-attempt-01.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/proxmox-preflight-after-2026.5.18-attempt-02.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/proxmox-preflight-after-2026.5.19-beta.1-attempt-01.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/proxmox-preflight-after-2026.5.19-beta.1-attempt-02.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/proxmox-preflight-after-2026.5.7-attempt-05.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/proxmox-preflight-after-attempt-01.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/proxmox-preflight-after-attempt-02.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/proxmox-preflight-after-attempt-03.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/proxmox-preflight-after-attempt-04.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/proxmox-preflight-before-2026.5.18-attempt-01.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/proxmox-preflight-before-2026.5.19-beta.1-attempt-01.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/proxmox-preflight-before-2026.5.19-beta.1-attempt-02.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/proxmox-preflight-before-attempt-02.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/proxmox-preflight-before-attempt-03.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/proxmox-preflight-before-attempt-04.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/proxmox-preflight-heartbeat-1904.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/proxmox-preflight.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/candidate-version-rules-post-beta-capture-1455.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/candidate-version-rules.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/manifest.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.20/deploy-command-validation.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.20/ip-discovery.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.20/proxmox-attempt-01.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.20-attempt-02/ip-discovery.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.20-attempt-02/proxmox-attempt-02.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.20-attempt-02/scan.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.20-attempt-03/ip-discovery.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.20-attempt-03/proxmox-attempt-03.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.20-attempt-03/scan.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.22-attempt-01/deploy-command-validation.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.22-attempt-01/ip-discovery.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.22-attempt-01/proxmox-attempt-01.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.22-attempt-01/scan.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.22-attempt-02/ip-discovery.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.22-attempt-02/proxmox-attempt-02.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.22-attempt-02/scan.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.22-beta.1/deploy-command-validation.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.22-beta.1/ip-discovery.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.22-beta.1/proxmox-attempt-01.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.22-beta.1-attempt-02/ip-discovery.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.22-beta.1-attempt-02/proxmox-attempt-02.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.22-beta.1-attempt-03/ip-discovery.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.22-beta.1-attempt-03/proxmox-attempt-03.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.22-beta.1-attempt-03/scan.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.22-beta.1-attempt-04/ip-discovery.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.22-beta.1-attempt-04/proxmox-attempt-04.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.22-beta.1-attempt-04/scan.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.24-beta.1-attempt-01/deploy-command-validation.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.24-beta.1-attempt-01/ip-discovery.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.24-beta.1-attempt-01/proxmox-attempt-01.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.24-beta.1-attempt-02/ip-discovery.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.24-beta.1-attempt-02/proxmox-attempt-02.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.24-beta.1-attempt-02/scan.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.24-beta.1-attempt-03/ip-discovery.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.24-beta.1-attempt-03/proxmox-attempt-03.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.24-beta.1-attempt-03/scan.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-corpus-heartbeat-1155.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-corpus-heartbeat-1255.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-corpus-heartbeat-1355.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-corpus-heartbeat-1455.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-release-gap-0855.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-release-gap-0955.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-release-gap-1055.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-release-gap-1155.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-release-gap-heartbeat-1155.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-release-gap-heartbeat-1255.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-release-gap-heartbeat-1355.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-release-gap-heartbeat-1455.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-release-gap-prerelease-heartbeat-1455.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-versions-heartbeat-1455.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-after-2026.5.20-attempt-01.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-after-2026.5.20-attempt-02.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-after-2026.5.20-attempt-03.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-after-2026.5.22-beta.1-attempt-01.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-after-2026.5.22-beta.1-attempt-02.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-after-2026.5.22-beta.1-attempt-03.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-after-2026.5.22-beta.1-attempt-04.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-before-2026.5.20-attempt-01.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-before-2026.5.20-attempt-02.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-before-2026.5.20-attempt-03.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-before-2026.5.22-beta.1-attempt-01.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-before-2026.5.22-beta.1-attempt-02.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-before-2026.5.22-beta.1-attempt-03.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-before-2026.5.22-beta.1-attempt-04.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-heartbeat-0055.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-heartbeat-0155.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-heartbeat-0255.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-heartbeat-0355.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-heartbeat-0455.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-heartbeat-0555.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-heartbeat-0655.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-heartbeat-0755.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-heartbeat-0855.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-heartbeat-0955.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-heartbeat-1055.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-heartbeat-1155.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-heartbeat-1255.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-heartbeat-1355.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-heartbeat-1455.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-heartbeat-2055.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-heartbeat-2155-final.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-heartbeat-2255.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-heartbeat-2355.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-post-2026.5.22-attempt-01.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-post-2026.5.22-attempt-02.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-post-beta-attempt-1455.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-post-beta-capture-1455.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/saved-capture-inference-check-0255.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/saved-capture-inference-check-0355.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/saved-capture-inference-check-0455.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/saved-capture-inference-check-0555.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/saved-capture-inference-check-0655.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/saved-capture-inference-check-promoted-0555.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/saved-capture-inference-check-promoted-0655.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/saved-capture-inference-check-promoted-1055.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/saved-capture-inference-check-promoted-1155.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/saved-capture-inference-check-promoted-heartbeat-1155.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/saved-capture-inference-check-promoted-heartbeat-1255.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/saved-capture-inference-check-promoted-heartbeat-1355.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/saved-capture-inference-check-promoted-heartbeat-1455.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/saved-capture-inference-check-promoted-post-beta-attempt-1455.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "templates/manifest.template.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    }
+  ],
+  "versions": [
+    {
+      "candidate_rule": {
+        "all": [
+          {
+            "path": "/",
+            "type": "script_contains",
+            "value": "./assets/index-C_W1rzy-.js"
+          },
+          {
+            "path": "/ws",
+            "type": "script_contains",
+            "value": "./assets/index-C_W1rzy-.js"
+          },
+          {
+            "path": "/v1/models",
+            "type": "script_contains",
+            "value": "./assets/index-C_W1rzy-.js"
+          }
+        ],
+        "confidence": 0.89,
+        "exact": true,
+        "id": "lab-capture-2026-5-24-beta-1",
+        "notes": "Candidate rule derived from black-box captures against known-version test nodes. Review before promoting into openclaw_rules.json.",
+        "version": "2026.5.24-beta.1"
+      },
+      "capture_count": 2,
+      "capture_diagnostics": [
+        {
+          "capture_index": 1,
+          "capture_name": "openclaw-2026.5.24-beta.1-lab",
+          "error_count": 2,
+          "observation_count": 39,
+          "signal_count": 182,
+          "timeout_error_count": 2,
+          "timeout_probe_labels": [
+            "WS-UPGRADE /socket.io/",
+            "WS-UPGRADE /ws"
+          ]
+        },
+        {
+          "capture_index": 2,
+          "capture_name": "openclaw-2026.5.24-beta.1-lab",
+          "error_count": 2,
+          "observation_count": 39,
+          "signal_count": 182,
+          "timeout_error_count": 2,
+          "timeout_probe_labels": [
+            "WS-UPGRADE /socket.io/",
+            "WS-UPGRADE /ws"
+          ]
+        }
+      ],
+      "promotion": {
+        "blockers": [],
+        "ready_for_review": true,
+        "reasons": [
+          "has at least two same-version captures",
+          "22 stable unique signal(s)",
+          "intra-version Jaccard is stable (1.0000)",
+          "nearest other version has a similar overall surface (0.7843); selected stable unique signals distinguish it"
+        ],
+        "status": "review_candidate"
+      },
+      "selected_signals": [
+        "script_contains|/|./assets/index-C_W1rzy-.js",
+        "script_contains|/ws|./assets/index-C_W1rzy-.js",
+        "script_contains|/v1/models|./assets/index-C_W1rzy-.js"
+      ],
+      "similarity": {
+        "intra_version_avg_jaccard": 1.0,
+        "intra_version_min_jaccard": 1.0,
+        "intra_version_pair_count": 1,
+        "nearest_other_jaccard": 0.7843,
+        "nearest_other_version": "2026.5.18",
+        "stable_nearest_other_jaccard": 0.7843,
+        "stable_nearest_other_version": "2026.5.19-beta.1"
+      },
+      "stable_signal_count": 182,
+      "stable_signals": [
+        "body_hash|/.well-known/openid-configuration|a7c704adef05eb0f23be3481a79b4337590c05de10a8d334655dc64cfda60aab",
+        "body_hash|/.well-known/security.txt|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/agents|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/config|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/devices|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/docs|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/doesnotexist|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/graphql|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/health|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/skills|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/status|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/system/info|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/version|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/asset-manifest.json|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/config.js|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/debug/pprof/|a7c704adef05eb0f23be3481a79b4337590c05de10a8d334655dc64cfda60aab",
+        "body_hash|/debug/pprof|a7c704adef05eb0f23be3481a79b4337590c05de10a8d334655dc64cfda60aab",
+        "body_hash|/env.js|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/favicon.ico|e9f1d85593e10f4e7455ce7bc7f1d92fec873b04628bf3ca7dcbdab5344cfafb",
+        "body_hash|/health|6191c1f860b8a0225c697e46ebce756193dfb18c189218cfe742037501da05eb",
+        "body_hash|/login|a7c704adef05eb0f23be3481a79b4337590c05de10a8d334655dc64cfda60aab",
+        "body_hash|/manifest.json|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/metrics|a7c704adef05eb0f23be3481a79b4337590c05de10a8d334655dc64cfda60aab",
+        "body_hash|/robots.txt|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/socket.io/|a7c704adef05eb0f23be3481a79b4337590c05de10a8d334655dc64cfda60aab",
+        "body_hash|/status|a7c704adef05eb0f23be3481a79b4337590c05de10a8d334655dc64cfda60aab",
+        "body_hash|/swagger.json|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/tools/invoke|e7151570b616d475350de67f752a54d15b26d977967b0aa70d442e4568a0f956",
+        "body_hash|/v1/chat/completions|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/v1/embeddings|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/v1/models/openclaw/default|a7c704adef05eb0f23be3481a79b4337590c05de10a8d334655dc64cfda60aab",
+        "body_hash|/v1/models|a7c704adef05eb0f23be3481a79b4337590c05de10a8d334655dc64cfda60aab",
+        "body_hash|/v1/responses|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/ws|a7c704adef05eb0f23be3481a79b4337590c05de10a8d334655dc64cfda60aab",
+        "body_hash|/|a7c704adef05eb0f23be3481a79b4337590c05de10a8d334655dc64cfda60aab",
+        "favicon_hash|/favicon.ico|-805544463",
+        "header_contains|/.well-known/openid-configuration|content-type|text/html",
+        "header_contains|/.well-known/security.txt|content-type|text/plain",
+        "header_contains|/api/agents|content-type|text/plain",
+        "header_contains|/api/config|content-type|text/plain",
+        "header_contains|/api/devices|content-type|text/plain",
+        "header_contains|/api/docs|content-type|text/plain",
+        "header_contains|/api/doesnotexist|content-type|text/plain",
+        "header_contains|/api/graphql|content-type|text/plain",
+        "header_contains|/api/health|content-type|text/plain",
+        "header_contains|/api/skills|content-type|text/plain",
+        "header_contains|/api/status|content-type|text/plain",
+        "header_contains|/api/system/info|content-type|text/plain",
+        "header_contains|/api/version|content-type|text/plain",
+        "header_contains|/api|content-type|text/plain",
+        "header_contains|/asset-manifest.json|content-type|text/plain",
+        "header_contains|/config.js|content-type|text/plain",
+        "header_contains|/debug/pprof/|content-type|text/html",
+        "header_contains|/debug/pprof|content-type|text/html",
+        "header_contains|/env.js|content-type|text/plain",
+        "header_contains|/favicon.ico|content-type|image/x-icon",
+        "header_contains|/health|content-type|application/json",
+        "header_contains|/login|content-type|text/html",
+        "header_contains|/manifest.json|content-type|text/plain",
+        "header_contains|/metrics|content-type|text/html",
+        "header_contains|/robots.txt|content-type|text/plain",
+        "header_contains|/socket.io/|content-type|text/html",
+        "header_contains|/status|content-type|text/html",
+        "header_contains|/swagger.json|content-type|text/plain",
+        "header_contains|/tools/invoke|content-type|application/json",
+        "header_contains|/v1/chat/completions|content-type|text/plain",
+        "header_contains|/v1/embeddings|content-type|text/plain",
+        "header_contains|/v1/models/openclaw/default|content-type|text/html",
+        "header_contains|/v1/models|content-type|text/html",
+        "header_contains|/v1/responses|content-type|text/plain",
+        "header_contains|/ws|content-type|text/html",
+        "header_contains|/|content-type|text/html",
+        "json_key|/health|ok",
+        "json_key|/health|status",
+        "json_key|/tools/invoke|error",
+        "marker_present|/.well-known/openid-configuration|openclaw",
+        "marker_present|/debug/pprof/|openclaw",
+        "marker_present|/debug/pprof|openclaw",
+        "marker_present|/login|openclaw",
+        "marker_present|/metrics|openclaw",
+        "marker_present|/socket.io/|openclaw",
+        "marker_present|/status|openclaw",
+        "marker_present|/v1/models/openclaw/default|openclaw",
+        "marker_present|/v1/models|openclaw",
+        "marker_present|/ws|openclaw",
+        "marker_present|/|openclaw",
+        "method_status|GET|/.well-known/openid-configuration|200",
+        "method_status|GET|/.well-known/security.txt|404",
+        "method_status|GET|/api/agents|404",
+        "method_status|GET|/api/config|404",
+        "method_status|GET|/api/devices|404",
+        "method_status|GET|/api/docs|404",
+        "method_status|GET|/api/doesnotexist|404",
+        "method_status|GET|/api/graphql|404",
+        "method_status|GET|/api/health|404",
+        "method_status|GET|/api/skills|404",
+        "method_status|GET|/api/status|404",
+        "method_status|GET|/api/system/info|404",
+        "method_status|GET|/api/version|404",
+        "method_status|GET|/api|404",
+        "method_status|GET|/asset-manifest.json|404",
+        "method_status|GET|/config.js|404",
+        "method_status|GET|/debug/pprof/|200",
+        "method_status|GET|/debug/pprof|200",
+        "method_status|GET|/env.js|404",
+        "method_status|GET|/favicon.ico|200",
+        "method_status|GET|/health|200",
+        "method_status|GET|/login|200",
+        "method_status|GET|/manifest.json|404",
+        "method_status|GET|/metrics|200",
+        "method_status|GET|/robots.txt|404",
+        "method_status|GET|/socket.io/|200",
+        "method_status|GET|/status|200",
+        "method_status|GET|/swagger.json|404",
+        "method_status|GET|/v1/models/openclaw/default|200",
+        "method_status|GET|/v1/models|200",
+        "method_status|GET|/ws|200",
+        "method_status|GET|/|200",
+        "method_status|POST|/api/doesnotexist|404",
+        "method_status|POST|/tools/invoke|401",
+        "method_status|POST|/v1/chat/completions|404",
+        "method_status|POST|/v1/embeddings|404",
+        "method_status|POST|/v1/responses|404",
+        "path_status|/.well-known/openid-configuration|200",
+        "path_status|/.well-known/security.txt|404",
+        "path_status|/api/agents|404",
+        "path_status|/api/config|404",
+        "path_status|/api/devices|404",
+        "path_status|/api/docs|404",
+        "path_status|/api/doesnotexist|404",
+        "path_status|/api/graphql|404",
+        "path_status|/api/health|404",
+        "path_status|/api/skills|404",
+        "path_status|/api/status|404",
+        "path_status|/api/system/info|404",
+        "path_status|/api/version|404",
+        "path_status|/api|404",
+        "path_status|/asset-manifest.json|404",
+        "path_status|/config.js|404",
+        "path_status|/debug/pprof/|200",
+        "path_status|/debug/pprof|200",
+        "path_status|/env.js|404",
+        "path_status|/favicon.ico|200",
+        "path_status|/health|200",
+        "path_status|/login|200",
+        "path_status|/manifest.json|404",
+        "path_status|/metrics|200",
+        "path_status|/robots.txt|404",
+        "path_status|/socket.io/|200",
+        "path_status|/status|200",
+        "path_status|/swagger.json|404",
+        "path_status|/tools/invoke|401",
+        "path_status|/v1/chat/completions|404",
+        "path_status|/v1/embeddings|404",
+        "path_status|/v1/models/openclaw/default|200",
+        "path_status|/v1/models|200",
+        "path_status|/v1/responses|404",
+        "path_status|/ws|200",
+        "path_status|/|200",
+        "script_contains|/.well-known/openid-configuration|./assets/index-C_W1rzy-.js",
+        "script_contains|/debug/pprof/|./assets/index-C_W1rzy-.js",
+        "script_contains|/debug/pprof|./assets/index-C_W1rzy-.js",
+        "script_contains|/login|./assets/index-C_W1rzy-.js",
+        "script_contains|/metrics|./assets/index-C_W1rzy-.js",
+        "script_contains|/socket.io/|./assets/index-C_W1rzy-.js",
+        "script_contains|/status|./assets/index-C_W1rzy-.js",
+        "script_contains|/v1/models/openclaw/default|./assets/index-C_W1rzy-.js",
+        "script_contains|/v1/models|./assets/index-C_W1rzy-.js",
+        "script_contains|/ws|./assets/index-C_W1rzy-.js",
+        "script_contains|/|./assets/index-C_W1rzy-.js",
+        "title_contains|/.well-known/openid-configuration|OpenClaw Control",
+        "title_contains|/debug/pprof/|OpenClaw Control",
+        "title_contains|/debug/pprof|OpenClaw Control",
+        "title_contains|/login|OpenClaw Control",
+        "title_contains|/metrics|OpenClaw Control",
+        "title_contains|/socket.io/|OpenClaw Control",
+        "title_contains|/status|OpenClaw Control",
+        "title_contains|/v1/models/openclaw/default|OpenClaw Control",
+        "title_contains|/v1/models|OpenClaw Control",
+        "title_contains|/ws|OpenClaw Control",
+        "title_contains|/|OpenClaw Control"
+      ],
+      "unique_signal_count": 22,
+      "unique_signals": [
+        "body_hash|/.well-known/openid-configuration|a7c704adef05eb0f23be3481a79b4337590c05de10a8d334655dc64cfda60aab",
+        "body_hash|/debug/pprof/|a7c704adef05eb0f23be3481a79b4337590c05de10a8d334655dc64cfda60aab",
+        "body_hash|/debug/pprof|a7c704adef05eb0f23be3481a79b4337590c05de10a8d334655dc64cfda60aab",
+        "body_hash|/login|a7c704adef05eb0f23be3481a79b4337590c05de10a8d334655dc64cfda60aab",
+        "body_hash|/metrics|a7c704adef05eb0f23be3481a79b4337590c05de10a8d334655dc64cfda60aab",
+        "body_hash|/socket.io/|a7c704adef05eb0f23be3481a79b4337590c05de10a8d334655dc64cfda60aab",
+        "body_hash|/status|a7c704adef05eb0f23be3481a79b4337590c05de10a8d334655dc64cfda60aab",
+        "body_hash|/v1/models/openclaw/default|a7c704adef05eb0f23be3481a79b4337590c05de10a8d334655dc64cfda60aab",
+        "body_hash|/v1/models|a7c704adef05eb0f23be3481a79b4337590c05de10a8d334655dc64cfda60aab",
+        "body_hash|/ws|a7c704adef05eb0f23be3481a79b4337590c05de10a8d334655dc64cfda60aab",
+        "body_hash|/|a7c704adef05eb0f23be3481a79b4337590c05de10a8d334655dc64cfda60aab",
+        "script_contains|/.well-known/openid-configuration|./assets/index-C_W1rzy-.js",
+        "script_contains|/debug/pprof/|./assets/index-C_W1rzy-.js",
+        "script_contains|/debug/pprof|./assets/index-C_W1rzy-.js",
+        "script_contains|/login|./assets/index-C_W1rzy-.js",
+        "script_contains|/metrics|./assets/index-C_W1rzy-.js",
+        "script_contains|/socket.io/|./assets/index-C_W1rzy-.js",
+        "script_contains|/status|./assets/index-C_W1rzy-.js",
+        "script_contains|/v1/models/openclaw/default|./assets/index-C_W1rzy-.js",
+        "script_contains|/v1/models|./assets/index-C_W1rzy-.js",
+        "script_contains|/ws|./assets/index-C_W1rzy-.js",
+        "script_contains|/|./assets/index-C_W1rzy-.js"
+      ],
+      "version": "2026.5.24-beta.1"
+    },
+    {
+      "candidate_rule": {
+        "all": [
+          {
+            "path": "/",
+            "type": "script_contains",
+            "value": "./assets/index-2cIkIF_5.js"
+          },
+          {
+            "path": "/login",
+            "type": "script_contains",
+            "value": "./assets/index-2cIkIF_5.js"
+          },
+          {
+            "path": "/",
+            "type": "body_hash",
+            "value": "d375f0f8d071d85645c849175954c9530f142c794bcdd5c6c82edd2e505a500f"
+          }
+        ],
+        "confidence": 0.89,
+        "exact": true,
+        "id": "lab-capture-2026-5-22-beta-1",
+        "notes": "Candidate rule derived from black-box captures against known-version test nodes. Review before promoting into openclaw_rules.json.",
+        "version": "2026.5.22-beta.1"
+      },
+      "capture_count": 2,
+      "capture_diagnostics": [
+        {
+          "capture_index": 1,
+          "capture_name": "openclaw-2026.5.22-beta.1-lab",
+          "error_count": 14,
+          "observation_count": 39,
+          "signal_count": 121,
+          "timeout_error_count": 14,
+          "timeout_probe_labels": [
+            "/.well-known/openid-configuration",
+            "/api/doesnotexist",
+            "/asset-manifest.json",
+            "/debug/pprof",
+            "/debug/pprof/",
+            "/favicon.ico",
+            "/manifest.json",
+            "/socket.io/",
+            "/ws",
+            "POST /api/doesnotexist",
+            "POST /v1/chat/completions",
+            "POST /v1/embeddings",
+            "WS-UPGRADE /socket.io/",
+            "WS-UPGRADE /ws"
+          ]
+        },
+        {
+          "capture_index": 2,
+          "capture_name": "openclaw-2026.5.22-beta.1-lab",
+          "error_count": 17,
+          "observation_count": 39,
+          "signal_count": 105,
+          "timeout_error_count": 17,
+          "timeout_probe_labels": [
+            "/api/agents",
+            "/api/config",
+            "/api/devices",
+            "/api/docs",
+            "/api/graphql",
+            "/api/health",
+            "/api/skills",
+            "/api/system/info",
+            "/health",
+            "/metrics",
+            "/socket.io/",
+            "/status",
+            "/swagger.json",
+            "/v1/models",
+            "/v1/models/openclaw/default",
+            "WS-UPGRADE /socket.io/",
+            "WS-UPGRADE /ws"
+          ]
+        }
+      ],
+      "promotion": {
+        "blockers": [
+          "intra-version Jaccard is low (0.2914)"
+        ],
+        "ready_for_review": false,
+        "reasons": [
+          "has at least two same-version captures",
+          "4 stable unique signal(s)",
+          "nearest other version has a similar overall surface (0.5952); selected stable unique signals distinguish it"
+        ],
+        "status": "needs_more_evidence"
+      },
+      "selected_signals": [
+        "script_contains|/|./assets/index-2cIkIF_5.js",
+        "script_contains|/login|./assets/index-2cIkIF_5.js",
+        "body_hash|/|d375f0f8d071d85645c849175954c9530f142c794bcdd5c6c82edd2e505a500f"
+      ],
+      "similarity": {
+        "intra_version_avg_jaccard": 0.2914,
+        "intra_version_min_jaccard": 0.2914,
+        "intra_version_pair_count": 1,
+        "nearest_other_jaccard": 0.5952,
+        "nearest_other_version": "2026.5.18",
+        "stable_nearest_other_jaccard": 0.2605,
+        "stable_nearest_other_version": "2026.5.22"
+      },
+      "stable_signal_count": 51,
+      "stable_signals": [
+        "body_hash|/.well-known/security.txt|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/status|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/version|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/config.js|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/env.js|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/login|d375f0f8d071d85645c849175954c9530f142c794bcdd5c6c82edd2e505a500f",
+        "body_hash|/robots.txt|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/tools/invoke|e7151570b616d475350de67f752a54d15b26d977967b0aa70d442e4568a0f956",
+        "body_hash|/v1/responses|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/|d375f0f8d071d85645c849175954c9530f142c794bcdd5c6c82edd2e505a500f",
+        "header_contains|/.well-known/security.txt|content-type|text/plain",
+        "header_contains|/api/status|content-type|text/plain",
+        "header_contains|/api/version|content-type|text/plain",
+        "header_contains|/api|content-type|text/plain",
+        "header_contains|/config.js|content-type|text/plain",
+        "header_contains|/env.js|content-type|text/plain",
+        "header_contains|/login|content-type|text/html",
+        "header_contains|/robots.txt|content-type|text/plain",
+        "header_contains|/tools/invoke|content-type|application/json",
+        "header_contains|/v1/responses|content-type|text/plain",
+        "header_contains|/|content-type|text/html",
+        "json_key|/tools/invoke|error",
+        "marker_present|/login|openclaw",
+        "marker_present|/|openclaw",
+        "method_status|GET|/.well-known/security.txt|404",
+        "method_status|GET|/api/status|404",
+        "method_status|GET|/api/version|404",
+        "method_status|GET|/api|404",
+        "method_status|GET|/config.js|404",
+        "method_status|GET|/env.js|404",
+        "method_status|GET|/login|200",
+        "method_status|GET|/robots.txt|404",
+        "method_status|GET|/|200",
+        "method_status|POST|/tools/invoke|401",
+        "method_status|POST|/v1/responses|404",
+        "path_status|/.well-known/security.txt|404",
+        "path_status|/api/status|404",
+        "path_status|/api/version|404",
+        "path_status|/api|404",
+        "path_status|/config.js|404",
+        "path_status|/env.js|404",
+        "path_status|/login|200",
+        "path_status|/robots.txt|404",
+        "path_status|/tools/invoke|401",
+        "path_status|/v1/responses|404",
+        "path_status|/|200",
+        "script_contains|/login|./assets/index-2cIkIF_5.js",
+        "script_contains|/|./assets/index-2cIkIF_5.js",
+        "title_contains|/login|OpenClaw Control",
+        "title_contains|/|OpenClaw Control"
+      ],
+      "unique_signal_count": 4,
+      "unique_signals": [
+        "body_hash|/login|d375f0f8d071d85645c849175954c9530f142c794bcdd5c6c82edd2e505a500f",
+        "body_hash|/|d375f0f8d071d85645c849175954c9530f142c794bcdd5c6c82edd2e505a500f",
+        "script_contains|/login|./assets/index-2cIkIF_5.js",
+        "script_contains|/|./assets/index-2cIkIF_5.js"
+      ],
+      "version": "2026.5.22-beta.1"
+    },
+    {
+      "candidate_rule": {
+        "all": [
+          {
+            "path": "/",
+            "type": "script_contains",
+            "value": "./assets/index-BtIuF4zW.js"
+          },
+          {
+            "path": "/login",
+            "type": "script_contains",
+            "value": "./assets/index-BtIuF4zW.js"
+          },
+          {
+            "path": "/",
+            "type": "body_hash",
+            "value": "c329016b3319a0ab0eaa9315b4413197823adcd0b5c21126d67d83ea34431dff"
+          }
+        ],
+        "confidence": 0.89,
+        "exact": true,
+        "id": "lab-capture-2026-5-22",
+        "notes": "Candidate rule derived from black-box captures against known-version test nodes. Review before promoting into openclaw_rules.json.",
+        "version": "2026.5.22"
+      },
+      "capture_count": 2,
+      "capture_diagnostics": [
+        {
+          "capture_index": 1,
+          "capture_name": "openclaw-2026.5.22-lab",
+          "error_count": 14,
+          "observation_count": 39,
+          "signal_count": 113,
+          "timeout_error_count": 14,
+          "timeout_probe_labels": [
+            "/.well-known/openid-configuration",
+            "/.well-known/security.txt",
+            "/config.js",
+            "/debug/pprof",
+            "/debug/pprof/",
+            "/env.js",
+            "/metrics",
+            "/robots.txt",
+            "/socket.io/",
+            "/swagger.json",
+            "/v1/models/openclaw/default",
+            "/ws",
+            "WS-UPGRADE /socket.io/",
+            "WS-UPGRADE /ws"
+          ]
+        },
+        {
+          "capture_index": 2,
+          "capture_name": "openclaw-2026.5.22-lab",
+          "error_count": 15,
+          "observation_count": 39,
+          "signal_count": 106,
+          "timeout_error_count": 15,
+          "timeout_probe_labels": [
+            "/.well-known/openid-configuration",
+            "/.well-known/security.txt",
+            "/config.js",
+            "/debug/pprof",
+            "/debug/pprof/",
+            "/env.js",
+            "/metrics",
+            "/robots.txt",
+            "/status",
+            "/swagger.json",
+            "/v1/models",
+            "/v1/models/openclaw/default",
+            "/ws",
+            "WS-UPGRADE /socket.io/",
+            "WS-UPGRADE /ws"
+          ]
+        }
+      ],
+      "promotion": {
+        "blockers": [],
+        "ready_for_review": true,
+        "reasons": [
+          "has at least two same-version captures",
+          "4 stable unique signal(s)",
+          "intra-version surface varied (0.8250); selected stable unique signals remained",
+          "nearest other version has a similar overall surface (0.5526); selected stable unique signals distinguish it"
+        ],
+        "status": "review_candidate"
+      },
+      "selected_signals": [
+        "script_contains|/|./assets/index-BtIuF4zW.js",
+        "script_contains|/login|./assets/index-BtIuF4zW.js",
+        "body_hash|/|c329016b3319a0ab0eaa9315b4413197823adcd0b5c21126d67d83ea34431dff"
+      ],
+      "similarity": {
+        "intra_version_avg_jaccard": 0.825,
+        "intra_version_min_jaccard": 0.825,
+        "intra_version_pair_count": 1,
+        "nearest_other_jaccard": 0.5526,
+        "nearest_other_version": "2026.5.18",
+        "stable_nearest_other_jaccard": 0.5108,
+        "stable_nearest_other_version": "2026.5.19-beta.1"
+      },
+      "stable_signal_count": 99,
+      "stable_signals": [
+        "body_hash|/api/agents|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/config|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/devices|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/docs|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/doesnotexist|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/graphql|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/health|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/skills|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/status|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/system/info|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/version|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/asset-manifest.json|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/favicon.ico|e9f1d85593e10f4e7455ce7bc7f1d92fec873b04628bf3ca7dcbdab5344cfafb",
+        "body_hash|/health|6191c1f860b8a0225c697e46ebce756193dfb18c189218cfe742037501da05eb",
+        "body_hash|/login|c329016b3319a0ab0eaa9315b4413197823adcd0b5c21126d67d83ea34431dff",
+        "body_hash|/manifest.json|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/tools/invoke|e7151570b616d475350de67f752a54d15b26d977967b0aa70d442e4568a0f956",
+        "body_hash|/v1/chat/completions|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/v1/embeddings|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/v1/responses|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/|c329016b3319a0ab0eaa9315b4413197823adcd0b5c21126d67d83ea34431dff",
+        "favicon_hash|/favicon.ico|-805544463",
+        "header_contains|/api/agents|content-type|text/plain",
+        "header_contains|/api/config|content-type|text/plain",
+        "header_contains|/api/devices|content-type|text/plain",
+        "header_contains|/api/docs|content-type|text/plain",
+        "header_contains|/api/doesnotexist|content-type|text/plain",
+        "header_contains|/api/graphql|content-type|text/plain",
+        "header_contains|/api/health|content-type|text/plain",
+        "header_contains|/api/skills|content-type|text/plain",
+        "header_contains|/api/status|content-type|text/plain",
+        "header_contains|/api/system/info|content-type|text/plain",
+        "header_contains|/api/version|content-type|text/plain",
+        "header_contains|/api|content-type|text/plain",
+        "header_contains|/asset-manifest.json|content-type|text/plain",
+        "header_contains|/favicon.ico|content-type|image/x-icon",
+        "header_contains|/health|content-type|application/json",
+        "header_contains|/login|content-type|text/html",
+        "header_contains|/manifest.json|content-type|text/plain",
+        "header_contains|/tools/invoke|content-type|application/json",
+        "header_contains|/v1/chat/completions|content-type|text/plain",
+        "header_contains|/v1/embeddings|content-type|text/plain",
+        "header_contains|/v1/responses|content-type|text/plain",
+        "header_contains|/|content-type|text/html",
+        "json_key|/health|ok",
+        "json_key|/health|status",
+        "json_key|/tools/invoke|error",
+        "marker_present|/login|openclaw",
+        "marker_present|/|openclaw",
+        "method_status|GET|/api/agents|404",
+        "method_status|GET|/api/config|404",
+        "method_status|GET|/api/devices|404",
+        "method_status|GET|/api/docs|404",
+        "method_status|GET|/api/doesnotexist|404",
+        "method_status|GET|/api/graphql|404",
+        "method_status|GET|/api/health|404",
+        "method_status|GET|/api/skills|404",
+        "method_status|GET|/api/status|404",
+        "method_status|GET|/api/system/info|404",
+        "method_status|GET|/api/version|404",
+        "method_status|GET|/api|404",
+        "method_status|GET|/asset-manifest.json|404",
+        "method_status|GET|/favicon.ico|200",
+        "method_status|GET|/health|200",
+        "method_status|GET|/login|200",
+        "method_status|GET|/manifest.json|404",
+        "method_status|GET|/|200",
+        "method_status|POST|/api/doesnotexist|404",
+        "method_status|POST|/tools/invoke|401",
+        "method_status|POST|/v1/chat/completions|404",
+        "method_status|POST|/v1/embeddings|404",
+        "method_status|POST|/v1/responses|404",
+        "path_status|/api/agents|404",
+        "path_status|/api/config|404",
+        "path_status|/api/devices|404",
+        "path_status|/api/docs|404",
+        "path_status|/api/doesnotexist|404",
+        "path_status|/api/graphql|404",
+        "path_status|/api/health|404",
+        "path_status|/api/skills|404",
+        "path_status|/api/status|404",
+        "path_status|/api/system/info|404",
+        "path_status|/api/version|404",
+        "path_status|/api|404",
+        "path_status|/asset-manifest.json|404",
+        "path_status|/favicon.ico|200",
+        "path_status|/health|200",
+        "path_status|/login|200",
+        "path_status|/manifest.json|404",
+        "path_status|/tools/invoke|401",
+        "path_status|/v1/chat/completions|404",
+        "path_status|/v1/embeddings|404",
+        "path_status|/v1/responses|404",
+        "path_status|/|200",
+        "script_contains|/login|./assets/index-BtIuF4zW.js",
+        "script_contains|/|./assets/index-BtIuF4zW.js",
+        "title_contains|/login|OpenClaw Control",
+        "title_contains|/|OpenClaw Control"
+      ],
+      "unique_signal_count": 4,
+      "unique_signals": [
+        "body_hash|/login|c329016b3319a0ab0eaa9315b4413197823adcd0b5c21126d67d83ea34431dff",
+        "body_hash|/|c329016b3319a0ab0eaa9315b4413197823adcd0b5c21126d67d83ea34431dff",
+        "script_contains|/login|./assets/index-BtIuF4zW.js",
+        "script_contains|/|./assets/index-BtIuF4zW.js"
+      ],
+      "version": "2026.5.22"
+    },
+    {
+      "candidate_rule": {
+        "all": [
+          {
+            "path": "/",
+            "type": "script_contains",
+            "value": "./assets/index-DIlhMoR6.js"
+          },
+          {
+            "path": "/ws",
+            "type": "script_contains",
+            "value": "./assets/index-DIlhMoR6.js"
+          },
+          {
+            "path": "/v1/models",
+            "type": "script_contains",
+            "value": "./assets/index-DIlhMoR6.js"
+          }
+        ],
+        "confidence": 0.89,
+        "exact": true,
+        "id": "lab-capture-2026-5-20",
+        "notes": "Candidate rule derived from black-box captures against known-version test nodes. Review before promoting into openclaw_rules.json.",
+        "version": "2026.5.20"
+      },
+      "capture_count": 2,
+      "capture_diagnostics": [
+        {
+          "capture_index": 1,
+          "capture_name": "openclaw-2026.5.20-lab",
+          "error_count": 2,
+          "observation_count": 39,
+          "signal_count": 182,
+          "timeout_error_count": 2,
+          "timeout_probe_labels": [
+            "WS-UPGRADE /socket.io/",
+            "WS-UPGRADE /ws"
+          ]
+        },
+        {
+          "capture_index": 2,
+          "capture_name": "openclaw-2026.5.20-lab",
+          "error_count": 2,
+          "observation_count": 39,
+          "signal_count": 182,
+          "timeout_error_count": 2,
+          "timeout_probe_labels": [
+            "WS-UPGRADE /socket.io/",
+            "WS-UPGRADE /ws"
+          ]
+        }
+      ],
+      "promotion": {
+        "blockers": [],
+        "ready_for_review": true,
+        "reasons": [
+          "has at least two same-version captures",
+          "22 stable unique signal(s)",
+          "intra-version Jaccard is stable (1.0000)",
+          "nearest other version has a similar overall surface (0.7843); selected stable unique signals distinguish it"
+        ],
+        "status": "review_candidate"
+      },
+      "selected_signals": [
+        "script_contains|/|./assets/index-DIlhMoR6.js",
+        "script_contains|/ws|./assets/index-DIlhMoR6.js",
+        "script_contains|/v1/models|./assets/index-DIlhMoR6.js"
+      ],
+      "similarity": {
+        "intra_version_avg_jaccard": 1.0,
+        "intra_version_min_jaccard": 1.0,
+        "intra_version_pair_count": 1,
+        "nearest_other_jaccard": 0.7843,
+        "nearest_other_version": "2026.5.18",
+        "stable_nearest_other_jaccard": 0.7843,
+        "stable_nearest_other_version": "2026.5.19-beta.1"
+      },
+      "stable_signal_count": 182,
+      "stable_signals": [
+        "body_hash|/.well-known/openid-configuration|a073e1c1bfe3155377f07cad653466383c58bb7dc95617c8aecfefafa5e9ee7a",
+        "body_hash|/.well-known/security.txt|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/agents|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/config|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/devices|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/docs|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/doesnotexist|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/graphql|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/health|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/skills|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/status|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/system/info|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/version|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/asset-manifest.json|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/config.js|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/debug/pprof/|a073e1c1bfe3155377f07cad653466383c58bb7dc95617c8aecfefafa5e9ee7a",
+        "body_hash|/debug/pprof|a073e1c1bfe3155377f07cad653466383c58bb7dc95617c8aecfefafa5e9ee7a",
+        "body_hash|/env.js|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/favicon.ico|e9f1d85593e10f4e7455ce7bc7f1d92fec873b04628bf3ca7dcbdab5344cfafb",
+        "body_hash|/health|6191c1f860b8a0225c697e46ebce756193dfb18c189218cfe742037501da05eb",
+        "body_hash|/login|a073e1c1bfe3155377f07cad653466383c58bb7dc95617c8aecfefafa5e9ee7a",
+        "body_hash|/manifest.json|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/metrics|a073e1c1bfe3155377f07cad653466383c58bb7dc95617c8aecfefafa5e9ee7a",
+        "body_hash|/robots.txt|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/socket.io/|a073e1c1bfe3155377f07cad653466383c58bb7dc95617c8aecfefafa5e9ee7a",
+        "body_hash|/status|a073e1c1bfe3155377f07cad653466383c58bb7dc95617c8aecfefafa5e9ee7a",
+        "body_hash|/swagger.json|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/tools/invoke|e7151570b616d475350de67f752a54d15b26d977967b0aa70d442e4568a0f956",
+        "body_hash|/v1/chat/completions|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/v1/embeddings|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/v1/models/openclaw/default|a073e1c1bfe3155377f07cad653466383c58bb7dc95617c8aecfefafa5e9ee7a",
+        "body_hash|/v1/models|a073e1c1bfe3155377f07cad653466383c58bb7dc95617c8aecfefafa5e9ee7a",
+        "body_hash|/v1/responses|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/ws|a073e1c1bfe3155377f07cad653466383c58bb7dc95617c8aecfefafa5e9ee7a",
+        "body_hash|/|a073e1c1bfe3155377f07cad653466383c58bb7dc95617c8aecfefafa5e9ee7a",
+        "favicon_hash|/favicon.ico|-805544463",
+        "header_contains|/.well-known/openid-configuration|content-type|text/html",
+        "header_contains|/.well-known/security.txt|content-type|text/plain",
+        "header_contains|/api/agents|content-type|text/plain",
+        "header_contains|/api/config|content-type|text/plain",
+        "header_contains|/api/devices|content-type|text/plain",
+        "header_contains|/api/docs|content-type|text/plain",
+        "header_contains|/api/doesnotexist|content-type|text/plain",
+        "header_contains|/api/graphql|content-type|text/plain",
+        "header_contains|/api/health|content-type|text/plain",
+        "header_contains|/api/skills|content-type|text/plain",
+        "header_contains|/api/status|content-type|text/plain",
+        "header_contains|/api/system/info|content-type|text/plain",
+        "header_contains|/api/version|content-type|text/plain",
+        "header_contains|/api|content-type|text/plain",
+        "header_contains|/asset-manifest.json|content-type|text/plain",
+        "header_contains|/config.js|content-type|text/plain",
+        "header_contains|/debug/pprof/|content-type|text/html",
+        "header_contains|/debug/pprof|content-type|text/html",
+        "header_contains|/env.js|content-type|text/plain",
+        "header_contains|/favicon.ico|content-type|image/x-icon",
+        "header_contains|/health|content-type|application/json",
+        "header_contains|/login|content-type|text/html",
+        "header_contains|/manifest.json|content-type|text/plain",
+        "header_contains|/metrics|content-type|text/html",
+        "header_contains|/robots.txt|content-type|text/plain",
+        "header_contains|/socket.io/|content-type|text/html",
+        "header_contains|/status|content-type|text/html",
+        "header_contains|/swagger.json|content-type|text/plain",
+        "header_contains|/tools/invoke|content-type|application/json",
+        "header_contains|/v1/chat/completions|content-type|text/plain",
+        "header_contains|/v1/embeddings|content-type|text/plain",
+        "header_contains|/v1/models/openclaw/default|content-type|text/html",
+        "header_contains|/v1/models|content-type|text/html",
+        "header_contains|/v1/responses|content-type|text/plain",
+        "header_contains|/ws|content-type|text/html",
+        "header_contains|/|content-type|text/html",
+        "json_key|/health|ok",
+        "json_key|/health|status",
+        "json_key|/tools/invoke|error",
+        "marker_present|/.well-known/openid-configuration|openclaw",
+        "marker_present|/debug/pprof/|openclaw",
+        "marker_present|/debug/pprof|openclaw",
+        "marker_present|/login|openclaw",
+        "marker_present|/metrics|openclaw",
+        "marker_present|/socket.io/|openclaw",
+        "marker_present|/status|openclaw",
+        "marker_present|/v1/models/openclaw/default|openclaw",
+        "marker_present|/v1/models|openclaw",
+        "marker_present|/ws|openclaw",
+        "marker_present|/|openclaw",
+        "method_status|GET|/.well-known/openid-configuration|200",
+        "method_status|GET|/.well-known/security.txt|404",
+        "method_status|GET|/api/agents|404",
+        "method_status|GET|/api/config|404",
+        "method_status|GET|/api/devices|404",
+        "method_status|GET|/api/docs|404",
+        "method_status|GET|/api/doesnotexist|404",
+        "method_status|GET|/api/graphql|404",
+        "method_status|GET|/api/health|404",
+        "method_status|GET|/api/skills|404",
+        "method_status|GET|/api/status|404",
+        "method_status|GET|/api/system/info|404",
+        "method_status|GET|/api/version|404",
+        "method_status|GET|/api|404",
+        "method_status|GET|/asset-manifest.json|404",
+        "method_status|GET|/config.js|404",
+        "method_status|GET|/debug/pprof/|200",
+        "method_status|GET|/debug/pprof|200",
+        "method_status|GET|/env.js|404",
+        "method_status|GET|/favicon.ico|200",
+        "method_status|GET|/health|200",
+        "method_status|GET|/login|200",
+        "method_status|GET|/manifest.json|404",
+        "method_status|GET|/metrics|200",
+        "method_status|GET|/robots.txt|404",
+        "method_status|GET|/socket.io/|200",
+        "method_status|GET|/status|200",
+        "method_status|GET|/swagger.json|404",
+        "method_status|GET|/v1/models/openclaw/default|200",
+        "method_status|GET|/v1/models|200",
+        "method_status|GET|/ws|200",
+        "method_status|GET|/|200",
+        "method_status|POST|/api/doesnotexist|404",
+        "method_status|POST|/tools/invoke|401",
+        "method_status|POST|/v1/chat/completions|404",
+        "method_status|POST|/v1/embeddings|404",
+        "method_status|POST|/v1/responses|404",
+        "path_status|/.well-known/openid-configuration|200",
+        "path_status|/.well-known/security.txt|404",
+        "path_status|/api/agents|404",
+        "path_status|/api/config|404",
+        "path_status|/api/devices|404",
+        "path_status|/api/docs|404",
+        "path_status|/api/doesnotexist|404",
+        "path_status|/api/graphql|404",
+        "path_status|/api/health|404",
+        "path_status|/api/skills|404",
+        "path_status|/api/status|404",
+        "path_status|/api/system/info|404",
+        "path_status|/api/version|404",
+        "path_status|/api|404",
+        "path_status|/asset-manifest.json|404",
+        "path_status|/config.js|404",
+        "path_status|/debug/pprof/|200",
+        "path_status|/debug/pprof|200",
+        "path_status|/env.js|404",
+        "path_status|/favicon.ico|200",
+        "path_status|/health|200",
+        "path_status|/login|200",
+        "path_status|/manifest.json|404",
+        "path_status|/metrics|200",
+        "path_status|/robots.txt|404",
+        "path_status|/socket.io/|200",
+        "path_status|/status|200",
+        "path_status|/swagger.json|404",
+        "path_status|/tools/invoke|401",
+        "path_status|/v1/chat/completions|404",
+        "path_status|/v1/embeddings|404",
+        "path_status|/v1/models/openclaw/default|200",
+        "path_status|/v1/models|200",
+        "path_status|/v1/responses|404",
+        "path_status|/ws|200",
+        "path_status|/|200",
+        "script_contains|/.well-known/openid-configuration|./assets/index-DIlhMoR6.js",
+        "script_contains|/debug/pprof/|./assets/index-DIlhMoR6.js",
+        "script_contains|/debug/pprof|./assets/index-DIlhMoR6.js",
+        "script_contains|/login|./assets/index-DIlhMoR6.js",
+        "script_contains|/metrics|./assets/index-DIlhMoR6.js",
+        "script_contains|/socket.io/|./assets/index-DIlhMoR6.js",
+        "script_contains|/status|./assets/index-DIlhMoR6.js",
+        "script_contains|/v1/models/openclaw/default|./assets/index-DIlhMoR6.js",
+        "script_contains|/v1/models|./assets/index-DIlhMoR6.js",
+        "script_contains|/ws|./assets/index-DIlhMoR6.js",
+        "script_contains|/|./assets/index-DIlhMoR6.js",
+        "title_contains|/.well-known/openid-configuration|OpenClaw Control",
+        "title_contains|/debug/pprof/|OpenClaw Control",
+        "title_contains|/debug/pprof|OpenClaw Control",
+        "title_contains|/login|OpenClaw Control",
+        "title_contains|/metrics|OpenClaw Control",
+        "title_contains|/socket.io/|OpenClaw Control",
+        "title_contains|/status|OpenClaw Control",
+        "title_contains|/v1/models/openclaw/default|OpenClaw Control",
+        "title_contains|/v1/models|OpenClaw Control",
+        "title_contains|/ws|OpenClaw Control",
+        "title_contains|/|OpenClaw Control"
+      ],
+      "unique_signal_count": 22,
+      "unique_signals": [
+        "body_hash|/.well-known/openid-configuration|a073e1c1bfe3155377f07cad653466383c58bb7dc95617c8aecfefafa5e9ee7a",
+        "body_hash|/debug/pprof/|a073e1c1bfe3155377f07cad653466383c58bb7dc95617c8aecfefafa5e9ee7a",
+        "body_hash|/debug/pprof|a073e1c1bfe3155377f07cad653466383c58bb7dc95617c8aecfefafa5e9ee7a",
+        "body_hash|/login|a073e1c1bfe3155377f07cad653466383c58bb7dc95617c8aecfefafa5e9ee7a",
+        "body_hash|/metrics|a073e1c1bfe3155377f07cad653466383c58bb7dc95617c8aecfefafa5e9ee7a",
+        "body_hash|/socket.io/|a073e1c1bfe3155377f07cad653466383c58bb7dc95617c8aecfefafa5e9ee7a",
+        "body_hash|/status|a073e1c1bfe3155377f07cad653466383c58bb7dc95617c8aecfefafa5e9ee7a",
+        "body_hash|/v1/models/openclaw/default|a073e1c1bfe3155377f07cad653466383c58bb7dc95617c8aecfefafa5e9ee7a",
+        "body_hash|/v1/models|a073e1c1bfe3155377f07cad653466383c58bb7dc95617c8aecfefafa5e9ee7a",
+        "body_hash|/ws|a073e1c1bfe3155377f07cad653466383c58bb7dc95617c8aecfefafa5e9ee7a",
+        "body_hash|/|a073e1c1bfe3155377f07cad653466383c58bb7dc95617c8aecfefafa5e9ee7a",
+        "script_contains|/.well-known/openid-configuration|./assets/index-DIlhMoR6.js",
+        "script_contains|/debug/pprof/|./assets/index-DIlhMoR6.js",
+        "script_contains|/debug/pprof|./assets/index-DIlhMoR6.js",
+        "script_contains|/login|./assets/index-DIlhMoR6.js",
+        "script_contains|/metrics|./assets/index-DIlhMoR6.js",
+        "script_contains|/socket.io/|./assets/index-DIlhMoR6.js",
+        "script_contains|/status|./assets/index-DIlhMoR6.js",
+        "script_contains|/v1/models/openclaw/default|./assets/index-DIlhMoR6.js",
+        "script_contains|/v1/models|./assets/index-DIlhMoR6.js",
+        "script_contains|/ws|./assets/index-DIlhMoR6.js",
+        "script_contains|/|./assets/index-DIlhMoR6.js"
+      ],
+      "version": "2026.5.20"
+    },
+    {
+      "candidate_rule": {
+        "all": [
+          {
+            "path": "/",
+            "type": "script_contains",
+            "value": "./assets/index-B9aIykxh.js"
+          },
+          {
+            "path": "/ws",
+            "type": "script_contains",
+            "value": "./assets/index-B9aIykxh.js"
+          },
+          {
+            "path": "/v1/models",
+            "type": "script_contains",
+            "value": "./assets/index-B9aIykxh.js"
+          }
+        ],
+        "confidence": 0.89,
+        "exact": true,
+        "id": "lab-capture-2026-5-19-beta-1",
+        "notes": "Candidate rule derived from black-box captures against known-version test nodes. Review before promoting into openclaw_rules.json.",
+        "version": "2026.5.19-beta.1"
+      },
+      "capture_count": 2,
+      "capture_diagnostics": [
+        {
+          "capture_index": 1,
+          "capture_name": "openclaw-2026.5.19-beta.1-lab",
+          "error_count": 2,
+          "observation_count": 39,
+          "signal_count": 182,
+          "timeout_error_count": 2,
+          "timeout_probe_labels": [
+            "WS-UPGRADE /socket.io/",
+            "WS-UPGRADE /ws"
+          ]
+        },
+        {
+          "capture_index": 2,
+          "capture_name": "openclaw-2026.5.19-beta.1-lab",
+          "error_count": 2,
+          "observation_count": 39,
+          "signal_count": 182,
+          "timeout_error_count": 2,
+          "timeout_probe_labels": [
+            "WS-UPGRADE /socket.io/",
+            "WS-UPGRADE /ws"
+          ]
+        }
+      ],
+      "promotion": {
+        "blockers": [],
+        "ready_for_review": true,
+        "reasons": [
+          "has at least two same-version captures",
+          "22 stable unique signal(s)",
+          "intra-version Jaccard is stable (1.0000)",
+          "nearest other version has a similar overall surface (0.7843); selected stable unique signals distinguish it"
+        ],
+        "status": "review_candidate"
+      },
+      "selected_signals": [
+        "script_contains|/|./assets/index-B9aIykxh.js",
+        "script_contains|/ws|./assets/index-B9aIykxh.js",
+        "script_contains|/v1/models|./assets/index-B9aIykxh.js"
+      ],
+      "similarity": {
+        "intra_version_avg_jaccard": 1.0,
+        "intra_version_min_jaccard": 1.0,
+        "intra_version_pair_count": 1,
+        "nearest_other_jaccard": 0.7843,
+        "nearest_other_version": "2026.5.18",
+        "stable_nearest_other_jaccard": 0.7843,
+        "stable_nearest_other_version": "2026.5.7"
+      },
+      "stable_signal_count": 182,
+      "stable_signals": [
+        "body_hash|/.well-known/openid-configuration|a7f214b183a27953b20d3ad6c396d3de1b15d996b269058c6c3e4be927e7f9bd",
+        "body_hash|/.well-known/security.txt|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/agents|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/config|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/devices|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/docs|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/doesnotexist|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/graphql|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/health|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/skills|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/status|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/system/info|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/version|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/asset-manifest.json|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/config.js|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/debug/pprof/|a7f214b183a27953b20d3ad6c396d3de1b15d996b269058c6c3e4be927e7f9bd",
+        "body_hash|/debug/pprof|a7f214b183a27953b20d3ad6c396d3de1b15d996b269058c6c3e4be927e7f9bd",
+        "body_hash|/env.js|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/favicon.ico|e9f1d85593e10f4e7455ce7bc7f1d92fec873b04628bf3ca7dcbdab5344cfafb",
+        "body_hash|/health|6191c1f860b8a0225c697e46ebce756193dfb18c189218cfe742037501da05eb",
+        "body_hash|/login|a7f214b183a27953b20d3ad6c396d3de1b15d996b269058c6c3e4be927e7f9bd",
+        "body_hash|/manifest.json|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/metrics|a7f214b183a27953b20d3ad6c396d3de1b15d996b269058c6c3e4be927e7f9bd",
+        "body_hash|/robots.txt|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/socket.io/|a7f214b183a27953b20d3ad6c396d3de1b15d996b269058c6c3e4be927e7f9bd",
+        "body_hash|/status|a7f214b183a27953b20d3ad6c396d3de1b15d996b269058c6c3e4be927e7f9bd",
+        "body_hash|/swagger.json|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/tools/invoke|e7151570b616d475350de67f752a54d15b26d977967b0aa70d442e4568a0f956",
+        "body_hash|/v1/chat/completions|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/v1/embeddings|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/v1/models/openclaw/default|a7f214b183a27953b20d3ad6c396d3de1b15d996b269058c6c3e4be927e7f9bd",
+        "body_hash|/v1/models|a7f214b183a27953b20d3ad6c396d3de1b15d996b269058c6c3e4be927e7f9bd",
+        "body_hash|/v1/responses|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/ws|a7f214b183a27953b20d3ad6c396d3de1b15d996b269058c6c3e4be927e7f9bd",
+        "body_hash|/|a7f214b183a27953b20d3ad6c396d3de1b15d996b269058c6c3e4be927e7f9bd",
+        "favicon_hash|/favicon.ico|-805544463",
+        "header_contains|/.well-known/openid-configuration|content-type|text/html",
+        "header_contains|/.well-known/security.txt|content-type|text/plain",
+        "header_contains|/api/agents|content-type|text/plain",
+        "header_contains|/api/config|content-type|text/plain",
+        "header_contains|/api/devices|content-type|text/plain",
+        "header_contains|/api/docs|content-type|text/plain",
+        "header_contains|/api/doesnotexist|content-type|text/plain",
+        "header_contains|/api/graphql|content-type|text/plain",
+        "header_contains|/api/health|content-type|text/plain",
+        "header_contains|/api/skills|content-type|text/plain",
+        "header_contains|/api/status|content-type|text/plain",
+        "header_contains|/api/system/info|content-type|text/plain",
+        "header_contains|/api/version|content-type|text/plain",
+        "header_contains|/api|content-type|text/plain",
+        "header_contains|/asset-manifest.json|content-type|text/plain",
+        "header_contains|/config.js|content-type|text/plain",
+        "header_contains|/debug/pprof/|content-type|text/html",
+        "header_contains|/debug/pprof|content-type|text/html",
+        "header_contains|/env.js|content-type|text/plain",
+        "header_contains|/favicon.ico|content-type|image/x-icon",
+        "header_contains|/health|content-type|application/json",
+        "header_contains|/login|content-type|text/html",
+        "header_contains|/manifest.json|content-type|text/plain",
+        "header_contains|/metrics|content-type|text/html",
+        "header_contains|/robots.txt|content-type|text/plain",
+        "header_contains|/socket.io/|content-type|text/html",
+        "header_contains|/status|content-type|text/html",
+        "header_contains|/swagger.json|content-type|text/plain",
+        "header_contains|/tools/invoke|content-type|application/json",
+        "header_contains|/v1/chat/completions|content-type|text/plain",
+        "header_contains|/v1/embeddings|content-type|text/plain",
+        "header_contains|/v1/models/openclaw/default|content-type|text/html",
+        "header_contains|/v1/models|content-type|text/html",
+        "header_contains|/v1/responses|content-type|text/plain",
+        "header_contains|/ws|content-type|text/html",
+        "header_contains|/|content-type|text/html",
+        "json_key|/health|ok",
+        "json_key|/health|status",
+        "json_key|/tools/invoke|error",
+        "marker_present|/.well-known/openid-configuration|openclaw",
+        "marker_present|/debug/pprof/|openclaw",
+        "marker_present|/debug/pprof|openclaw",
+        "marker_present|/login|openclaw",
+        "marker_present|/metrics|openclaw",
+        "marker_present|/socket.io/|openclaw",
+        "marker_present|/status|openclaw",
+        "marker_present|/v1/models/openclaw/default|openclaw",
+        "marker_present|/v1/models|openclaw",
+        "marker_present|/ws|openclaw",
+        "marker_present|/|openclaw",
+        "method_status|GET|/.well-known/openid-configuration|200",
+        "method_status|GET|/.well-known/security.txt|404",
+        "method_status|GET|/api/agents|404",
+        "method_status|GET|/api/config|404",
+        "method_status|GET|/api/devices|404",
+        "method_status|GET|/api/docs|404",
+        "method_status|GET|/api/doesnotexist|404",
+        "method_status|GET|/api/graphql|404",
+        "method_status|GET|/api/health|404",
+        "method_status|GET|/api/skills|404",
+        "method_status|GET|/api/status|404",
+        "method_status|GET|/api/system/info|404",
+        "method_status|GET|/api/version|404",
+        "method_status|GET|/api|404",
+        "method_status|GET|/asset-manifest.json|404",
+        "method_status|GET|/config.js|404",
+        "method_status|GET|/debug/pprof/|200",
+        "method_status|GET|/debug/pprof|200",
+        "method_status|GET|/env.js|404",
+        "method_status|GET|/favicon.ico|200",
+        "method_status|GET|/health|200",
+        "method_status|GET|/login|200",
+        "method_status|GET|/manifest.json|404",
+        "method_status|GET|/metrics|200",
+        "method_status|GET|/robots.txt|404",
+        "method_status|GET|/socket.io/|200",
+        "method_status|GET|/status|200",
+        "method_status|GET|/swagger.json|404",
+        "method_status|GET|/v1/models/openclaw/default|200",
+        "method_status|GET|/v1/models|200",
+        "method_status|GET|/ws|200",
+        "method_status|GET|/|200",
+        "method_status|POST|/api/doesnotexist|404",
+        "method_status|POST|/tools/invoke|401",
+        "method_status|POST|/v1/chat/completions|404",
+        "method_status|POST|/v1/embeddings|404",
+        "method_status|POST|/v1/responses|404",
+        "path_status|/.well-known/openid-configuration|200",
+        "path_status|/.well-known/security.txt|404",
+        "path_status|/api/agents|404",
+        "path_status|/api/config|404",
+        "path_status|/api/devices|404",
+        "path_status|/api/docs|404",
+        "path_status|/api/doesnotexist|404",
+        "path_status|/api/graphql|404",
+        "path_status|/api/health|404",
+        "path_status|/api/skills|404",
+        "path_status|/api/status|404",
+        "path_status|/api/system/info|404",
+        "path_status|/api/version|404",
+        "path_status|/api|404",
+        "path_status|/asset-manifest.json|404",
+        "path_status|/config.js|404",
+        "path_status|/debug/pprof/|200",
+        "path_status|/debug/pprof|200",
+        "path_status|/env.js|404",
+        "path_status|/favicon.ico|200",
+        "path_status|/health|200",
+        "path_status|/login|200",
+        "path_status|/manifest.json|404",
+        "path_status|/metrics|200",
+        "path_status|/robots.txt|404",
+        "path_status|/socket.io/|200",
+        "path_status|/status|200",
+        "path_status|/swagger.json|404",
+        "path_status|/tools/invoke|401",
+        "path_status|/v1/chat/completions|404",
+        "path_status|/v1/embeddings|404",
+        "path_status|/v1/models/openclaw/default|200",
+        "path_status|/v1/models|200",
+        "path_status|/v1/responses|404",
+        "path_status|/ws|200",
+        "path_status|/|200",
+        "script_contains|/.well-known/openid-configuration|./assets/index-B9aIykxh.js",
+        "script_contains|/debug/pprof/|./assets/index-B9aIykxh.js",
+        "script_contains|/debug/pprof|./assets/index-B9aIykxh.js",
+        "script_contains|/login|./assets/index-B9aIykxh.js",
+        "script_contains|/metrics|./assets/index-B9aIykxh.js",
+        "script_contains|/socket.io/|./assets/index-B9aIykxh.js",
+        "script_contains|/status|./assets/index-B9aIykxh.js",
+        "script_contains|/v1/models/openclaw/default|./assets/index-B9aIykxh.js",
+        "script_contains|/v1/models|./assets/index-B9aIykxh.js",
+        "script_contains|/ws|./assets/index-B9aIykxh.js",
+        "script_contains|/|./assets/index-B9aIykxh.js",
+        "title_contains|/.well-known/openid-configuration|OpenClaw Control",
+        "title_contains|/debug/pprof/|OpenClaw Control",
+        "title_contains|/debug/pprof|OpenClaw Control",
+        "title_contains|/login|OpenClaw Control",
+        "title_contains|/metrics|OpenClaw Control",
+        "title_contains|/socket.io/|OpenClaw Control",
+        "title_contains|/status|OpenClaw Control",
+        "title_contains|/v1/models/openclaw/default|OpenClaw Control",
+        "title_contains|/v1/models|OpenClaw Control",
+        "title_contains|/ws|OpenClaw Control",
+        "title_contains|/|OpenClaw Control"
+      ],
+      "unique_signal_count": 22,
+      "unique_signals": [
+        "body_hash|/.well-known/openid-configuration|a7f214b183a27953b20d3ad6c396d3de1b15d996b269058c6c3e4be927e7f9bd",
+        "body_hash|/debug/pprof/|a7f214b183a27953b20d3ad6c396d3de1b15d996b269058c6c3e4be927e7f9bd",
+        "body_hash|/debug/pprof|a7f214b183a27953b20d3ad6c396d3de1b15d996b269058c6c3e4be927e7f9bd",
+        "body_hash|/login|a7f214b183a27953b20d3ad6c396d3de1b15d996b269058c6c3e4be927e7f9bd",
+        "body_hash|/metrics|a7f214b183a27953b20d3ad6c396d3de1b15d996b269058c6c3e4be927e7f9bd",
+        "body_hash|/socket.io/|a7f214b183a27953b20d3ad6c396d3de1b15d996b269058c6c3e4be927e7f9bd",
+        "body_hash|/status|a7f214b183a27953b20d3ad6c396d3de1b15d996b269058c6c3e4be927e7f9bd",
+        "body_hash|/v1/models/openclaw/default|a7f214b183a27953b20d3ad6c396d3de1b15d996b269058c6c3e4be927e7f9bd",
+        "body_hash|/v1/models|a7f214b183a27953b20d3ad6c396d3de1b15d996b269058c6c3e4be927e7f9bd",
+        "body_hash|/ws|a7f214b183a27953b20d3ad6c396d3de1b15d996b269058c6c3e4be927e7f9bd",
+        "body_hash|/|a7f214b183a27953b20d3ad6c396d3de1b15d996b269058c6c3e4be927e7f9bd",
+        "script_contains|/.well-known/openid-configuration|./assets/index-B9aIykxh.js",
+        "script_contains|/debug/pprof/|./assets/index-B9aIykxh.js",
+        "script_contains|/debug/pprof|./assets/index-B9aIykxh.js",
+        "script_contains|/login|./assets/index-B9aIykxh.js",
+        "script_contains|/metrics|./assets/index-B9aIykxh.js",
+        "script_contains|/socket.io/|./assets/index-B9aIykxh.js",
+        "script_contains|/status|./assets/index-B9aIykxh.js",
+        "script_contains|/v1/models/openclaw/default|./assets/index-B9aIykxh.js",
+        "script_contains|/v1/models|./assets/index-B9aIykxh.js",
+        "script_contains|/ws|./assets/index-B9aIykxh.js",
+        "script_contains|/|./assets/index-B9aIykxh.js"
+      ],
+      "version": "2026.5.19-beta.1"
+    },
+    {
+      "candidate_rule": {
+        "all": [
+          {
+            "path": "/",
+            "type": "script_contains",
+            "value": "./assets/index-quv2B8bV.js"
+          },
+          {
+            "path": "/ws",
+            "type": "script_contains",
+            "value": "./assets/index-quv2B8bV.js"
+          },
+          {
+            "path": "/v1/models",
+            "type": "script_contains",
+            "value": "./assets/index-quv2B8bV.js"
+          }
+        ],
+        "confidence": 0.89,
+        "exact": true,
+        "id": "lab-capture-2026-5-18",
+        "notes": "Candidate rule derived from black-box captures against known-version test nodes. Review before promoting into openclaw_rules.json.",
+        "version": "2026.5.18"
+      },
+      "capture_count": 2,
+      "capture_diagnostics": [
+        {
+          "capture_index": 1,
+          "capture_name": "openclaw-2026.5.18-lab",
+          "error_count": 2,
+          "observation_count": 39,
+          "signal_count": 182,
+          "timeout_error_count": 2,
+          "timeout_probe_labels": [
+            "WS-UPGRADE /socket.io/",
+            "WS-UPGRADE /ws"
+          ]
+        },
+        {
+          "capture_index": 2,
+          "capture_name": "openclaw-2026.5.18-lab",
+          "error_count": 11,
+          "observation_count": 39,
+          "signal_count": 147,
+          "timeout_error_count": 11,
+          "timeout_probe_labels": [
+            "/api/doesnotexist",
+            "/asset-manifest.json",
+            "/favicon.ico",
+            "/manifest.json",
+            "POST /api/doesnotexist",
+            "POST /tools/invoke",
+            "POST /v1/chat/completions",
+            "POST /v1/embeddings",
+            "POST /v1/responses",
+            "WS-UPGRADE /socket.io/",
+            "WS-UPGRADE /ws"
+          ]
+        }
+      ],
+      "promotion": {
+        "blockers": [],
+        "ready_for_review": true,
+        "reasons": [
+          "has at least two same-version captures",
+          "22 stable unique signal(s)",
+          "intra-version surface varied (0.8077); selected stable unique signals remained",
+          "nearest other version has a similar overall surface (0.7843); selected stable unique signals distinguish it"
+        ],
+        "status": "review_candidate"
+      },
+      "selected_signals": [
+        "script_contains|/|./assets/index-quv2B8bV.js",
+        "script_contains|/ws|./assets/index-quv2B8bV.js",
+        "script_contains|/v1/models|./assets/index-quv2B8bV.js"
+      ],
+      "similarity": {
+        "intra_version_avg_jaccard": 0.8077,
+        "intra_version_min_jaccard": 0.8077,
+        "intra_version_pair_count": 1,
+        "nearest_other_jaccard": 0.7843,
+        "nearest_other_version": "2026.5.19-beta.1",
+        "stable_nearest_other_jaccard": 0.6127,
+        "stable_nearest_other_version": "2026.5.19-beta.1"
+      },
+      "stable_signal_count": 147,
+      "stable_signals": [
+        "body_hash|/.well-known/openid-configuration|c46cc2279fdd89c1416aba150460cb8bf7e98e04f31d3bcb9d5957699aaf22f0",
+        "body_hash|/.well-known/security.txt|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/agents|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/config|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/devices|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/docs|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/graphql|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/health|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/skills|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/status|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/system/info|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/version|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/config.js|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/debug/pprof/|c46cc2279fdd89c1416aba150460cb8bf7e98e04f31d3bcb9d5957699aaf22f0",
+        "body_hash|/debug/pprof|c46cc2279fdd89c1416aba150460cb8bf7e98e04f31d3bcb9d5957699aaf22f0",
+        "body_hash|/env.js|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/health|6191c1f860b8a0225c697e46ebce756193dfb18c189218cfe742037501da05eb",
+        "body_hash|/login|c46cc2279fdd89c1416aba150460cb8bf7e98e04f31d3bcb9d5957699aaf22f0",
+        "body_hash|/metrics|c46cc2279fdd89c1416aba150460cb8bf7e98e04f31d3bcb9d5957699aaf22f0",
+        "body_hash|/robots.txt|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/socket.io/|c46cc2279fdd89c1416aba150460cb8bf7e98e04f31d3bcb9d5957699aaf22f0",
+        "body_hash|/status|c46cc2279fdd89c1416aba150460cb8bf7e98e04f31d3bcb9d5957699aaf22f0",
+        "body_hash|/swagger.json|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/v1/models/openclaw/default|c46cc2279fdd89c1416aba150460cb8bf7e98e04f31d3bcb9d5957699aaf22f0",
+        "body_hash|/v1/models|c46cc2279fdd89c1416aba150460cb8bf7e98e04f31d3bcb9d5957699aaf22f0",
+        "body_hash|/ws|c46cc2279fdd89c1416aba150460cb8bf7e98e04f31d3bcb9d5957699aaf22f0",
+        "body_hash|/|c46cc2279fdd89c1416aba150460cb8bf7e98e04f31d3bcb9d5957699aaf22f0",
+        "header_contains|/.well-known/openid-configuration|content-type|text/html",
+        "header_contains|/.well-known/security.txt|content-type|text/plain",
+        "header_contains|/api/agents|content-type|text/plain",
+        "header_contains|/api/config|content-type|text/plain",
+        "header_contains|/api/devices|content-type|text/plain",
+        "header_contains|/api/docs|content-type|text/plain",
+        "header_contains|/api/graphql|content-type|text/plain",
+        "header_contains|/api/health|content-type|text/plain",
+        "header_contains|/api/skills|content-type|text/plain",
+        "header_contains|/api/status|content-type|text/plain",
+        "header_contains|/api/system/info|content-type|text/plain",
+        "header_contains|/api/version|content-type|text/plain",
+        "header_contains|/api|content-type|text/plain",
+        "header_contains|/config.js|content-type|text/plain",
+        "header_contains|/debug/pprof/|content-type|text/html",
+        "header_contains|/debug/pprof|content-type|text/html",
+        "header_contains|/env.js|content-type|text/plain",
+        "header_contains|/health|content-type|application/json",
+        "header_contains|/login|content-type|text/html",
+        "header_contains|/metrics|content-type|text/html",
+        "header_contains|/robots.txt|content-type|text/plain",
+        "header_contains|/socket.io/|content-type|text/html",
+        "header_contains|/status|content-type|text/html",
+        "header_contains|/swagger.json|content-type|text/plain",
+        "header_contains|/v1/models/openclaw/default|content-type|text/html",
+        "header_contains|/v1/models|content-type|text/html",
+        "header_contains|/ws|content-type|text/html",
+        "header_contains|/|content-type|text/html",
+        "json_key|/health|ok",
+        "json_key|/health|status",
+        "marker_present|/.well-known/openid-configuration|openclaw",
+        "marker_present|/debug/pprof/|openclaw",
+        "marker_present|/debug/pprof|openclaw",
+        "marker_present|/login|openclaw",
+        "marker_present|/metrics|openclaw",
+        "marker_present|/socket.io/|openclaw",
+        "marker_present|/status|openclaw",
+        "marker_present|/v1/models/openclaw/default|openclaw",
+        "marker_present|/v1/models|openclaw",
+        "marker_present|/ws|openclaw",
+        "marker_present|/|openclaw",
+        "method_status|GET|/.well-known/openid-configuration|200",
+        "method_status|GET|/.well-known/security.txt|404",
+        "method_status|GET|/api/agents|404",
+        "method_status|GET|/api/config|404",
+        "method_status|GET|/api/devices|404",
+        "method_status|GET|/api/docs|404",
+        "method_status|GET|/api/graphql|404",
+        "method_status|GET|/api/health|404",
+        "method_status|GET|/api/skills|404",
+        "method_status|GET|/api/status|404",
+        "method_status|GET|/api/system/info|404",
+        "method_status|GET|/api/version|404",
+        "method_status|GET|/api|404",
+        "method_status|GET|/config.js|404",
+        "method_status|GET|/debug/pprof/|200",
+        "method_status|GET|/debug/pprof|200",
+        "method_status|GET|/env.js|404",
+        "method_status|GET|/health|200",
+        "method_status|GET|/login|200",
+        "method_status|GET|/metrics|200",
+        "method_status|GET|/robots.txt|404",
+        "method_status|GET|/socket.io/|200",
+        "method_status|GET|/status|200",
+        "method_status|GET|/swagger.json|404",
+        "method_status|GET|/v1/models/openclaw/default|200",
+        "method_status|GET|/v1/models|200",
+        "method_status|GET|/ws|200",
+        "method_status|GET|/|200",
+        "path_status|/.well-known/openid-configuration|200",
+        "path_status|/.well-known/security.txt|404",
+        "path_status|/api/agents|404",
+        "path_status|/api/config|404",
+        "path_status|/api/devices|404",
+        "path_status|/api/docs|404",
+        "path_status|/api/graphql|404",
+        "path_status|/api/health|404",
+        "path_status|/api/skills|404",
+        "path_status|/api/status|404",
+        "path_status|/api/system/info|404",
+        "path_status|/api/version|404",
+        "path_status|/api|404",
+        "path_status|/config.js|404",
+        "path_status|/debug/pprof/|200",
+        "path_status|/debug/pprof|200",
+        "path_status|/env.js|404",
+        "path_status|/health|200",
+        "path_status|/login|200",
+        "path_status|/metrics|200",
+        "path_status|/robots.txt|404",
+        "path_status|/socket.io/|200",
+        "path_status|/status|200",
+        "path_status|/swagger.json|404",
+        "path_status|/v1/models/openclaw/default|200",
+        "path_status|/v1/models|200",
+        "path_status|/ws|200",
+        "path_status|/|200",
+        "script_contains|/.well-known/openid-configuration|./assets/index-quv2B8bV.js",
+        "script_contains|/debug/pprof/|./assets/index-quv2B8bV.js",
+        "script_contains|/debug/pprof|./assets/index-quv2B8bV.js",
+        "script_contains|/login|./assets/index-quv2B8bV.js",
+        "script_contains|/metrics|./assets/index-quv2B8bV.js",
+        "script_contains|/socket.io/|./assets/index-quv2B8bV.js",
+        "script_contains|/status|./assets/index-quv2B8bV.js",
+        "script_contains|/v1/models/openclaw/default|./assets/index-quv2B8bV.js",
+        "script_contains|/v1/models|./assets/index-quv2B8bV.js",
+        "script_contains|/ws|./assets/index-quv2B8bV.js",
+        "script_contains|/|./assets/index-quv2B8bV.js",
+        "title_contains|/.well-known/openid-configuration|OpenClaw Control",
+        "title_contains|/debug/pprof/|OpenClaw Control",
+        "title_contains|/debug/pprof|OpenClaw Control",
+        "title_contains|/login|OpenClaw Control",
+        "title_contains|/metrics|OpenClaw Control",
+        "title_contains|/socket.io/|OpenClaw Control",
+        "title_contains|/status|OpenClaw Control",
+        "title_contains|/v1/models/openclaw/default|OpenClaw Control",
+        "title_contains|/v1/models|OpenClaw Control",
+        "title_contains|/ws|OpenClaw Control",
+        "title_contains|/|OpenClaw Control"
+      ],
+      "unique_signal_count": 22,
+      "unique_signals": [
+        "body_hash|/.well-known/openid-configuration|c46cc2279fdd89c1416aba150460cb8bf7e98e04f31d3bcb9d5957699aaf22f0",
+        "body_hash|/debug/pprof/|c46cc2279fdd89c1416aba150460cb8bf7e98e04f31d3bcb9d5957699aaf22f0",
+        "body_hash|/debug/pprof|c46cc2279fdd89c1416aba150460cb8bf7e98e04f31d3bcb9d5957699aaf22f0",
+        "body_hash|/login|c46cc2279fdd89c1416aba150460cb8bf7e98e04f31d3bcb9d5957699aaf22f0",
+        "body_hash|/metrics|c46cc2279fdd89c1416aba150460cb8bf7e98e04f31d3bcb9d5957699aaf22f0",
+        "body_hash|/socket.io/|c46cc2279fdd89c1416aba150460cb8bf7e98e04f31d3bcb9d5957699aaf22f0",
+        "body_hash|/status|c46cc2279fdd89c1416aba150460cb8bf7e98e04f31d3bcb9d5957699aaf22f0",
+        "body_hash|/v1/models/openclaw/default|c46cc2279fdd89c1416aba150460cb8bf7e98e04f31d3bcb9d5957699aaf22f0",
+        "body_hash|/v1/models|c46cc2279fdd89c1416aba150460cb8bf7e98e04f31d3bcb9d5957699aaf22f0",
+        "body_hash|/ws|c46cc2279fdd89c1416aba150460cb8bf7e98e04f31d3bcb9d5957699aaf22f0",
+        "body_hash|/|c46cc2279fdd89c1416aba150460cb8bf7e98e04f31d3bcb9d5957699aaf22f0",
+        "script_contains|/.well-known/openid-configuration|./assets/index-quv2B8bV.js",
+        "script_contains|/debug/pprof/|./assets/index-quv2B8bV.js",
+        "script_contains|/debug/pprof|./assets/index-quv2B8bV.js",
+        "script_contains|/login|./assets/index-quv2B8bV.js",
+        "script_contains|/metrics|./assets/index-quv2B8bV.js",
+        "script_contains|/socket.io/|./assets/index-quv2B8bV.js",
+        "script_contains|/status|./assets/index-quv2B8bV.js",
+        "script_contains|/v1/models/openclaw/default|./assets/index-quv2B8bV.js",
+        "script_contains|/v1/models|./assets/index-quv2B8bV.js",
+        "script_contains|/ws|./assets/index-quv2B8bV.js",
+        "script_contains|/|./assets/index-quv2B8bV.js"
+      ],
+      "version": "2026.5.18"
+    },
+    {
+      "candidate_rule": {
+        "all": [
+          {
+            "path": "/",
+            "type": "script_contains",
+            "value": "./assets/index-NYVkUQrq.js"
+          },
+          {
+            "path": "/ws",
+            "type": "script_contains",
+            "value": "./assets/index-NYVkUQrq.js"
+          },
+          {
+            "path": "/v1/models",
+            "type": "script_contains",
+            "value": "./assets/index-NYVkUQrq.js"
+          }
+        ],
+        "confidence": 0.89,
+        "exact": true,
+        "id": "lab-capture-2026-5-7",
+        "notes": "Candidate rule derived from black-box captures against known-version test nodes. Review before promoting into openclaw_rules.json.",
+        "version": "2026.5.7"
+      },
+      "capture_count": 2,
+      "capture_diagnostics": [
+        {
+          "capture_index": 1,
+          "capture_name": "openclaw-2026.5.7-lab",
+          "error_count": 2,
+          "observation_count": 39,
+          "signal_count": 182,
+          "timeout_error_count": 2,
+          "timeout_probe_labels": [
+            "WS-UPGRADE /socket.io/",
+            "WS-UPGRADE /ws"
+          ]
+        },
+        {
+          "capture_index": 2,
+          "capture_name": "openclaw-2026.5.7-lab",
+          "error_count": 2,
+          "observation_count": 39,
+          "signal_count": 182,
+          "timeout_error_count": 2,
+          "timeout_probe_labels": [
+            "WS-UPGRADE /socket.io/",
+            "WS-UPGRADE /ws"
+          ]
+        }
+      ],
+      "promotion": {
+        "blockers": [],
+        "ready_for_review": true,
+        "reasons": [
+          "has at least two same-version captures",
+          "22 stable unique signal(s)",
+          "intra-version Jaccard is stable (1.0000)",
+          "nearest other version has a similar overall surface (0.7843); selected stable unique signals distinguish it"
+        ],
+        "status": "review_candidate"
+      },
+      "selected_signals": [
+        "script_contains|/|./assets/index-NYVkUQrq.js",
+        "script_contains|/ws|./assets/index-NYVkUQrq.js",
+        "script_contains|/v1/models|./assets/index-NYVkUQrq.js"
+      ],
+      "similarity": {
+        "intra_version_avg_jaccard": 1.0,
+        "intra_version_min_jaccard": 1.0,
+        "intra_version_pair_count": 1,
+        "nearest_other_jaccard": 0.7843,
+        "nearest_other_version": "2026.5.18",
+        "stable_nearest_other_jaccard": 0.7843,
+        "stable_nearest_other_version": "2026.5.19-beta.1"
+      },
+      "stable_signal_count": 182,
+      "stable_signals": [
+        "body_hash|/.well-known/openid-configuration|5a02153ca956b739085ec518b6ab91b45b3889cf489ddcccf2eb69ae9705fc91",
+        "body_hash|/.well-known/security.txt|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/agents|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/config|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/devices|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/docs|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/doesnotexist|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/graphql|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/health|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/skills|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/status|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/system/info|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api/version|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/api|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/asset-manifest.json|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/config.js|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/debug/pprof/|5a02153ca956b739085ec518b6ab91b45b3889cf489ddcccf2eb69ae9705fc91",
+        "body_hash|/debug/pprof|5a02153ca956b739085ec518b6ab91b45b3889cf489ddcccf2eb69ae9705fc91",
+        "body_hash|/env.js|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/favicon.ico|e9f1d85593e10f4e7455ce7bc7f1d92fec873b04628bf3ca7dcbdab5344cfafb",
+        "body_hash|/health|6191c1f860b8a0225c697e46ebce756193dfb18c189218cfe742037501da05eb",
+        "body_hash|/login|5a02153ca956b739085ec518b6ab91b45b3889cf489ddcccf2eb69ae9705fc91",
+        "body_hash|/manifest.json|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/metrics|5a02153ca956b739085ec518b6ab91b45b3889cf489ddcccf2eb69ae9705fc91",
+        "body_hash|/robots.txt|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/socket.io/|5a02153ca956b739085ec518b6ab91b45b3889cf489ddcccf2eb69ae9705fc91",
+        "body_hash|/status|5a02153ca956b739085ec518b6ab91b45b3889cf489ddcccf2eb69ae9705fc91",
+        "body_hash|/swagger.json|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/tools/invoke|e7151570b616d475350de67f752a54d15b26d977967b0aa70d442e4568a0f956",
+        "body_hash|/v1/chat/completions|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/v1/embeddings|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/v1/models/openclaw/default|5a02153ca956b739085ec518b6ab91b45b3889cf489ddcccf2eb69ae9705fc91",
+        "body_hash|/v1/models|5a02153ca956b739085ec518b6ab91b45b3889cf489ddcccf2eb69ae9705fc91",
+        "body_hash|/v1/responses|0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5",
+        "body_hash|/ws|5a02153ca956b739085ec518b6ab91b45b3889cf489ddcccf2eb69ae9705fc91",
+        "body_hash|/|5a02153ca956b739085ec518b6ab91b45b3889cf489ddcccf2eb69ae9705fc91",
+        "favicon_hash|/favicon.ico|-805544463",
+        "header_contains|/.well-known/openid-configuration|content-type|text/html",
+        "header_contains|/.well-known/security.txt|content-type|text/plain",
+        "header_contains|/api/agents|content-type|text/plain",
+        "header_contains|/api/config|content-type|text/plain",
+        "header_contains|/api/devices|content-type|text/plain",
+        "header_contains|/api/docs|content-type|text/plain",
+        "header_contains|/api/doesnotexist|content-type|text/plain",
+        "header_contains|/api/graphql|content-type|text/plain",
+        "header_contains|/api/health|content-type|text/plain",
+        "header_contains|/api/skills|content-type|text/plain",
+        "header_contains|/api/status|content-type|text/plain",
+        "header_contains|/api/system/info|content-type|text/plain",
+        "header_contains|/api/version|content-type|text/plain",
+        "header_contains|/api|content-type|text/plain",
+        "header_contains|/asset-manifest.json|content-type|text/plain",
+        "header_contains|/config.js|content-type|text/plain",
+        "header_contains|/debug/pprof/|content-type|text/html",
+        "header_contains|/debug/pprof|content-type|text/html",
+        "header_contains|/env.js|content-type|text/plain",
+        "header_contains|/favicon.ico|content-type|image/x-icon",
+        "header_contains|/health|content-type|application/json",
+        "header_contains|/login|content-type|text/html",
+        "header_contains|/manifest.json|content-type|text/plain",
+        "header_contains|/metrics|content-type|text/html",
+        "header_contains|/robots.txt|content-type|text/plain",
+        "header_contains|/socket.io/|content-type|text/html",
+        "header_contains|/status|content-type|text/html",
+        "header_contains|/swagger.json|content-type|text/plain",
+        "header_contains|/tools/invoke|content-type|application/json",
+        "header_contains|/v1/chat/completions|content-type|text/plain",
+        "header_contains|/v1/embeddings|content-type|text/plain",
+        "header_contains|/v1/models/openclaw/default|content-type|text/html",
+        "header_contains|/v1/models|content-type|text/html",
+        "header_contains|/v1/responses|content-type|text/plain",
+        "header_contains|/ws|content-type|text/html",
+        "header_contains|/|content-type|text/html",
+        "json_key|/health|ok",
+        "json_key|/health|status",
+        "json_key|/tools/invoke|error",
+        "marker_present|/.well-known/openid-configuration|openclaw",
+        "marker_present|/debug/pprof/|openclaw",
+        "marker_present|/debug/pprof|openclaw",
+        "marker_present|/login|openclaw",
+        "marker_present|/metrics|openclaw",
+        "marker_present|/socket.io/|openclaw",
+        "marker_present|/status|openclaw",
+        "marker_present|/v1/models/openclaw/default|openclaw",
+        "marker_present|/v1/models|openclaw",
+        "marker_present|/ws|openclaw",
+        "marker_present|/|openclaw",
+        "method_status|GET|/.well-known/openid-configuration|200",
+        "method_status|GET|/.well-known/security.txt|404",
+        "method_status|GET|/api/agents|404",
+        "method_status|GET|/api/config|404",
+        "method_status|GET|/api/devices|404",
+        "method_status|GET|/api/docs|404",
+        "method_status|GET|/api/doesnotexist|404",
+        "method_status|GET|/api/graphql|404",
+        "method_status|GET|/api/health|404",
+        "method_status|GET|/api/skills|404",
+        "method_status|GET|/api/status|404",
+        "method_status|GET|/api/system/info|404",
+        "method_status|GET|/api/version|404",
+        "method_status|GET|/api|404",
+        "method_status|GET|/asset-manifest.json|404",
+        "method_status|GET|/config.js|404",
+        "method_status|GET|/debug/pprof/|200",
+        "method_status|GET|/debug/pprof|200",
+        "method_status|GET|/env.js|404",
+        "method_status|GET|/favicon.ico|200",
+        "method_status|GET|/health|200",
+        "method_status|GET|/login|200",
+        "method_status|GET|/manifest.json|404",
+        "method_status|GET|/metrics|200",
+        "method_status|GET|/robots.txt|404",
+        "method_status|GET|/socket.io/|200",
+        "method_status|GET|/status|200",
+        "method_status|GET|/swagger.json|404",
+        "method_status|GET|/v1/models/openclaw/default|200",
+        "method_status|GET|/v1/models|200",
+        "method_status|GET|/ws|200",
+        "method_status|GET|/|200",
+        "method_status|POST|/api/doesnotexist|404",
+        "method_status|POST|/tools/invoke|401",
+        "method_status|POST|/v1/chat/completions|404",
+        "method_status|POST|/v1/embeddings|404",
+        "method_status|POST|/v1/responses|404",
+        "path_status|/.well-known/openid-configuration|200",
+        "path_status|/.well-known/security.txt|404",
+        "path_status|/api/agents|404",
+        "path_status|/api/config|404",
+        "path_status|/api/devices|404",
+        "path_status|/api/docs|404",
+        "path_status|/api/doesnotexist|404",
+        "path_status|/api/graphql|404",
+        "path_status|/api/health|404",
+        "path_status|/api/skills|404",
+        "path_status|/api/status|404",
+        "path_status|/api/system/info|404",
+        "path_status|/api/version|404",
+        "path_status|/api|404",
+        "path_status|/asset-manifest.json|404",
+        "path_status|/config.js|404",
+        "path_status|/debug/pprof/|200",
+        "path_status|/debug/pprof|200",
+        "path_status|/env.js|404",
+        "path_status|/favicon.ico|200",
+        "path_status|/health|200",
+        "path_status|/login|200",
+        "path_status|/manifest.json|404",
+        "path_status|/metrics|200",
+        "path_status|/robots.txt|404",
+        "path_status|/socket.io/|200",
+        "path_status|/status|200",
+        "path_status|/swagger.json|404",
+        "path_status|/tools/invoke|401",
+        "path_status|/v1/chat/completions|404",
+        "path_status|/v1/embeddings|404",
+        "path_status|/v1/models/openclaw/default|200",
+        "path_status|/v1/models|200",
+        "path_status|/v1/responses|404",
+        "path_status|/ws|200",
+        "path_status|/|200",
+        "script_contains|/.well-known/openid-configuration|./assets/index-NYVkUQrq.js",
+        "script_contains|/debug/pprof/|./assets/index-NYVkUQrq.js",
+        "script_contains|/debug/pprof|./assets/index-NYVkUQrq.js",
+        "script_contains|/login|./assets/index-NYVkUQrq.js",
+        "script_contains|/metrics|./assets/index-NYVkUQrq.js",
+        "script_contains|/socket.io/|./assets/index-NYVkUQrq.js",
+        "script_contains|/status|./assets/index-NYVkUQrq.js",
+        "script_contains|/v1/models/openclaw/default|./assets/index-NYVkUQrq.js",
+        "script_contains|/v1/models|./assets/index-NYVkUQrq.js",
+        "script_contains|/ws|./assets/index-NYVkUQrq.js",
+        "script_contains|/|./assets/index-NYVkUQrq.js",
+        "title_contains|/.well-known/openid-configuration|OpenClaw Control",
+        "title_contains|/debug/pprof/|OpenClaw Control",
+        "title_contains|/debug/pprof|OpenClaw Control",
+        "title_contains|/login|OpenClaw Control",
+        "title_contains|/metrics|OpenClaw Control",
+        "title_contains|/socket.io/|OpenClaw Control",
+        "title_contains|/status|OpenClaw Control",
+        "title_contains|/v1/models/openclaw/default|OpenClaw Control",
+        "title_contains|/v1/models|OpenClaw Control",
+        "title_contains|/ws|OpenClaw Control",
+        "title_contains|/|OpenClaw Control"
+      ],
+      "unique_signal_count": 22,
+      "unique_signals": [
+        "body_hash|/.well-known/openid-configuration|5a02153ca956b739085ec518b6ab91b45b3889cf489ddcccf2eb69ae9705fc91",
+        "body_hash|/debug/pprof/|5a02153ca956b739085ec518b6ab91b45b3889cf489ddcccf2eb69ae9705fc91",
+        "body_hash|/debug/pprof|5a02153ca956b739085ec518b6ab91b45b3889cf489ddcccf2eb69ae9705fc91",
+        "body_hash|/login|5a02153ca956b739085ec518b6ab91b45b3889cf489ddcccf2eb69ae9705fc91",
+        "body_hash|/metrics|5a02153ca956b739085ec518b6ab91b45b3889cf489ddcccf2eb69ae9705fc91",
+        "body_hash|/socket.io/|5a02153ca956b739085ec518b6ab91b45b3889cf489ddcccf2eb69ae9705fc91",
+        "body_hash|/status|5a02153ca956b739085ec518b6ab91b45b3889cf489ddcccf2eb69ae9705fc91",
+        "body_hash|/v1/models/openclaw/default|5a02153ca956b739085ec518b6ab91b45b3889cf489ddcccf2eb69ae9705fc91",
+        "body_hash|/v1/models|5a02153ca956b739085ec518b6ab91b45b3889cf489ddcccf2eb69ae9705fc91",
+        "body_hash|/ws|5a02153ca956b739085ec518b6ab91b45b3889cf489ddcccf2eb69ae9705fc91",
+        "body_hash|/|5a02153ca956b739085ec518b6ab91b45b3889cf489ddcccf2eb69ae9705fc91",
+        "script_contains|/.well-known/openid-configuration|./assets/index-NYVkUQrq.js",
+        "script_contains|/debug/pprof/|./assets/index-NYVkUQrq.js",
+        "script_contains|/debug/pprof|./assets/index-NYVkUQrq.js",
+        "script_contains|/login|./assets/index-NYVkUQrq.js",
+        "script_contains|/metrics|./assets/index-NYVkUQrq.js",
+        "script_contains|/socket.io/|./assets/index-NYVkUQrq.js",
+        "script_contains|/status|./assets/index-NYVkUQrq.js",
+        "script_contains|/v1/models/openclaw/default|./assets/index-NYVkUQrq.js",
+        "script_contains|/v1/models|./assets/index-NYVkUQrq.js",
+        "script_contains|/ws|./assets/index-NYVkUQrq.js",
+        "script_contains|/|./assets/index-NYVkUQrq.js"
+      ],
+      "version": "2026.5.7"
+    }
+  ]
+}

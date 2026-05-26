@@ -1,0 +1,10 @@
+{
+  "clone_exitstatus": "OK",
+  "clone_upid": "redacted-task-id",
+  "clone_upid_redacted": true,
+  "created_at": "2026-05-18T23:39:07Z",
+  "name": "openclaw-corpus-2026-2-13-01",
+  "start_exitstatus": "OK",
+  "started_at": "2026-05-18T23:39:54Z",
+  "vmid": 100
+}

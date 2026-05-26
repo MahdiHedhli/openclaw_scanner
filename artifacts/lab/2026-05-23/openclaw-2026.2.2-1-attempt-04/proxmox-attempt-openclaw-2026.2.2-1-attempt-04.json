@@ -1,0 +1,189 @@
+{
+  "allowed_subnet": "10.0.30.0/24",
+  "artifact": "artifacts/lab/2026-05-23/openclaw-2026.2.2-1-attempt-04/proxmox-attempt-openclaw-2026.2.2-1-attempt-04.json",
+  "attempt_id": "openclaw-2026.2.2-1-attempt-04",
+  "checked_at": "2026-05-26T16:09:27Z",
+  "deployment_method": "proxmox-vm-ssh-deploy",
+  "deployment_result": {
+    "command_label": "openclaw-legacy-known-vulnerable",
+    "command_recorded": false,
+    "command_source": "file",
+    "method": "ssh-command",
+    "ok": true,
+    "placeholders_used": [
+      "version",
+      "port"
+    ],
+    "returncode": 0,
+    "ssh_ready": {
+      "attempts": 1,
+      "ok": true,
+      "returncode": 0,
+      "stderr_recorded": false,
+      "stdout_recorded": false
+    },
+    "stderr_recorded": false,
+    "stdout_recorded": false
+  },
+  "gateway_health": {
+    "attempts": [
+      {
+        "attempt": 1,
+        "error": null,
+        "http_status": 200
+      }
+    ],
+    "error": null,
+    "expected_http_status": 200,
+    "expected_status_matched": true,
+    "http_status": 200,
+    "ok": true,
+    "url": "http://<ip>:18789/health"
+  },
+  "ip": "10.0.30.173",
+  "ip_discovery": {
+    "attempts": 5,
+    "evidence": [
+      {
+        "attempt": 1,
+        "guest_agent_http_status": 500
+      },
+      {
+        "attempt": 1,
+        "mac_digest": "d89360640598abd0",
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 2,
+        "guest_agent_http_status": 500
+      },
+      {
+        "attempt": 2,
+        "mac_digest": "d89360640598abd0",
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 3,
+        "guest_agent_http_status": 500
+      },
+      {
+        "attempt": 3,
+        "mac_digest": "d89360640598abd0",
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 4,
+        "guest_agent_http_status": 500
+      },
+      {
+        "attempt": 4,
+        "mac_digest": "d89360640598abd0",
+        "passive_sources_checked": 2
+      }
+    ],
+    "ip": "10.0.30.173",
+    "method": "guest-agent",
+    "ok": true
+  },
+  "lifecycle": {
+    "created_at": "2026-05-26T16:10:17Z",
+    "deleted_at": "2026-05-26T16:13:42Z",
+    "started_at": "2026-05-26T16:10:39Z",
+    "stopped_at": "2026-05-26T16:13:41Z"
+  },
+  "mac": "bc:24:11:5a:8e:c8",
+  "mac_digest": "d89360640598abd0",
+  "network_facts": {
+    "bridge": "vmbr0",
+    "device": "net0",
+    "mac": "bc:24:11:5a:8e:c8",
+    "mac_digest": "d89360640598abd0",
+    "ok": true,
+    "reason": null,
+    "vlan": "30"
+  },
+  "outcome": "captured",
+  "port": 18789,
+  "preflight": {
+    "blockers": [],
+    "checked_at": "2026-05-26T16:09:27Z",
+    "vm_lifecycle_allowed": true
+  },
+  "reason": null,
+  "scanner_capture_attempted": true,
+  "scanner_result": {
+    "capture_artifact": "artifacts/lab/2026-05-23/openclaw-2026.2.2-1-attempt-04/capture.json",
+    "command": "python3 -m openclaw_scanner --target http://<ip>:18789 --capture-version <version> --capture-name <name> --capture-output <capture> --format json --output <scan>",
+    "ok": true,
+    "returncode": 0,
+    "scan_artifact": "artifacts/lab/2026-05-23/openclaw-2026.2.2-1-attempt-04/scan.json"
+  },
+  "schema_version": 1,
+  "secret_values_recorded": false,
+  "steps": [
+    {
+      "exitstatus": "OK",
+      "http_status": 200,
+      "name": "clone",
+      "ok": true,
+      "task_status": "stopped",
+      "upid_redacted": true
+    },
+    {
+      "http_status": 200,
+      "name": "config:resources",
+      "ok": true
+    },
+    {
+      "http_status": 200,
+      "name": "config:network",
+      "ok": true
+    },
+    {
+      "http_status": 200,
+      "name": "config:cloudinit_identity",
+      "ok": true
+    },
+    {
+      "http_status": 200,
+      "name": "config:cloudinit",
+      "ok": true
+    },
+    {
+      "exitstatus": "OK",
+      "http_status": 200,
+      "name": "resize:scsi0",
+      "ok": true,
+      "task_status": "stopped",
+      "upid_redacted": true
+    },
+    {
+      "exitstatus": "OK",
+      "http_status": 200,
+      "name": "start",
+      "ok": true,
+      "task_status": "stopped",
+      "upid_redacted": true
+    },
+    {
+      "exitstatus": "OK",
+      "http_status": 200,
+      "name": "stop",
+      "ok": true,
+      "task_status": "stopped",
+      "upid_redacted": true
+    },
+    {
+      "exitstatus": "OK",
+      "http_status": 200,
+      "name": "delete",
+      "ok": true,
+      "task_status": "stopped",
+      "upid_redacted": true
+    }
+  ],
+  "version": "2026.2.2-1",
+  "vlan": 30,
+  "vm_name": "openclaw-corpus-2026-2-2-1-openclaw-2026.2.2-1-attempt-04",
+  "vmid": 101
+}

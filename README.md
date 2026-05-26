@@ -130,6 +130,31 @@ python3 -m openclaw_scanner --targets-file targets.txt --output results.json
 Project planning lives in [`docs/roadmap.md`](/Users/mhedhli/Documents/Codex/OpenClawScanner/docs/roadmap.md).
 The Proxmox-backed known-version corpus workflow lives in
 [`docs/corpus-workflow.md`](/Users/mhedhli/Documents/Codex/OpenClawScanner/docs/corpus-workflow.md).
+That lifecycle requires a bounded known-version deployment command or an
+explicit pre-deployed image override before scanner capture.
+
+The bundled exact-version rules currently include 14 lab-promoted OpenClaw
+releases:
+
+- `2026.1.29-beta.1`
+- `2026.2.2-1`
+- `2026.2.6`
+- `2026.2.13`
+- `2026.2.21`
+- `2026.5.3-1`
+- `2026.5.7`
+- `2026.5.18`
+- `2026.5.19-beta.1`
+- `2026.5.20`
+- `2026.5.22`
+- `2026.5.24-beta.1`
+- `2026.5.24-beta.2`
+- `2026.5.25-beta.1`
+
+These rules are based on short-lived VLAN 30 captures and should be treated as
+high-value triage evidence. They are not exploit proof, and unusual deployment
+modes, proxies, custom builds, or hidden static assets can still reduce a scan
+to family-level confidence.
 
 Create a black-box calibration capture bundle from known-version test nodes:
 
@@ -150,6 +175,13 @@ python3 -m openclaw_scanner \
   --format json \
   --output candidate-version-rules.json
 ```
+
+The suggestion report includes stable and unique signal counts plus lightweight
+Jaccard similarity metrics. Use high intra-version similarity and low
+nearest-other-version similarity as promotion criteria before adding a candidate
+rule to the bundled rules file. The report also includes a conservative
+`promotion` summary; treat `review_candidate` as a human-review queue, not an
+automatic merge signal.
 
 Provision disposable Oracle Cloud free-tier calibration nodes:
 
@@ -340,6 +372,8 @@ The bundled family rules currently recognize:
 
 - `claw_gateway_tools_invoke_auth_json`
 - `openclaw_openai_chat_surface_enabled`
+- `openclaw_mdns_gateway_advertisement`
+- `clawdbot_mdns_gateway_advertisement`
 - `openclaw_ui_only_404_api`
 - `openclaw_spa_fallback_all_200`
 - `clawdbot_spa_fallback_all_200`
@@ -351,6 +385,13 @@ The bundled family rules currently recognize:
 | `openclaw_spa_fallback_all_200` | `OpenClaw Control` | `200 text/html` | `200 text/html` | `200 text/html` | API-looking routes fall back to the same SPA shell, so `200` here does not imply a real version endpoint. |
 | `clawdbot_spa_fallback_all_200` | `Clawdbot Control` | `200 text/html` | `200 text/html` | `200 text/html` | Same SPA-fallback pattern as OpenClaw, but branded as Clawdbot. |
 | `moltbot_spa_fallback_all_200` | `Moltbot Control` | `200 text/html` | `200 text/html` | `200 text/html` | Same SPA-fallback pattern as OpenClaw, but branded as Moltbot. |
+
+Passive Shodan mDNS exports can also match gateway advertisement families:
+
+| Family | Service | Required TXT markers | Interpretation |
+| --- | --- | --- | --- |
+| `openclaw_mdns_gateway_advertisement` | `_openclaw-gw._tcp.local` | `role=gateway`, `gatewayPort=18789` | Passive confirmation that an OpenClaw-family gateway advertises the default gateway port. |
+| `clawdbot_mdns_gateway_advertisement` | `_clawdbot-gw._tcp.local` | `role=gateway`, `gatewayPort=18789` | Passive confirmation that a Clawdbot-family gateway advertises the default gateway port. |
 
 These family matches improve clustering and triage, but they do not create
 vulnerability hits unless an exact or approximate version is also inferred.

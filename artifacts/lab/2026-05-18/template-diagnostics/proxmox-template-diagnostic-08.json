@@ -1,0 +1,365 @@
+{
+  "allowed_subnet": "10.0.30.0/24",
+  "artifact": "artifacts/lab/2026-05-18/template-diagnostics/proxmox-template-diagnostic-08.json",
+  "attempt_id": "08",
+  "checked_at": "2026-05-19T04:22:21Z",
+  "deployment_method": "proxmox-template-diagnostic-vm",
+  "diagnostic_type": "template_network_validation",
+  "ip": "10.0.30.198",
+  "l2_capture": {
+    "duration_seconds": 260,
+    "interface": "eth0",
+    "mac_digest": "c1e206cbcdd52e58",
+    "returncode": 124,
+    "started": true,
+    "stderr_excerpt": "tcpdump: verbose output suppressed, use -v[v]... for full protocol decode\nlistening on eth0, link-type EN10MB (Ethernet), snapshot length 262144 bytes\n5 packets captured\n5 packets received by filter\n0 packets dropped by kernel\n",
+    "summary": {
+      "arp_seen": true,
+      "arp_tell_ipv4_candidates": [
+        "10.0.30.198"
+      ],
+      "dhcp_seen": true,
+      "excerpt": [
+        "00:23:26.904977 bc:24:11:d5:37:4e > ff:ff:ff:ff:ff:ff, ethertype IPv4 (0x0800), length 335: 0.0.0.0.68 > 255.255.255.255.67: BOOTP/DHCP, Request from bc:24:11:d5:37:4e, length 293",
+        "00:23:27.172122 bc:24:11:d5:37:4e > ff:ff:ff:ff:ff:ff, ethertype IPv4 (0x0800), length 345: 0.0.0.0.68 > 255.255.255.255.67: BOOTP/DHCP, Request from bc:24:11:d5:37:4e, length 303",
+        "00:24:27.618983 bc:24:11:d5:37:4e > ff:ff:ff:ff:ff:ff, ethertype IPv4 (0x0800), length 354: 0.0.0.0.68 > 255.255.255.255.67: BOOTP/DHCP, Request from bc:24:11:d5:37:4e, length 312",
+        "00:24:27.655372 bc:24:11:d5:37:4e > ff:ff:ff:ff:ff:ff, ethertype IPv4 (0x0800), length 364: 0.0.0.0.68 > 255.255.255.255.67: BOOTP/DHCP, Request from bc:24:11:d5:37:4e, length 322",
+        "00:24:28.425329 bc:24:11:d5:37:4e > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 42: Request who-has 10.0.30.254 tell 10.0.30.198, length 28"
+      ],
+      "line_count": 5,
+      "mac_line_count": 5
+    },
+    "target": "claude@10.0.30.10"
+  },
+  "lifecycle": {
+    "created_at": "2026-05-19T04:22:26Z",
+    "deleted_at": "2026-05-19T04:27:45Z",
+    "started_at": "2026-05-19T04:22:30Z",
+    "stopped_at": "2026-05-19T04:27:44Z"
+  },
+  "mac": "bc:24:11:d5:37:4e",
+  "mac_digest": "c1e206cbcdd52e58",
+  "network_facts": {
+    "bridge": "vmbr0",
+    "device": "net0",
+    "mac": "bc:24:11:d5:37:4e",
+    "mac_digest": "c1e206cbcdd52e58",
+    "ok": true,
+    "reason": null,
+    "vlan": "30"
+  },
+  "outcome": "dhcp_observed_guest_agent_unhealthy",
+  "port": null,
+  "preflight": {
+    "blockers": [],
+    "checked_at": "2026-05-19T04:22:21Z",
+    "vm_lifecycle_allowed": true
+  },
+  "product_family": "proxmox-template",
+  "reason": "guest_agent_unhealthy_after_dhcp",
+  "scanner_capture_attempted": false,
+  "schema_version": 1,
+  "secret_values_recorded": false,
+  "steps": [
+    {
+      "exitstatus": "OK",
+      "http_status": 200,
+      "name": "clone",
+      "ok": true,
+      "task_status": "stopped",
+      "upid_redacted": true
+    },
+    {
+      "http_status": 200,
+      "name": "config:resources",
+      "ok": true
+    },
+    {
+      "http_status": 200,
+      "name": "config:network",
+      "ok": true
+    },
+    {
+      "http_status": 200,
+      "name": "config:cloudinit",
+      "ok": true
+    },
+    {
+      "exitstatus": "OK",
+      "http_status": 200,
+      "name": "resize:scsi0",
+      "ok": true,
+      "task_status": "stopped",
+      "upid_redacted": true
+    },
+    {
+      "exitstatus": "OK",
+      "http_status": 200,
+      "name": "start",
+      "ok": true,
+      "task_status": "stopped",
+      "upid_redacted": true
+    },
+    {
+      "exitstatus": "OK",
+      "http_status": 200,
+      "name": "stop",
+      "ok": true,
+      "task_status": "stopped",
+      "upid_redacted": true
+    },
+    {
+      "exitstatus": "OK",
+      "http_status": 200,
+      "name": "delete",
+      "ok": true,
+      "task_status": "stopped",
+      "upid_redacted": true
+    }
+  ],
+  "template_diagnostics": {
+    "attempts": [
+      {
+        "attempt": 1,
+        "checked_at": "2026-05-19T04:22:36Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 2,
+        "checked_at": "2026-05-19T04:22:52Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 3,
+        "checked_at": "2026-05-19T04:23:08Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 4,
+        "checked_at": "2026-05-19T04:23:25Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 5,
+        "checked_at": "2026-05-19T04:23:41Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 6,
+        "checked_at": "2026-05-19T04:23:57Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 7,
+        "checked_at": "2026-05-19T04:24:13Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 8,
+        "checked_at": "2026-05-19T04:24:29Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 9,
+        "checked_at": "2026-05-19T04:24:45Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 10,
+        "checked_at": "2026-05-19T04:25:01Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 11,
+        "checked_at": "2026-05-19T04:25:17Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 12,
+        "checked_at": "2026-05-19T04:25:33Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 13,
+        "checked_at": "2026-05-19T04:25:50Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 14,
+        "checked_at": "2026-05-19T04:26:06Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 15,
+        "checked_at": "2026-05-19T04:26:22Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 16,
+        "checked_at": "2026-05-19T04:26:38Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 17,
+        "checked_at": "2026-05-19T04:26:54Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 18,
+        "checked_at": "2026-05-19T04:27:10Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 19,
+        "checked_at": "2026-05-19T04:27:27Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 20,
+        "checked_at": "2026-05-19T04:27:43Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      }
+    ],
+    "cloud_init": null,
+    "guest_agent_healthy": false,
+    "guest_agent_network_ipv4": null,
+    "l2_ipv4": "10.0.30.198",
+    "method": "template-diagnostics",
+    "network_facts": {
+      "bridge": "vmbr0",
+      "device": "net0",
+      "mac": "bc:24:11:d5:37:4e",
+      "mac_digest": "c1e206cbcdd52e58",
+      "ok": true,
+      "vlan": "30"
+    },
+    "ok": false,
+    "outcome": "no_ip_discovered",
+    "passive_ipv4": null,
+    "reason": "no_guest_or_passive_vlan30_ip"
+  },
+  "version": "template-validation",
+  "vlan": 30,
+  "vm_name": "openclaw-template-diag-08",
+  "vmid": 100
+}

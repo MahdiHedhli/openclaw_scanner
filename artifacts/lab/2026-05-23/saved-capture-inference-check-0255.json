@@ -1,0 +1,73 @@
+{
+  "artifact_type": "openclaw_saved_capture_inference_check",
+  "generated_at": "2026-05-24T02:56:50.843750+00:00",
+  "input_root": "artifacts/lab/2026-05-23",
+  "results": [
+    {
+      "capture_index": 1,
+      "capture_path": "artifacts/lab/2026-05-23/openclaw-2026.5.20-attempt-02/capture.json",
+      "declared_exact_match": true,
+      "declared_exact_sources": [
+        "lab-capture-2026-5-20"
+      ],
+      "declared_version": "2026.5.20",
+      "matched_version_count": 1,
+      "observation_count": 39,
+      "top_version": {
+        "confidence": 0.89,
+        "exact": true,
+        "notes": "Promoted from two short-lived VLAN 30 known-version corpus captures on 2026-05-23. Review before applying to unrelated OpenClaw deployment modes.",
+        "source": "lab-capture-2026-5-20",
+        "version": "2026.5.20"
+      }
+    },
+    {
+      "capture_index": 1,
+      "capture_path": "artifacts/lab/2026-05-23/openclaw-2026.5.20-attempt-03/capture.json",
+      "declared_exact_match": true,
+      "declared_exact_sources": [
+        "lab-capture-2026-5-20"
+      ],
+      "declared_version": "2026.5.20",
+      "matched_version_count": 1,
+      "observation_count": 39,
+      "top_version": {
+        "confidence": 0.89,
+        "exact": true,
+        "notes": "Promoted from two short-lived VLAN 30 known-version corpus captures on 2026-05-23. Review before applying to unrelated OpenClaw deployment modes.",
+        "source": "lab-capture-2026-5-20",
+        "version": "2026.5.20"
+      }
+    },
+    {
+      "capture_index": 1,
+      "capture_path": "artifacts/lab/2026-05-23/openclaw-2026.5.22-beta.1-attempt-03/capture.json",
+      "declared_exact_match": false,
+      "declared_exact_sources": [],
+      "declared_version": "2026.5.22-beta.1",
+      "matched_version_count": 0,
+      "observation_count": 39,
+      "top_version": null
+    },
+    {
+      "capture_index": 1,
+      "capture_path": "artifacts/lab/2026-05-23/openclaw-2026.5.22-beta.1-attempt-04/capture.json",
+      "declared_exact_match": false,
+      "declared_exact_sources": [],
+      "declared_version": "2026.5.22-beta.1",
+      "matched_version_count": 0,
+      "observation_count": 39,
+      "top_version": null
+    }
+  ],
+  "rules_source": "openclaw_scanner/data/openclaw_rules.json",
+  "schema_version": 1,
+  "summary": {
+    "capture_count": 4,
+    "declared_exact_match_count": 2,
+    "declared_no_exact_match_count": 2,
+    "declared_versions_without_exact_match": [
+      "2026.5.22-beta.1"
+    ]
+  }
+}

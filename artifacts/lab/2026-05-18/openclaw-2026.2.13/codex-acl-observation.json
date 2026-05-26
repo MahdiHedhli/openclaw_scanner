@@ -1,0 +1,23 @@
+{
+  "acl_change": {
+    "existing_vlan30_path_preserved": "/sdn/zones/localnetwork/vmbr0/30",
+    "path_added": "/sdn/zones/localnetwork/vmbr0",
+    "principal_token": "redacted-token-identifier",
+    "principal_user": "openclaw_scanner@pve",
+    "privilege": "SDN.Use",
+    "role": "OpenClawScannerNetwork"
+  },
+  "final_inventory": "No openclaw-corpus VM present in qm list after cleanup check.",
+  "gateway_health_result": "not reachable before lifecycle cleanup",
+  "gateway_health_url": "http://10.0.30.191:18789/health",
+  "ip_observed_via_dev01_arp": "10.0.30.191",
+  "mac_observed": "bc:24:11:6a:6a:a4",
+  "observer": "codex-thread-acl-and-out-of-band-check",
+  "reason_no_scan_artifact": "Other thread owned lifecycle cleanup; scanner wait was stopped to avoid racing. Gateway port did not become reachable before cleanup.",
+  "scan_artifacts_captured_by_this_thread": [],
+  "schema_version": 1,
+  "version": "2026.2.13",
+  "vlan": 30,
+  "vm_name_observed": "openclaw-corpus-2026-2-13-03",
+  "vmid_observed": 103
+}

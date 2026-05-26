@@ -1,0 +1,1506 @@
+[
+  {
+    "errors": [
+      "http://10.0.30.136:18789 WS-UPGRADE /ws: timed out",
+      "http://10.0.30.136:18789 WS-UPGRADE /socket.io/: timed out"
+    ],
+    "fingerprint_matches": [
+      {
+        "confidence": 0.91,
+        "family": "claw_gateway_tools_invoke_auth_json",
+        "label": "Claw-family gateway with auth-gated /tools/invoke HTTP API",
+        "notes": "Observed on live port 18789 responders and aligned to official gateway/security docs where /tools/invoke shares the main trusted-operator auth boundary.",
+        "source": "claw-gateway-tools-invoke-auth-json"
+      },
+      {
+        "confidence": 0.86,
+        "family": "openclaw_spa_fallback_all_200",
+        "label": "OpenClaw SPA fallback on API and health routes",
+        "notes": "Observed on live port 18789 responders where /api, /api/version, and /health all return the same HTML control shell instead of a dedicated API response.",
+        "source": "openclaw-spa-fallback-all-200"
+      }
+    ],
+    "honeypot_assessment": {
+      "known_signature": null,
+      "notes": null,
+      "probability": 0.0,
+      "probable": false,
+      "signals": [],
+      "timing_cv": 0.7439,
+      "uniform_timing": false
+    },
+    "input_target": "http://10.0.30.136:18789",
+    "matched_versions": [],
+    "metadata": {},
+    "observations": {
+      "/": {
+        "body_length": 671,
+        "body_markers": [
+          "openclaw"
+        ],
+        "body_sha256": "7d328b8c81a7b3090dcd4f6259c02b3978a2df7abb95c167cfb0599676aa78de",
+        "content_type": "text/html; charset=utf-8",
+        "error": null,
+        "error_text": null,
+        "favicon_hash": null,
+        "final_url": "http://10.0.30.136:18789/",
+        "has_stack_trace": false,
+        "header_order": [
+          "content-type",
+          "cache-control",
+          "date",
+          "connection",
+          "content-length"
+        ],
+        "headers": {
+          "cache-control": "no-cache",
+          "connection": "close",
+          "content-length": "671",
+          "content-type": "text/html; charset=utf-8",
+          "date": "Tue, 26 May 2026 16:09:44 GMT"
+        },
+        "js_files": [
+          "./assets/index-DFDgq9AK.js"
+        ],
+        "json_keys": [],
+        "method": "GET",
+        "path": "/",
+        "probe_name": null,
+        "response_time_ms": 66.435,
+        "status": 200,
+        "title": "OpenClaw Control",
+        "url": "http://10.0.30.136:18789/",
+        "version_hints": []
+      },
+      "/.well-known/openid-configuration": {
+        "body_length": 671,
+        "body_markers": [
+          "openclaw"
+        ],
+        "body_sha256": "7d328b8c81a7b3090dcd4f6259c02b3978a2df7abb95c167cfb0599676aa78de",
+        "content_type": "text/html; charset=utf-8",
+        "error": null,
+        "error_text": null,
+        "favicon_hash": null,
+        "final_url": "http://10.0.30.136:18789/.well-known/openid-configuration",
+        "has_stack_trace": false,
+        "header_order": [
+          "content-type",
+          "cache-control",
+          "date",
+          "connection",
+          "content-length"
+        ],
+        "headers": {
+          "cache-control": "no-cache",
+          "connection": "close",
+          "content-length": "671",
+          "content-type": "text/html; charset=utf-8",
+          "date": "Tue, 26 May 2026 16:09:44 GMT"
+        },
+        "js_files": [
+          "./assets/index-DFDgq9AK.js"
+        ],
+        "json_keys": [],
+        "method": "GET",
+        "path": "/.well-known/openid-configuration",
+        "probe_name": null,
+        "response_time_ms": 22.771,
+        "status": 200,
+        "title": "OpenClaw Control",
+        "url": "http://10.0.30.136:18789/.well-known/openid-configuration",
+        "version_hints": []
+      },
+      "/.well-known/security.txt": {
+        "body_length": 671,
+        "body_markers": [
+          "openclaw"
+        ],
+        "body_sha256": "7d328b8c81a7b3090dcd4f6259c02b3978a2df7abb95c167cfb0599676aa78de",
+        "content_type": "text/html; charset=utf-8",
+        "error": null,
+        "error_text": null,
+        "favicon_hash": null,
+        "final_url": "http://10.0.30.136:18789/.well-known/security.txt",
+        "has_stack_trace": false,
+        "header_order": [
+          "content-type",
+          "cache-control",
+          "date",
+          "connection",
+          "content-length"
+        ],
+        "headers": {
+          "cache-control": "no-cache",
+          "connection": "close",
+          "content-length": "671",
+          "content-type": "text/html; charset=utf-8",
+          "date": "Tue, 26 May 2026 16:09:44 GMT"
+        },
+        "js_files": [
+          "./assets/index-DFDgq9AK.js"
+        ],
+        "json_keys": [],
+        "method": "GET",
+        "path": "/.well-known/security.txt",
+        "probe_name": null,
+        "response_time_ms": 22.368,
+        "status": 200,
+        "title": "OpenClaw Control",
+        "url": "http://10.0.30.136:18789/.well-known/security.txt",
+        "version_hints": []
+      },
+      "/api": {
+        "body_length": 671,
+        "body_markers": [
+          "openclaw"
+        ],
+        "body_sha256": "7d328b8c81a7b3090dcd4f6259c02b3978a2df7abb95c167cfb0599676aa78de",
+        "content_type": "text/html; charset=utf-8",
+        "error": null,
+        "error_text": null,
+        "favicon_hash": null,
+        "final_url": "http://10.0.30.136:18789/api",
+        "has_stack_trace": false,
+        "header_order": [
+          "content-type",
+          "cache-control",
+          "date",
+          "connection",
+          "content-length"
+        ],
+        "headers": {
+          "cache-control": "no-cache",
+          "connection": "close",
+          "content-length": "671",
+          "content-type": "text/html; charset=utf-8",
+          "date": "Tue, 26 May 2026 16:09:44 GMT"
+        },
+        "js_files": [
+          "./assets/index-DFDgq9AK.js"
+        ],
+        "json_keys": [],
+        "method": "GET",
+        "path": "/api",
+        "probe_name": null,
+        "response_time_ms": 23.818,
+        "status": 200,
+        "title": "OpenClaw Control",
+        "url": "http://10.0.30.136:18789/api",
+        "version_hints": []
+      },
+      "/api/agents": {
+        "body_length": 671,
+        "body_markers": [
+          "openclaw"
+        ],
+        "body_sha256": "7d328b8c81a7b3090dcd4f6259c02b3978a2df7abb95c167cfb0599676aa78de",
+        "content_type": "text/html; charset=utf-8",
+        "error": null,
+        "error_text": null,
+        "favicon_hash": null,
+        "final_url": "http://10.0.30.136:18789/api/agents",
+        "has_stack_trace": false,
+        "header_order": [
+          "content-type",
+          "cache-control",
+          "date",
+          "connection",
+          "content-length"
+        ],
+        "headers": {
+          "cache-control": "no-cache",
+          "connection": "close",
+          "content-length": "671",
+          "content-type": "text/html; charset=utf-8",
+          "date": "Tue, 26 May 2026 16:09:44 GMT"
+        },
+        "js_files": [
+          "./assets/index-DFDgq9AK.js"
+        ],
+        "json_keys": [],
+        "method": "GET",
+        "path": "/api/agents",
+        "probe_name": null,
+        "response_time_ms": 34.931,
+        "status": 200,
+        "title": "OpenClaw Control",
+        "url": "http://10.0.30.136:18789/api/agents",
+        "version_hints": []
+      },
+      "/api/config": {
+        "body_length": 671,
+        "body_markers": [
+          "openclaw"
+        ],
+        "body_sha256": "7d328b8c81a7b3090dcd4f6259c02b3978a2df7abb95c167cfb0599676aa78de",
+        "content_type": "text/html; charset=utf-8",
+        "error": null,
+        "error_text": null,
+        "favicon_hash": null,
+        "final_url": "http://10.0.30.136:18789/api/config",
+        "has_stack_trace": false,
+        "header_order": [
+          "content-type",
+          "cache-control",
+          "date",
+          "connection",
+          "content-length"
+        ],
+        "headers": {
+          "cache-control": "no-cache",
+          "connection": "close",
+          "content-length": "671",
+          "content-type": "text/html; charset=utf-8",
+          "date": "Tue, 26 May 2026 16:09:44 GMT"
+        },
+        "js_files": [
+          "./assets/index-DFDgq9AK.js"
+        ],
+        "json_keys": [],
+        "method": "GET",
+        "path": "/api/config",
+        "probe_name": null,
+        "response_time_ms": 15.968,
+        "status": 200,
+        "title": "OpenClaw Control",
+        "url": "http://10.0.30.136:18789/api/config",
+        "version_hints": []
+      },
+      "/api/devices": {
+        "body_length": 671,
+        "body_markers": [
+          "openclaw"
+        ],
+        "body_sha256": "7d328b8c81a7b3090dcd4f6259c02b3978a2df7abb95c167cfb0599676aa78de",
+        "content_type": "text/html; charset=utf-8",
+        "error": null,
+        "error_text": null,
+        "favicon_hash": null,
+        "final_url": "http://10.0.30.136:18789/api/devices",
+        "has_stack_trace": false,
+        "header_order": [
+          "content-type",
+          "cache-control",
+          "date",
+          "connection",
+          "content-length"
+        ],
+        "headers": {
+          "cache-control": "no-cache",
+          "connection": "close",
+          "content-length": "671",
+          "content-type": "text/html; charset=utf-8",
+          "date": "Tue, 26 May 2026 16:09:44 GMT"
+        },
+        "js_files": [
+          "./assets/index-DFDgq9AK.js"
+        ],
+        "json_keys": [],
+        "method": "GET",
+        "path": "/api/devices",
+        "probe_name": null,
+        "response_time_ms": 46.411,
+        "status": 200,
+        "title": "OpenClaw Control",
+        "url": "http://10.0.30.136:18789/api/devices",
+        "version_hints": []
+      },
+      "/api/docs": {
+        "body_length": 671,
+        "body_markers": [
+          "openclaw"
+        ],
+        "body_sha256": "7d328b8c81a7b3090dcd4f6259c02b3978a2df7abb95c167cfb0599676aa78de",
+        "content_type": "text/html; charset=utf-8",
+        "error": null,
+        "error_text": null,
+        "favicon_hash": null,
+        "final_url": "http://10.0.30.136:18789/api/docs",
+        "has_stack_trace": false,
+        "header_order": [
+          "content-type",
+          "cache-control",
+          "date",
+          "connection",
+          "content-length"
+        ],
+        "headers": {
+          "cache-control": "no-cache",
+          "connection": "close",
+          "content-length": "671",
+          "content-type": "text/html; charset=utf-8",
+          "date": "Tue, 26 May 2026 16:09:44 GMT"
+        },
+        "js_files": [
+          "./assets/index-DFDgq9AK.js"
+        ],
+        "json_keys": [],
+        "method": "GET",
+        "path": "/api/docs",
+        "probe_name": null,
+        "response_time_ms": 31.539,
+        "status": 200,
+        "title": "OpenClaw Control",
+        "url": "http://10.0.30.136:18789/api/docs",
+        "version_hints": []
+      },
+      "/api/doesnotexist": {
+        "body_length": 671,
+        "body_markers": [
+          "openclaw"
+        ],
+        "body_sha256": "7d328b8c81a7b3090dcd4f6259c02b3978a2df7abb95c167cfb0599676aa78de",
+        "content_type": "text/html; charset=utf-8",
+        "error": null,
+        "error_text": null,
+        "favicon_hash": null,
+        "final_url": "http://10.0.30.136:18789/api/doesnotexist",
+        "has_stack_trace": false,
+        "header_order": [
+          "content-type",
+          "cache-control",
+          "date",
+          "connection",
+          "content-length"
+        ],
+        "headers": {
+          "cache-control": "no-cache",
+          "connection": "close",
+          "content-length": "671",
+          "content-type": "text/html; charset=utf-8",
+          "date": "Tue, 26 May 2026 16:09:54 GMT"
+        },
+        "js_files": [
+          "./assets/index-DFDgq9AK.js"
+        ],
+        "json_keys": [],
+        "method": "GET",
+        "path": "/api/doesnotexist",
+        "probe_name": null,
+        "response_time_ms": 91.095,
+        "status": 200,
+        "title": "OpenClaw Control",
+        "url": "http://10.0.30.136:18789/api/doesnotexist",
+        "version_hints": []
+      },
+      "/api/graphql": {
+        "body_length": 671,
+        "body_markers": [
+          "openclaw"
+        ],
+        "body_sha256": "7d328b8c81a7b3090dcd4f6259c02b3978a2df7abb95c167cfb0599676aa78de",
+        "content_type": "text/html; charset=utf-8",
+        "error": null,
+        "error_text": null,
+        "favicon_hash": null,
+        "final_url": "http://10.0.30.136:18789/api/graphql",
+        "has_stack_trace": false,
+        "header_order": [
+          "content-type",
+          "cache-control",
+          "date",
+          "connection",
+          "content-length"
+        ],
+        "headers": {
+          "cache-control": "no-cache",
+          "connection": "close",
+          "content-length": "671",
+          "content-type": "text/html; charset=utf-8",
+          "date": "Tue, 26 May 2026 16:09:44 GMT"
+        },
+        "js_files": [
+          "./assets/index-DFDgq9AK.js"
+        ],
+        "json_keys": [],
+        "method": "GET",
+        "path": "/api/graphql",
+        "probe_name": null,
+        "response_time_ms": 17.848,
+        "status": 200,
+        "title": "OpenClaw Control",
+        "url": "http://10.0.30.136:18789/api/graphql",
+        "version_hints": []
+      },
+      "/api/health": {
+        "body_length": 671,
+        "body_markers": [
+          "openclaw"
+        ],
+        "body_sha256": "7d328b8c81a7b3090dcd4f6259c02b3978a2df7abb95c167cfb0599676aa78de",
+        "content_type": "text/html; charset=utf-8",
+        "error": null,
+        "error_text": null,
+        "favicon_hash": null,
+        "final_url": "http://10.0.30.136:18789/api/health",
+        "has_stack_trace": false,
+        "header_order": [
+          "content-type",
+          "cache-control",
+          "date",
+          "connection",
+          "content-length"
+        ],
+        "headers": {
+          "cache-control": "no-cache",
+          "connection": "close",
+          "content-length": "671",
+          "content-type": "text/html; charset=utf-8",
+          "date": "Tue, 26 May 2026 16:09:44 GMT"
+        },
+        "js_files": [
+          "./assets/index-DFDgq9AK.js"
+        ],
+        "json_keys": [],
+        "method": "GET",
+        "path": "/api/health",
+        "probe_name": null,
+        "response_time_ms": 25.697,
+        "status": 200,
+        "title": "OpenClaw Control",
+        "url": "http://10.0.30.136:18789/api/health",
+        "version_hints": []
+      },
+      "/api/skills": {
+        "body_length": 671,
+        "body_markers": [
+          "openclaw"
+        ],
+        "body_sha256": "7d328b8c81a7b3090dcd4f6259c02b3978a2df7abb95c167cfb0599676aa78de",
+        "content_type": "text/html; charset=utf-8",
+        "error": null,
+        "error_text": null,
+        "favicon_hash": null,
+        "final_url": "http://10.0.30.136:18789/api/skills",
+        "has_stack_trace": false,
+        "header_order": [
+          "content-type",
+          "cache-control",
+          "date",
+          "connection",
+          "content-length"
+        ],
+        "headers": {
+          "cache-control": "no-cache",
+          "connection": "close",
+          "content-length": "671",
+          "content-type": "text/html; charset=utf-8",
+          "date": "Tue, 26 May 2026 16:09:44 GMT"
+        },
+        "js_files": [
+          "./assets/index-DFDgq9AK.js"
+        ],
+        "json_keys": [],
+        "method": "GET",
+        "path": "/api/skills",
+        "probe_name": null,
+        "response_time_ms": 21.569,
+        "status": 200,
+        "title": "OpenClaw Control",
+        "url": "http://10.0.30.136:18789/api/skills",
+        "version_hints": []
+      },
+      "/api/status": {
+        "body_length": 671,
+        "body_markers": [
+          "openclaw"
+        ],
+        "body_sha256": "7d328b8c81a7b3090dcd4f6259c02b3978a2df7abb95c167cfb0599676aa78de",
+        "content_type": "text/html; charset=utf-8",
+        "error": null,
+        "error_text": null,
+        "favicon_hash": null,
+        "final_url": "http://10.0.30.136:18789/api/status",
+        "has_stack_trace": false,
+        "header_order": [
+          "content-type",
+          "cache-control",
+          "date",
+          "connection",
+          "content-length"
+        ],
+        "headers": {
+          "cache-control": "no-cache",
+          "connection": "close",
+          "content-length": "671",
+          "content-type": "text/html; charset=utf-8",
+          "date": "Tue, 26 May 2026 16:09:44 GMT"
+        },
+        "js_files": [
+          "./assets/index-DFDgq9AK.js"
+        ],
+        "json_keys": [],
+        "method": "GET",
+        "path": "/api/status",
+        "probe_name": null,
+        "response_time_ms": 29.136,
+        "status": 200,
+        "title": "OpenClaw Control",
+        "url": "http://10.0.30.136:18789/api/status",
+        "version_hints": []
+      },
+      "/api/system/info": {
+        "body_length": 671,
+        "body_markers": [
+          "openclaw"
+        ],
+        "body_sha256": "7d328b8c81a7b3090dcd4f6259c02b3978a2df7abb95c167cfb0599676aa78de",
+        "content_type": "text/html; charset=utf-8",
+        "error": null,
+        "error_text": null,
+        "favicon_hash": null,
+        "final_url": "http://10.0.30.136:18789/api/system/info",
+        "has_stack_trace": false,
+        "header_order": [
+          "content-type",
+          "cache-control",
+          "date",
+          "connection",
+          "content-length"
+        ],
+        "headers": {
+          "cache-control": "no-cache",
+          "connection": "close",
+          "content-length": "671",
+          "content-type": "text/html; charset=utf-8",
+          "date": "Tue, 26 May 2026 16:09:44 GMT"
+        },
+        "js_files": [
+          "./assets/index-DFDgq9AK.js"
+        ],
+        "json_keys": [],
+        "method": "GET",
+        "path": "/api/system/info",
+        "probe_name": null,
+        "response_time_ms": 115.54,
+        "status": 200,
+        "title": "OpenClaw Control",
+        "url": "http://10.0.30.136:18789/api/system/info",
+        "version_hints": []
+      },
+      "/api/version": {
+        "body_length": 671,
+        "body_markers": [
+          "openclaw"
+        ],
+        "body_sha256": "7d328b8c81a7b3090dcd4f6259c02b3978a2df7abb95c167cfb0599676aa78de",
+        "content_type": "text/html; charset=utf-8",
+        "error": null,
+        "error_text": null,
+        "favicon_hash": null,
+        "final_url": "http://10.0.30.136:18789/api/version",
+        "has_stack_trace": false,
+        "header_order": [
+          "content-type",
+          "cache-control",
+          "date",
+          "connection",
+          "content-length"
+        ],
+        "headers": {
+          "cache-control": "no-cache",
+          "connection": "close",
+          "content-length": "671",
+          "content-type": "text/html; charset=utf-8",
+          "date": "Tue, 26 May 2026 16:09:44 GMT"
+        },
+        "js_files": [
+          "./assets/index-DFDgq9AK.js"
+        ],
+        "json_keys": [],
+        "method": "GET",
+        "path": "/api/version",
+        "probe_name": null,
+        "response_time_ms": 15.23,
+        "status": 200,
+        "title": "OpenClaw Control",
+        "url": "http://10.0.30.136:18789/api/version",
+        "version_hints": []
+      },
+      "/asset-manifest.json": {
+        "body_length": 671,
+        "body_markers": [
+          "openclaw"
+        ],
+        "body_sha256": "7d328b8c81a7b3090dcd4f6259c02b3978a2df7abb95c167cfb0599676aa78de",
+        "content_type": "text/html; charset=utf-8",
+        "error": null,
+        "error_text": null,
+        "favicon_hash": null,
+        "final_url": "http://10.0.30.136:18789/asset-manifest.json",
+        "has_stack_trace": false,
+        "header_order": [
+          "content-type",
+          "cache-control",
+          "date",
+          "connection",
+          "content-length"
+        ],
+        "headers": {
+          "cache-control": "no-cache",
+          "connection": "close",
+          "content-length": "671",
+          "content-type": "text/html; charset=utf-8",
+          "date": "Tue, 26 May 2026 16:09:55 GMT"
+        },
+        "js_files": [
+          "./assets/index-DFDgq9AK.js"
+        ],
+        "json_keys": [],
+        "method": "GET",
+        "path": "/asset-manifest.json",
+        "probe_name": null,
+        "response_time_ms": 14.87,
+        "status": 200,
+        "title": "OpenClaw Control",
+        "url": "http://10.0.30.136:18789/asset-manifest.json",
+        "version_hints": []
+      },
+      "/config.js": {
+        "body_length": 671,
+        "body_markers": [
+          "openclaw"
+        ],
+        "body_sha256": "7d328b8c81a7b3090dcd4f6259c02b3978a2df7abb95c167cfb0599676aa78de",
+        "content_type": "text/html; charset=utf-8",
+        "error": null,
+        "error_text": null,
+        "favicon_hash": null,
+        "final_url": "http://10.0.30.136:18789/config.js",
+        "has_stack_trace": false,
+        "header_order": [
+          "content-type",
+          "cache-control",
+          "date",
+          "connection",
+          "content-length"
+        ],
+        "headers": {
+          "cache-control": "no-cache",
+          "connection": "close",
+          "content-length": "671",
+          "content-type": "text/html; charset=utf-8",
+          "date": "Tue, 26 May 2026 16:09:44 GMT"
+        },
+        "js_files": [
+          "./assets/index-DFDgq9AK.js"
+        ],
+        "json_keys": [],
+        "method": "GET",
+        "path": "/config.js",
+        "probe_name": null,
+        "response_time_ms": 13.615,
+        "status": 200,
+        "title": "OpenClaw Control",
+        "url": "http://10.0.30.136:18789/config.js",
+        "version_hints": []
+      },
+      "/debug/pprof": {
+        "body_length": 671,
+        "body_markers": [
+          "openclaw"
+        ],
+        "body_sha256": "7d328b8c81a7b3090dcd4f6259c02b3978a2df7abb95c167cfb0599676aa78de",
+        "content_type": "text/html; charset=utf-8",
+        "error": null,
+        "error_text": null,
+        "favicon_hash": null,
+        "final_url": "http://10.0.30.136:18789/debug/pprof",
+        "has_stack_trace": false,
+        "header_order": [
+          "content-type",
+          "cache-control",
+          "date",
+          "connection",
+          "content-length"
+        ],
+        "headers": {
+          "cache-control": "no-cache",
+          "connection": "close",
+          "content-length": "671",
+          "content-type": "text/html; charset=utf-8",
+          "date": "Tue, 26 May 2026 16:09:44 GMT"
+        },
+        "js_files": [
+          "./assets/index-DFDgq9AK.js"
+        ],
+        "json_keys": [],
+        "method": "GET",
+        "path": "/debug/pprof",
+        "probe_name": null,
+        "response_time_ms": 39.494,
+        "status": 200,
+        "title": "OpenClaw Control",
+        "url": "http://10.0.30.136:18789/debug/pprof",
+        "version_hints": []
+      },
+      "/debug/pprof/": {
+        "body_length": 671,
+        "body_markers": [
+          "openclaw"
+        ],
+        "body_sha256": "7d328b8c81a7b3090dcd4f6259c02b3978a2df7abb95c167cfb0599676aa78de",
+        "content_type": "text/html; charset=utf-8",
+        "error": null,
+        "error_text": null,
+        "favicon_hash": null,
+        "final_url": "http://10.0.30.136:18789/debug/pprof/",
+        "has_stack_trace": false,
+        "header_order": [
+          "content-type",
+          "cache-control",
+          "date",
+          "connection",
+          "content-length"
+        ],
+        "headers": {
+          "cache-control": "no-cache",
+          "connection": "close",
+          "content-length": "671",
+          "content-type": "text/html; charset=utf-8",
+          "date": "Tue, 26 May 2026 16:09:44 GMT"
+        },
+        "js_files": [
+          "./assets/index-DFDgq9AK.js"
+        ],
+        "json_keys": [],
+        "method": "GET",
+        "path": "/debug/pprof/",
+        "probe_name": null,
+        "response_time_ms": 37.095,
+        "status": 200,
+        "title": "OpenClaw Control",
+        "url": "http://10.0.30.136:18789/debug/pprof/",
+        "version_hints": []
+      },
+      "/env.js": {
+        "body_length": 671,
+        "body_markers": [
+          "openclaw"
+        ],
+        "body_sha256": "7d328b8c81a7b3090dcd4f6259c02b3978a2df7abb95c167cfb0599676aa78de",
+        "content_type": "text/html; charset=utf-8",
+        "error": null,
+        "error_text": null,
+        "favicon_hash": null,
+        "final_url": "http://10.0.30.136:18789/env.js",
+        "has_stack_trace": false,
+        "header_order": [
+          "content-type",
+          "cache-control",
+          "date",
+          "connection",
+          "content-length"
+        ],
+        "headers": {
+          "cache-control": "no-cache",
+          "connection": "close",
+          "content-length": "671",
+          "content-type": "text/html; charset=utf-8",
+          "date": "Tue, 26 May 2026 16:09:44 GMT"
+        },
+        "js_files": [
+          "./assets/index-DFDgq9AK.js"
+        ],
+        "json_keys": [],
+        "method": "GET",
+        "path": "/env.js",
+        "probe_name": null,
+        "response_time_ms": 17.536,
+        "status": 200,
+        "title": "OpenClaw Control",
+        "url": "http://10.0.30.136:18789/env.js",
+        "version_hints": []
+      },
+      "/favicon.ico": {
+        "body_length": 96542,
+        "body_markers": [],
+        "body_sha256": "e9f1d85593e10f4e7455ce7bc7f1d92fec873b04628bf3ca7dcbdab5344cfafb",
+        "content_type": "image/x-icon",
+        "error": null,
+        "error_text": null,
+        "favicon_hash": -805544463,
+        "final_url": "http://10.0.30.136:18789/favicon.ico",
+        "has_stack_trace": false,
+        "header_order": [
+          "content-type",
+          "cache-control",
+          "date",
+          "connection",
+          "content-length"
+        ],
+        "headers": {
+          "cache-control": "no-cache",
+          "connection": "close",
+          "content-length": "96542",
+          "content-type": "image/x-icon",
+          "date": "Tue, 26 May 2026 16:09:54 GMT"
+        },
+        "js_files": [],
+        "json_keys": [],
+        "method": "GET",
+        "path": "/favicon.ico",
+        "probe_name": null,
+        "response_time_ms": 32.342,
+        "status": 200,
+        "title": null,
+        "url": "http://10.0.30.136:18789/favicon.ico",
+        "version_hints": []
+      },
+      "/health": {
+        "body_length": 671,
+        "body_markers": [
+          "openclaw"
+        ],
+        "body_sha256": "7d328b8c81a7b3090dcd4f6259c02b3978a2df7abb95c167cfb0599676aa78de",
+        "content_type": "text/html; charset=utf-8",
+        "error": null,
+        "error_text": null,
+        "favicon_hash": null,
+        "final_url": "http://10.0.30.136:18789/health",
+        "has_stack_trace": false,
+        "header_order": [
+          "content-type",
+          "cache-control",
+          "date",
+          "connection",
+          "content-length"
+        ],
+        "headers": {
+          "cache-control": "no-cache",
+          "connection": "close",
+          "content-length": "671",
+          "content-type": "text/html; charset=utf-8",
+          "date": "Tue, 26 May 2026 16:09:44 GMT"
+        },
+        "js_files": [
+          "./assets/index-DFDgq9AK.js"
+        ],
+        "json_keys": [],
+        "method": "GET",
+        "path": "/health",
+        "probe_name": null,
+        "response_time_ms": 21.062,
+        "status": 200,
+        "title": "OpenClaw Control",
+        "url": "http://10.0.30.136:18789/health",
+        "version_hints": []
+      },
+      "/login": {
+        "body_length": 671,
+        "body_markers": [
+          "openclaw"
+        ],
+        "body_sha256": "7d328b8c81a7b3090dcd4f6259c02b3978a2df7abb95c167cfb0599676aa78de",
+        "content_type": "text/html; charset=utf-8",
+        "error": null,
+        "error_text": null,
+        "favicon_hash": null,
+        "final_url": "http://10.0.30.136:18789/login",
+        "has_stack_trace": false,
+        "header_order": [
+          "content-type",
+          "cache-control",
+          "date",
+          "connection",
+          "content-length"
+        ],
+        "headers": {
+          "cache-control": "no-cache",
+          "connection": "close",
+          "content-length": "671",
+          "content-type": "text/html; charset=utf-8",
+          "date": "Tue, 26 May 2026 16:09:44 GMT"
+        },
+        "js_files": [
+          "./assets/index-DFDgq9AK.js"
+        ],
+        "json_keys": [],
+        "method": "GET",
+        "path": "/login",
+        "probe_name": null,
+        "response_time_ms": 21.289,
+        "status": 200,
+        "title": "OpenClaw Control",
+        "url": "http://10.0.30.136:18789/login",
+        "version_hints": []
+      },
+      "/manifest.json": {
+        "body_length": 671,
+        "body_markers": [
+          "openclaw"
+        ],
+        "body_sha256": "7d328b8c81a7b3090dcd4f6259c02b3978a2df7abb95c167cfb0599676aa78de",
+        "content_type": "text/html; charset=utf-8",
+        "error": null,
+        "error_text": null,
+        "favicon_hash": null,
+        "final_url": "http://10.0.30.136:18789/manifest.json",
+        "has_stack_trace": false,
+        "header_order": [
+          "content-type",
+          "cache-control",
+          "date",
+          "connection",
+          "content-length"
+        ],
+        "headers": {
+          "cache-control": "no-cache",
+          "connection": "close",
+          "content-length": "671",
+          "content-type": "text/html; charset=utf-8",
+          "date": "Tue, 26 May 2026 16:09:54 GMT"
+        },
+        "js_files": [
+          "./assets/index-DFDgq9AK.js"
+        ],
+        "json_keys": [],
+        "method": "GET",
+        "path": "/manifest.json",
+        "probe_name": null,
+        "response_time_ms": 19.766,
+        "status": 200,
+        "title": "OpenClaw Control",
+        "url": "http://10.0.30.136:18789/manifest.json",
+        "version_hints": []
+      },
+      "/metrics": {
+        "body_length": 671,
+        "body_markers": [
+          "openclaw"
+        ],
+        "body_sha256": "7d328b8c81a7b3090dcd4f6259c02b3978a2df7abb95c167cfb0599676aa78de",
+        "content_type": "text/html; charset=utf-8",
+        "error": null,
+        "error_text": null,
+        "favicon_hash": null,
+        "final_url": "http://10.0.30.136:18789/metrics",
+        "has_stack_trace": false,
+        "header_order": [
+          "content-type",
+          "cache-control",
+          "date",
+          "connection",
+          "content-length"
+        ],
+        "headers": {
+          "cache-control": "no-cache",
+          "connection": "close",
+          "content-length": "671",
+          "content-type": "text/html; charset=utf-8",
+          "date": "Tue, 26 May 2026 16:09:44 GMT"
+        },
+        "js_files": [
+          "./assets/index-DFDgq9AK.js"
+        ],
+        "json_keys": [],
+        "method": "GET",
+        "path": "/metrics",
+        "probe_name": null,
+        "response_time_ms": 12.183,
+        "status": 200,
+        "title": "OpenClaw Control",
+        "url": "http://10.0.30.136:18789/metrics",
+        "version_hints": []
+      },
+      "/robots.txt": {
+        "body_length": 671,
+        "body_markers": [
+          "openclaw"
+        ],
+        "body_sha256": "7d328b8c81a7b3090dcd4f6259c02b3978a2df7abb95c167cfb0599676aa78de",
+        "content_type": "text/html; charset=utf-8",
+        "error": null,
+        "error_text": null,
+        "favicon_hash": null,
+        "final_url": "http://10.0.30.136:18789/robots.txt",
+        "has_stack_trace": false,
+        "header_order": [
+          "content-type",
+          "cache-control",
+          "date",
+          "connection",
+          "content-length"
+        ],
+        "headers": {
+          "cache-control": "no-cache",
+          "connection": "close",
+          "content-length": "671",
+          "content-type": "text/html; charset=utf-8",
+          "date": "Tue, 26 May 2026 16:09:44 GMT"
+        },
+        "js_files": [
+          "./assets/index-DFDgq9AK.js"
+        ],
+        "json_keys": [],
+        "method": "GET",
+        "path": "/robots.txt",
+        "probe_name": null,
+        "response_time_ms": 16.262,
+        "status": 200,
+        "title": "OpenClaw Control",
+        "url": "http://10.0.30.136:18789/robots.txt",
+        "version_hints": []
+      },
+      "/socket.io/": {
+        "body_length": 671,
+        "body_markers": [
+          "openclaw"
+        ],
+        "body_sha256": "7d328b8c81a7b3090dcd4f6259c02b3978a2df7abb95c167cfb0599676aa78de",
+        "content_type": "text/html; charset=utf-8",
+        "error": null,
+        "error_text": null,
+        "favicon_hash": null,
+        "final_url": "http://10.0.30.136:18789/socket.io/",
+        "has_stack_trace": false,
+        "header_order": [
+          "content-type",
+          "cache-control",
+          "date",
+          "connection",
+          "content-length"
+        ],
+        "headers": {
+          "cache-control": "no-cache",
+          "connection": "close",
+          "content-length": "671",
+          "content-type": "text/html; charset=utf-8",
+          "date": "Tue, 26 May 2026 16:09:44 GMT"
+        },
+        "js_files": [
+          "./assets/index-DFDgq9AK.js"
+        ],
+        "json_keys": [],
+        "method": "GET",
+        "path": "/socket.io/",
+        "probe_name": null,
+        "response_time_ms": 20.285,
+        "status": 200,
+        "title": "OpenClaw Control",
+        "url": "http://10.0.30.136:18789/socket.io/",
+        "version_hints": []
+      },
+      "/status": {
+        "body_length": 671,
+        "body_markers": [
+          "openclaw"
+        ],
+        "body_sha256": "7d328b8c81a7b3090dcd4f6259c02b3978a2df7abb95c167cfb0599676aa78de",
+        "content_type": "text/html; charset=utf-8",
+        "error": null,
+        "error_text": null,
+        "favicon_hash": null,
+        "final_url": "http://10.0.30.136:18789/status",
+        "has_stack_trace": false,
+        "header_order": [
+          "content-type",
+          "cache-control",
+          "date",
+          "connection",
+          "content-length"
+        ],
+        "headers": {
+          "cache-control": "no-cache",
+          "connection": "close",
+          "content-length": "671",
+          "content-type": "text/html; charset=utf-8",
+          "date": "Tue, 26 May 2026 16:09:44 GMT"
+        },
+        "js_files": [
+          "./assets/index-DFDgq9AK.js"
+        ],
+        "json_keys": [],
+        "method": "GET",
+        "path": "/status",
+        "probe_name": null,
+        "response_time_ms": 15.14,
+        "status": 200,
+        "title": "OpenClaw Control",
+        "url": "http://10.0.30.136:18789/status",
+        "version_hints": []
+      },
+      "/swagger.json": {
+        "body_length": 671,
+        "body_markers": [
+          "openclaw"
+        ],
+        "body_sha256": "7d328b8c81a7b3090dcd4f6259c02b3978a2df7abb95c167cfb0599676aa78de",
+        "content_type": "text/html; charset=utf-8",
+        "error": null,
+        "error_text": null,
+        "favicon_hash": null,
+        "final_url": "http://10.0.30.136:18789/swagger.json",
+        "has_stack_trace": false,
+        "header_order": [
+          "content-type",
+          "cache-control",
+          "date",
+          "connection",
+          "content-length"
+        ],
+        "headers": {
+          "cache-control": "no-cache",
+          "connection": "close",
+          "content-length": "671",
+          "content-type": "text/html; charset=utf-8",
+          "date": "Tue, 26 May 2026 16:09:44 GMT"
+        },
+        "js_files": [
+          "./assets/index-DFDgq9AK.js"
+        ],
+        "json_keys": [],
+        "method": "GET",
+        "path": "/swagger.json",
+        "probe_name": null,
+        "response_time_ms": 20.665,
+        "status": 200,
+        "title": "OpenClaw Control",
+        "url": "http://10.0.30.136:18789/swagger.json",
+        "version_hints": []
+      },
+      "/v1/models": {
+        "body_length": 671,
+        "body_markers": [
+          "openclaw"
+        ],
+        "body_sha256": "7d328b8c81a7b3090dcd4f6259c02b3978a2df7abb95c167cfb0599676aa78de",
+        "content_type": "text/html; charset=utf-8",
+        "error": null,
+        "error_text": null,
+        "favicon_hash": null,
+        "final_url": "http://10.0.30.136:18789/v1/models",
+        "has_stack_trace": false,
+        "header_order": [
+          "content-type",
+          "cache-control",
+          "date",
+          "connection",
+          "content-length"
+        ],
+        "headers": {
+          "cache-control": "no-cache",
+          "connection": "close",
+          "content-length": "671",
+          "content-type": "text/html; charset=utf-8",
+          "date": "Tue, 26 May 2026 16:09:44 GMT"
+        },
+        "js_files": [
+          "./assets/index-DFDgq9AK.js"
+        ],
+        "json_keys": [],
+        "method": "GET",
+        "path": "/v1/models",
+        "probe_name": null,
+        "response_time_ms": 21.502,
+        "status": 200,
+        "title": "OpenClaw Control",
+        "url": "http://10.0.30.136:18789/v1/models",
+        "version_hints": []
+      },
+      "/v1/models/openclaw/default": {
+        "body_length": 671,
+        "body_markers": [
+          "openclaw"
+        ],
+        "body_sha256": "7d328b8c81a7b3090dcd4f6259c02b3978a2df7abb95c167cfb0599676aa78de",
+        "content_type": "text/html; charset=utf-8",
+        "error": null,
+        "error_text": null,
+        "favicon_hash": null,
+        "final_url": "http://10.0.30.136:18789/v1/models/openclaw/default",
+        "has_stack_trace": false,
+        "header_order": [
+          "content-type",
+          "cache-control",
+          "date",
+          "connection",
+          "content-length"
+        ],
+        "headers": {
+          "cache-control": "no-cache",
+          "connection": "close",
+          "content-length": "671",
+          "content-type": "text/html; charset=utf-8",
+          "date": "Tue, 26 May 2026 16:09:44 GMT"
+        },
+        "js_files": [
+          "./assets/index-DFDgq9AK.js"
+        ],
+        "json_keys": [],
+        "method": "GET",
+        "path": "/v1/models/openclaw/default",
+        "probe_name": null,
+        "response_time_ms": 18.257,
+        "status": 200,
+        "title": "OpenClaw Control",
+        "url": "http://10.0.30.136:18789/v1/models/openclaw/default",
+        "version_hints": []
+      },
+      "/ws": {
+        "body_length": 671,
+        "body_markers": [
+          "openclaw"
+        ],
+        "body_sha256": "7d328b8c81a7b3090dcd4f6259c02b3978a2df7abb95c167cfb0599676aa78de",
+        "content_type": "text/html; charset=utf-8",
+        "error": null,
+        "error_text": null,
+        "favicon_hash": null,
+        "final_url": "http://10.0.30.136:18789/ws",
+        "has_stack_trace": false,
+        "header_order": [
+          "content-type",
+          "cache-control",
+          "date",
+          "connection",
+          "content-length"
+        ],
+        "headers": {
+          "cache-control": "no-cache",
+          "connection": "close",
+          "content-length": "671",
+          "content-type": "text/html; charset=utf-8",
+          "date": "Tue, 26 May 2026 16:09:44 GMT"
+        },
+        "js_files": [
+          "./assets/index-DFDgq9AK.js"
+        ],
+        "json_keys": [],
+        "method": "GET",
+        "path": "/ws",
+        "probe_name": null,
+        "response_time_ms": 30.259,
+        "status": 200,
+        "title": "OpenClaw Control",
+        "url": "http://10.0.30.136:18789/ws",
+        "version_hints": []
+      },
+      "POST /api/doesnotexist": {
+        "body_length": 18,
+        "body_markers": [],
+        "body_sha256": "e3933184560739b70b60e2d0e48a6c7d7e18f76d95362e11f4155267700ac3a7",
+        "content_type": "text/plain; charset=utf-8",
+        "error": null,
+        "error_text": "Method Not Allowed",
+        "favicon_hash": null,
+        "final_url": "http://10.0.30.136:18789/api/doesnotexist",
+        "has_stack_trace": false,
+        "header_order": [
+          "content-type",
+          "date",
+          "connection",
+          "content-length"
+        ],
+        "headers": {
+          "connection": "close",
+          "content-length": "18",
+          "content-type": "text/plain; charset=utf-8",
+          "date": "Tue, 26 May 2026 16:09:55 GMT"
+        },
+        "js_files": [],
+        "json_keys": [],
+        "method": "POST",
+        "path": "/api/doesnotexist",
+        "probe_name": null,
+        "response_time_ms": 16.159,
+        "status": 405,
+        "title": null,
+        "url": "http://10.0.30.136:18789/api/doesnotexist",
+        "version_hints": []
+      },
+      "POST /tools/invoke": {
+        "body_length": 58,
+        "body_markers": [],
+        "body_sha256": "e7151570b616d475350de67f752a54d15b26d977967b0aa70d442e4568a0f956",
+        "content_type": "application/json; charset=utf-8",
+        "error": null,
+        "error_text": "{\"error\":{\"message\":\"Unauthorized\",\"type\":\"unauthorized\"}}",
+        "favicon_hash": null,
+        "final_url": "http://10.0.30.136:18789/tools/invoke",
+        "has_stack_trace": false,
+        "header_order": [
+          "content-type",
+          "date",
+          "connection",
+          "content-length"
+        ],
+        "headers": {
+          "connection": "close",
+          "content-length": "58",
+          "content-type": "application/json; charset=utf-8",
+          "date": "Tue, 26 May 2026 16:09:55 GMT"
+        },
+        "js_files": [],
+        "json_keys": [
+          "error"
+        ],
+        "method": "POST",
+        "path": "/tools/invoke",
+        "probe_name": null,
+        "response_time_ms": 14.783,
+        "status": 401,
+        "title": null,
+        "url": "http://10.0.30.136:18789/tools/invoke",
+        "version_hints": []
+      },
+      "POST /v1/chat/completions": {
+        "body_length": 18,
+        "body_markers": [],
+        "body_sha256": "e3933184560739b70b60e2d0e48a6c7d7e18f76d95362e11f4155267700ac3a7",
+        "content_type": "text/plain; charset=utf-8",
+        "error": null,
+        "error_text": "Method Not Allowed",
+        "favicon_hash": null,
+        "final_url": "http://10.0.30.136:18789/v1/chat/completions",
+        "has_stack_trace": false,
+        "header_order": [
+          "content-type",
+          "date",
+          "connection",
+          "content-length"
+        ],
+        "headers": {
+          "connection": "close",
+          "content-length": "18",
+          "content-type": "text/plain; charset=utf-8",
+          "date": "Tue, 26 May 2026 16:09:55 GMT"
+        },
+        "js_files": [],
+        "json_keys": [],
+        "method": "POST",
+        "path": "/v1/chat/completions",
+        "probe_name": null,
+        "response_time_ms": 27.985,
+        "status": 405,
+        "title": null,
+        "url": "http://10.0.30.136:18789/v1/chat/completions",
+        "version_hints": []
+      },
+      "POST /v1/embeddings": {
+        "body_length": 18,
+        "body_markers": [],
+        "body_sha256": "e3933184560739b70b60e2d0e48a6c7d7e18f76d95362e11f4155267700ac3a7",
+        "content_type": "text/plain; charset=utf-8",
+        "error": null,
+        "error_text": "Method Not Allowed",
+        "favicon_hash": null,
+        "final_url": "http://10.0.30.136:18789/v1/embeddings",
+        "has_stack_trace": false,
+        "header_order": [
+          "content-type",
+          "date",
+          "connection",
+          "content-length"
+        ],
+        "headers": {
+          "connection": "close",
+          "content-length": "18",
+          "content-type": "text/plain; charset=utf-8",
+          "date": "Tue, 26 May 2026 16:09:55 GMT"
+        },
+        "js_files": [],
+        "json_keys": [],
+        "method": "POST",
+        "path": "/v1/embeddings",
+        "probe_name": null,
+        "response_time_ms": 14.023,
+        "status": 405,
+        "title": null,
+        "url": "http://10.0.30.136:18789/v1/embeddings",
+        "version_hints": []
+      },
+      "POST /v1/responses": {
+        "body_length": 18,
+        "body_markers": [],
+        "body_sha256": "e3933184560739b70b60e2d0e48a6c7d7e18f76d95362e11f4155267700ac3a7",
+        "content_type": "text/plain; charset=utf-8",
+        "error": null,
+        "error_text": "Method Not Allowed",
+        "favicon_hash": null,
+        "final_url": "http://10.0.30.136:18789/v1/responses",
+        "has_stack_trace": false,
+        "header_order": [
+          "content-type",
+          "date",
+          "connection",
+          "content-length"
+        ],
+        "headers": {
+          "connection": "close",
+          "content-length": "18",
+          "content-type": "text/plain; charset=utf-8",
+          "date": "Tue, 26 May 2026 16:09:55 GMT"
+        },
+        "js_files": [],
+        "json_keys": [],
+        "method": "POST",
+        "path": "/v1/responses",
+        "probe_name": null,
+        "response_time_ms": 32.362,
+        "status": 405,
+        "title": null,
+        "url": "http://10.0.30.136:18789/v1/responses",
+        "version_hints": []
+      },
+      "WS-UPGRADE /socket.io/": {
+        "body_length": 0,
+        "body_markers": [],
+        "body_sha256": null,
+        "content_type": null,
+        "error": "timed out",
+        "error_text": null,
+        "favicon_hash": null,
+        "final_url": null,
+        "has_stack_trace": false,
+        "header_order": [],
+        "headers": {},
+        "js_files": [],
+        "json_keys": [],
+        "method": "GET",
+        "path": "/socket.io/",
+        "probe_name": "ws-upgrade",
+        "response_time_ms": null,
+        "status": null,
+        "title": null,
+        "url": "http://10.0.30.136:18789/socket.io/",
+        "version_hints": []
+      },
+      "WS-UPGRADE /ws": {
+        "body_length": 0,
+        "body_markers": [],
+        "body_sha256": null,
+        "content_type": null,
+        "error": "timed out",
+        "error_text": null,
+        "favicon_hash": null,
+        "final_url": null,
+        "has_stack_trace": false,
+        "header_order": [],
+        "headers": {},
+        "js_files": [],
+        "json_keys": [],
+        "method": "GET",
+        "path": "/ws",
+        "probe_name": "ws-upgrade",
+        "response_time_ms": null,
+        "status": null,
+        "title": null,
+        "url": "http://10.0.30.136:18789/ws",
+        "version_hints": []
+      }
+    },
+    "probed_base": "http://10.0.30.136:18789",
+    "product_confidence": 1.0,
+    "proxy_detection": {
+      "confidence": 0.0,
+      "detected": false,
+      "indicators": [],
+      "notes": null,
+      "proxy_type": null
+    },
+    "source": "direct",
+    "vulnerability_matches": []
+  }
+]

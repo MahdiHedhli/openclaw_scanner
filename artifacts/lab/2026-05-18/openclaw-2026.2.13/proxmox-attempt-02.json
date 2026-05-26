@@ -1,0 +1,46 @@
+{
+  "errors": [
+    {
+      "message": "HTTP 400 POST /nodes/pve01/qemu/102/config",
+      "step": "lifecycle",
+      "type": "RuntimeError"
+    }
+  ],
+  "name": "openclaw-corpus-2026-2-13-02",
+  "secret_values_recorded": false,
+  "started_at": null,
+  "steps": [
+    {
+      "exitstatus": "OK",
+      "name": "clone"
+    },
+    {
+      "name": "config:resources",
+      "status": "OK"
+    },
+    {
+      "name": "config:network",
+      "status": "OK"
+    },
+    {
+      "name": "config:cloudinit",
+      "status": "OK"
+    },
+    {
+      "detail": {
+        "error_keys": [
+          "sshkeys"
+        ],
+        "http_status": 400,
+        "message": "Parameter verification failed.\n"
+      },
+      "name": "config:sshkeys",
+      "status": "failed"
+    },
+    {
+      "exitstatus": "OK",
+      "name": "delete"
+    }
+  ],
+  "vmid": 102
+}

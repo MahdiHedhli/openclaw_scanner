@@ -1,0 +1,64 @@
+{
+  "bundle_type": "openclaw_release_gap_check",
+  "capture_needed": false,
+  "capture_needed_versions": [],
+  "capture_root": "artifacts/lab",
+  "captured_unpromoted_versions": [
+    "2026.5.22-beta.1"
+  ],
+  "captured_versions": [
+    {
+      "capture_count": 2,
+      "version": "2026.5.7"
+    },
+    {
+      "capture_count": 2,
+      "version": "2026.5.18"
+    },
+    {
+      "capture_count": 2,
+      "version": "2026.5.19-beta.1"
+    },
+    {
+      "capture_count": 2,
+      "version": "2026.5.20"
+    },
+    {
+      "capture_count": 2,
+      "version": "2026.5.22-beta.1"
+    },
+    {
+      "capture_count": 2,
+      "version": "2026.5.22"
+    },
+    {
+      "capture_count": 2,
+      "version": "2026.5.24-beta.1"
+    },
+    {
+      "capture_count": 2,
+      "version": "2026.5.24-beta.2"
+    }
+  ],
+  "decision": "no_vm_needed",
+  "generated_at": "2026-05-25T16:00:13Z",
+  "latest_captured_version": "2026.5.24-beta.2",
+  "latest_promoted_exact_version": "2026.5.24-beta.2",
+  "latest_published_version": "2026.5.24-beta.2",
+  "package": "openclaw",
+  "prerelease_uncaptured_versions_after_latest_capture": [],
+  "promoted_exact_versions": [
+    "2026.5.7",
+    "2026.5.18",
+    "2026.5.19-beta.1",
+    "2026.5.20",
+    "2026.5.22",
+    "2026.5.24-beta.1",
+    "2026.5.24-beta.2"
+  ],
+  "published_version_count": 187,
+  "rules_file": "/Users/mhedhli/Documents/Codex/OpenClawScanner/openclaw_scanner/data/openclaw_rules.json",
+  "schema_version": 1,
+  "stable_uncaptured_versions_after_latest_capture": [],
+  "uncaptured_versions_after_latest_capture": []
+}

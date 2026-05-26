@@ -1,0 +1,92 @@
+{
+  "capture_count": 6,
+  "declared_exact_match_count": 4,
+  "declared_no_exact_match_count": 2,
+  "declared_versions_without_exact_match": [
+    "2026.5.22-beta.1"
+  ],
+  "generated_at": "2026-05-24T04:08:05Z",
+  "input_root": "artifacts/lab/2026-05-23",
+  "records": [
+    {
+      "capture_index": 1,
+      "capture_path": "artifacts/lab/2026-05-23/openclaw-2026.5.20-attempt-02/capture.json",
+      "declared_exact_match": true,
+      "declared_version": "2026.5.20",
+      "exact_sources": [
+        "lab-capture-2026-5-20"
+      ],
+      "matched_version_count": 1,
+      "observation_count": 39,
+      "top_exact": true,
+      "top_source": "lab-capture-2026-5-20",
+      "top_version": "2026.5.20"
+    },
+    {
+      "capture_index": 1,
+      "capture_path": "artifacts/lab/2026-05-23/openclaw-2026.5.20-attempt-03/capture.json",
+      "declared_exact_match": true,
+      "declared_version": "2026.5.20",
+      "exact_sources": [
+        "lab-capture-2026-5-20"
+      ],
+      "matched_version_count": 1,
+      "observation_count": 39,
+      "top_exact": true,
+      "top_source": "lab-capture-2026-5-20",
+      "top_version": "2026.5.20"
+    },
+    {
+      "capture_index": 1,
+      "capture_path": "artifacts/lab/2026-05-23/openclaw-2026.5.22-attempt-01/capture.json",
+      "declared_exact_match": true,
+      "declared_version": "2026.5.22",
+      "exact_sources": [
+        "lab-capture-2026-5-22"
+      ],
+      "matched_version_count": 1,
+      "observation_count": 39,
+      "top_exact": true,
+      "top_source": "lab-capture-2026-5-22",
+      "top_version": "2026.5.22"
+    },
+    {
+      "capture_index": 1,
+      "capture_path": "artifacts/lab/2026-05-23/openclaw-2026.5.22-attempt-02/capture.json",
+      "declared_exact_match": true,
+      "declared_version": "2026.5.22",
+      "exact_sources": [
+        "lab-capture-2026-5-22"
+      ],
+      "matched_version_count": 1,
+      "observation_count": 39,
+      "top_exact": true,
+      "top_source": "lab-capture-2026-5-22",
+      "top_version": "2026.5.22"
+    },
+    {
+      "capture_index": 1,
+      "capture_path": "artifacts/lab/2026-05-23/openclaw-2026.5.22-beta.1-attempt-03/capture.json",
+      "declared_exact_match": false,
+      "declared_version": "2026.5.22-beta.1",
+      "exact_sources": [],
+      "matched_version_count": 0,
+      "observation_count": 39,
+      "top_exact": null,
+      "top_source": null,
+      "top_version": null
+    },
+    {
+      "capture_index": 1,
+      "capture_path": "artifacts/lab/2026-05-23/openclaw-2026.5.22-beta.1-attempt-04/capture.json",
+      "declared_exact_match": false,
+      "declared_version": "2026.5.22-beta.1",
+      "exact_sources": [],
+      "matched_version_count": 0,
+      "observation_count": 39,
+      "top_exact": null,
+      "top_source": null,
+      "top_version": null
+    }
+  ]
+}

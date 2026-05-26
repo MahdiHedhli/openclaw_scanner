@@ -1,0 +1,435 @@
+{
+  "allowed_subnet": "10.0.30.0/24",
+  "artifact": "artifacts/lab/2026-05-18/template-repairs/proxmox-template-repair-qga-01.json",
+  "attempt_id": "qga-01",
+  "checked_at": "2026-05-19T12:01:23Z",
+  "deployment_method": "proxmox-template-repair-vm",
+  "diagnostic_type": "template_qga_repair",
+  "ip": "10.0.30.153",
+  "l2_capture": {
+    "duration_seconds": 300,
+    "interface": "eth0",
+    "mac_digest": "95b2664a0f2e92a0",
+    "returncode": 124,
+    "started": true,
+    "stderr_excerpt": "tcpdump: verbose output suppressed, use -v[v]... for full protocol decode\nlistening on eth0, link-type EN10MB (Ethernet), snapshot length 262144 bytes\n5 packets captured\n5 packets received by filter\n0 packets dropped by kernel\n",
+    "summary": {
+      "arp_seen": true,
+      "arp_tell_ipv4_candidates": [
+        "10.0.30.153"
+      ],
+      "dhcp_seen": true,
+      "excerpt": [
+        "08:02:31.377289 bc:24:11:23:71:40 > ff:ff:ff:ff:ff:ff, ethertype IPv4 (0x0800), length 335: 0.0.0.0.68 > 255.255.255.255.67: BOOTP/DHCP, Request from bc:24:11:23:71:40, length 293",
+        "08:02:31.638957 bc:24:11:23:71:40 > ff:ff:ff:ff:ff:ff, ethertype IPv4 (0x0800), length 345: 0.0.0.0.68 > 255.255.255.255.67: BOOTP/DHCP, Request from bc:24:11:23:71:40, length 303",
+        "08:03:51.518403 bc:24:11:23:71:40 > ff:ff:ff:ff:ff:ff, ethertype IPv4 (0x0800), length 360: 0.0.0.0.68 > 255.255.255.255.67: BOOTP/DHCP, Request from bc:24:11:23:71:40, length 318",
+        "08:03:51.534478 bc:24:11:23:71:40 > ff:ff:ff:ff:ff:ff, ethertype IPv4 (0x0800), length 370: 0.0.0.0.68 > 255.255.255.255.67: BOOTP/DHCP, Request from bc:24:11:23:71:40, length 328",
+        "08:03:52.709947 bc:24:11:23:71:40 > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 42: Request who-has 10.0.30.254 tell 10.0.30.153, length 28"
+      ],
+      "line_count": 5,
+      "mac_line_count": 5
+    },
+    "target": "claude@10.0.30.10"
+  },
+  "lifecycle": {
+    "converted_to_template_at": null,
+    "created_at": "2026-05-19T12:01:30Z",
+    "deleted_at": "2026-05-19T12:07:56Z",
+    "started_at": "2026-05-19T12:01:34Z",
+    "stopped_at": "2026-05-19T12:07:55Z"
+  },
+  "mac": "bc:24:11:23:71:40",
+  "mac_digest": "95b2664a0f2e92a0",
+  "network_facts": {
+    "bridge": "vmbr0",
+    "device": "net0",
+    "mac": "bc:24:11:23:71:40",
+    "mac_digest": "95b2664a0f2e92a0",
+    "ok": true,
+    "reason": null,
+    "vlan": "30"
+  },
+  "new_template_name": "ubuntu-2404-cloudinit-qga",
+  "outcome": "template_repair_failed",
+  "port": null,
+  "preflight": {
+    "blockers": [],
+    "checked_at": "2026-05-19T12:01:23Z",
+    "vm_lifecycle_allowed": true
+  },
+  "product_family": "proxmox-template",
+  "reason": "apt_update_failed",
+  "scanner_capture_attempted": false,
+  "schema_version": 1,
+  "secret_values_recorded": false,
+  "source_template_vmid": "9000",
+  "ssh_qga_repair": {
+    "commands": {
+      "apt_update": {
+        "ok": false,
+        "returncode": 1,
+        "stderr_excerpt": "",
+        "stdout_excerpt": ""
+      },
+      "cloud_init_wait": {
+        "ok": true,
+        "returncode": 0,
+        "stderr_excerpt": "Warning: Permanently added '10.0.30.153' (ED25519) to the list of known hosts.\n",
+        "stdout_excerpt": "cloud_init_checked\n"
+      }
+    },
+    "ok": false,
+    "reason": "apt_update_failed"
+  },
+  "steps": [
+    {
+      "exitstatus": "OK",
+      "http_status": 200,
+      "name": "clone",
+      "ok": true,
+      "task_status": "stopped",
+      "upid_redacted": true
+    },
+    {
+      "http_status": 200,
+      "name": "config:resources",
+      "ok": true
+    },
+    {
+      "http_status": 200,
+      "name": "config:network",
+      "ok": true
+    },
+    {
+      "http_status": 200,
+      "name": "config:cloudinit_identity",
+      "ok": true
+    },
+    {
+      "http_status": 200,
+      "name": "config:cloudinit",
+      "ok": true
+    },
+    {
+      "exitstatus": "OK",
+      "http_status": 200,
+      "name": "resize:scsi0",
+      "ok": true,
+      "task_status": "stopped",
+      "upid_redacted": true
+    },
+    {
+      "exitstatus": "OK",
+      "http_status": 200,
+      "name": "start",
+      "ok": true,
+      "task_status": "stopped",
+      "upid_redacted": true
+    },
+    {
+      "exitstatus": "OK",
+      "http_status": 200,
+      "name": "stop",
+      "ok": true,
+      "task_status": "stopped",
+      "upid_redacted": true
+    },
+    {
+      "exitstatus": "OK",
+      "http_status": 200,
+      "name": "delete_failed_repair_vm",
+      "ok": true,
+      "task_status": "stopped",
+      "upid_redacted": true
+    }
+  ],
+  "template_diagnostics": {
+    "attempts": [
+      {
+        "attempt": 1,
+        "checked_at": "2026-05-19T12:01:40Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 2,
+        "checked_at": "2026-05-19T12:01:56Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 3,
+        "checked_at": "2026-05-19T12:02:12Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 4,
+        "checked_at": "2026-05-19T12:02:28Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 5,
+        "checked_at": "2026-05-19T12:02:44Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 6,
+        "checked_at": "2026-05-19T12:03:00Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 7,
+        "checked_at": "2026-05-19T12:03:17Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 8,
+        "checked_at": "2026-05-19T12:03:33Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 9,
+        "checked_at": "2026-05-19T12:03:49Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 10,
+        "checked_at": "2026-05-19T12:04:05Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 11,
+        "checked_at": "2026-05-19T12:04:21Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 12,
+        "checked_at": "2026-05-19T12:04:37Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 13,
+        "checked_at": "2026-05-19T12:04:54Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 14,
+        "checked_at": "2026-05-19T12:05:10Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 15,
+        "checked_at": "2026-05-19T12:05:26Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 16,
+        "checked_at": "2026-05-19T12:05:43Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 17,
+        "checked_at": "2026-05-19T12:05:59Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 18,
+        "checked_at": "2026-05-19T12:06:15Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 19,
+        "checked_at": "2026-05-19T12:06:31Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 20,
+        "checked_at": "2026-05-19T12:06:47Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 21,
+        "checked_at": "2026-05-19T12:07:04Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 22,
+        "checked_at": "2026-05-19T12:07:20Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 23,
+        "checked_at": "2026-05-19T12:07:36Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 24,
+        "checked_at": "2026-05-19T12:07:52Z",
+        "guest_agent_network_http_status": 500,
+        "guest_agent_ping": {
+          "http_status": 500,
+          "ok": false
+        },
+        "passive_match": false,
+        "passive_sources_checked": 2
+      }
+    ],
+    "cloud_init": null,
+    "guest_agent_healthy": false,
+    "guest_agent_network_ipv4": null,
+    "l2_ipv4": "10.0.30.153",
+    "method": "template-diagnostics",
+    "network_facts": {
+      "bridge": "vmbr0",
+      "device": "net0",
+      "mac": "bc:24:11:23:71:40",
+      "mac_digest": "95b2664a0f2e92a0",
+      "ok": true,
+      "vlan": "30"
+    },
+    "ok": false,
+    "outcome": "no_ip_discovered",
+    "passive_ipv4": null,
+    "reason": "no_guest_or_passive_vlan30_ip"
+  },
+  "version": "template-qga-repair",
+  "vlan": 30,
+  "vm_name": "openclaw-template-repair-qga-01",
+  "vmid": 100
+}

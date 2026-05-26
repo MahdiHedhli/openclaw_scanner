@@ -1,0 +1,52 @@
+{
+  "errors": [
+    {
+      "message": "guest agent did not report an IPv4 address",
+      "step": "lifecycle",
+      "type": "RuntimeError"
+    }
+  ],
+  "ip_detected": false,
+  "name": "openclaw-corpus-2026-2-13-03",
+  "secret_values_recorded": false,
+  "started_at": "2026-05-18T23:52:10Z",
+  "steps": [
+    {
+      "exitstatus": "OK",
+      "name": "clone"
+    },
+    {
+      "name": "config:resources",
+      "status": "OK"
+    },
+    {
+      "name": "config:network",
+      "status": "OK"
+    },
+    {
+      "name": "config:cloudinit",
+      "status": "OK"
+    },
+    {
+      "name": "config:sshkeys",
+      "status": "OK"
+    },
+    {
+      "exitstatus": "OK",
+      "name": "resize:scsi0"
+    },
+    {
+      "exitstatus": "OK",
+      "name": "start"
+    },
+    {
+      "exitstatus": "OK",
+      "name": "stop"
+    },
+    {
+      "exitstatus": "OK",
+      "name": "delete"
+    }
+  ],
+  "vmid": 103
+}

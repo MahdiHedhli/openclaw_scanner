@@ -1,0 +1,172 @@
+{
+  "allowed_subnet": "10.0.30.0/24",
+  "artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.22-beta.1-attempt-02/proxmox-attempt-02.json",
+  "attempt_id": "02",
+  "checked_at": "2026-05-23T22:08:49Z",
+  "deployment_method": "proxmox-vm-ssh-deploy",
+  "deployment_result": {
+    "command_label": "openclaw-install-2026.5.22-beta.1",
+    "command_recorded": false,
+    "command_source": "file",
+    "method": "ssh-command",
+    "ok": true,
+    "placeholders_used": [
+      "version",
+      "ip",
+      "port"
+    ],
+    "returncode": 0,
+    "ssh_ready": {
+      "attempts": 1,
+      "ok": true,
+      "returncode": 0,
+      "stderr_recorded": false,
+      "stdout_recorded": false
+    },
+    "stderr_recorded": false,
+    "stdout_recorded": false
+  },
+  "gateway_health": {
+    "attempts": [
+      {
+        "attempt": 1,
+        "error": null,
+        "http_status": 200
+      }
+    ],
+    "error": null,
+    "expected_http_status": 200,
+    "expected_status_matched": true,
+    "http_status": 200,
+    "ok": true,
+    "url": "http://<ip>:18789/health"
+  },
+  "ip": "10.0.30.113",
+  "ip_discovery": {
+    "attempts": 3,
+    "evidence": [
+      {
+        "attempt": 1,
+        "guest_agent_http_status": 500
+      },
+      {
+        "attempt": 1,
+        "mac_digest": "49d4760b11e2bc7e",
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 2,
+        "guest_agent_http_status": 500
+      },
+      {
+        "attempt": 2,
+        "mac_digest": "49d4760b11e2bc7e",
+        "passive_sources_checked": 2
+      }
+    ],
+    "ip": "10.0.30.113",
+    "method": "guest-agent",
+    "ok": true
+  },
+  "lifecycle": {
+    "created_at": "2026-05-23T22:09:25Z",
+    "deleted_at": "2026-05-23T22:12:25Z",
+    "started_at": "2026-05-23T22:09:30Z",
+    "stopped_at": "2026-05-23T22:12:24Z"
+  },
+  "mac": "bc:24:11:cc:e9:d6",
+  "mac_digest": "49d4760b11e2bc7e",
+  "network_facts": {
+    "bridge": "vmbr0",
+    "device": "net0",
+    "mac": "bc:24:11:cc:e9:d6",
+    "mac_digest": "49d4760b11e2bc7e",
+    "ok": true,
+    "reason": null,
+    "vlan": "30"
+  },
+  "outcome": "capture_failed",
+  "port": 18789,
+  "preflight": {
+    "blockers": [],
+    "checked_at": "2026-05-23T22:08:49Z",
+    "vm_lifecycle_allowed": true
+  },
+  "reason": "scanner_timeout",
+  "scanner_capture_attempted": true,
+  "scanner_result": {
+    "capture_artifact": null,
+    "command": "python3 -m openclaw_scanner --target http://<ip>:18789 --capture-version <version> --capture-name <name> --capture-output <capture> --format json --output <scan>",
+    "ok": false,
+    "reason": "scanner_timeout",
+    "scan_artifact": null
+  },
+  "schema_version": 1,
+  "secret_values_recorded": false,
+  "steps": [
+    {
+      "exitstatus": "OK",
+      "http_status": 200,
+      "name": "clone",
+      "ok": true,
+      "task_status": "stopped",
+      "upid_redacted": true
+    },
+    {
+      "http_status": 200,
+      "name": "config:resources",
+      "ok": true
+    },
+    {
+      "http_status": 200,
+      "name": "config:network",
+      "ok": true
+    },
+    {
+      "http_status": 200,
+      "name": "config:cloudinit_identity",
+      "ok": true
+    },
+    {
+      "http_status": 200,
+      "name": "config:cloudinit",
+      "ok": true
+    },
+    {
+      "exitstatus": "OK",
+      "http_status": 200,
+      "name": "resize:scsi0",
+      "ok": true,
+      "task_status": "stopped",
+      "upid_redacted": true
+    },
+    {
+      "exitstatus": "OK",
+      "http_status": 200,
+      "name": "start",
+      "ok": true,
+      "task_status": "stopped",
+      "upid_redacted": true
+    },
+    {
+      "exitstatus": "OK",
+      "http_status": 200,
+      "name": "stop",
+      "ok": true,
+      "task_status": "stopped",
+      "upid_redacted": true
+    },
+    {
+      "exitstatus": "OK",
+      "http_status": 200,
+      "name": "delete",
+      "ok": true,
+      "task_status": "stopped",
+      "upid_redacted": true
+    }
+  ],
+  "version": "2026.5.22-beta.1",
+  "vlan": 30,
+  "vm_name": "openclaw-corpus-2026-5-22-beta-1-02",
+  "vmid": 101
+}

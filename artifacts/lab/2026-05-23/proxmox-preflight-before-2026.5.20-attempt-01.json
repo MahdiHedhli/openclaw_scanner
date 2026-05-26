@@ -1,0 +1,100 @@
+{
+  "blockers": [],
+  "checked_at": "2026-05-23T21:58:33Z",
+  "checks": [
+    {
+      "name": "api_version",
+      "ok": true,
+      "status": 200,
+      "version": "9.1.9"
+    },
+    {
+      "name": "corpus_vm_inventory",
+      "ok": true,
+      "openclaw_related_vms": 0,
+      "openclaw_running_vms": 0,
+      "status": 200,
+      "vms": []
+    },
+    {
+      "agent_enabled": true,
+      "boot_order": "order=scsi0",
+      "cloudinit_attached": true,
+      "is_template": true,
+      "name": "template_readiness",
+      "ok": true,
+      "serial_console": true,
+      "status": 200,
+      "template_name": "ubuntu-2404-cloudinit-qga",
+      "template_vmid": "100"
+    },
+    {
+      "env_cicustom_present": false,
+      "env_ciuser_present": true,
+      "env_ssh_public_key_present": false,
+      "env_sshkeys_file_present": true,
+      "has_key_source": true,
+      "has_user_source": true,
+      "name": "clone_identity_readiness",
+      "ok": true,
+      "template_cicustom_present": false,
+      "template_ciuser_present": true,
+      "template_sshkeys_present": true
+    },
+    {
+      "name": "permission",
+      "ok": true,
+      "path": "/nodes/pve01",
+      "permission": "Sys.Audit",
+      "present": true,
+      "propagates": false,
+      "status": 200
+    },
+    {
+      "name": "permission",
+      "ok": true,
+      "path": "/pool/openclaw-scanner",
+      "permission": "VM.Clone",
+      "present": true,
+      "propagates": true,
+      "status": 200
+    },
+    {
+      "name": "permission",
+      "ok": true,
+      "path": "/vms/100",
+      "permission": "VM.Clone",
+      "present": true,
+      "propagates": false,
+      "status": 200
+    },
+    {
+      "name": "permission",
+      "ok": true,
+      "path": "/sdn/zones/localnetwork/vmbr0",
+      "permission": "SDN.Use",
+      "present": true,
+      "propagates": true,
+      "status": 200
+    },
+    {
+      "name": "permission",
+      "ok": true,
+      "path": "/sdn/zones/localnetwork/vmbr0/30",
+      "permission": "SDN.Use",
+      "present": true,
+      "propagates": false,
+      "status": 200
+    }
+  ],
+  "schema_version": 1,
+  "vm_inventory": {
+    "created": 0,
+    "destroyed": 0,
+    "next_cleanup_deadline": null,
+    "reused": 0,
+    "shut_down": 0,
+    "still_running": 0
+  },
+  "vm_lifecycle_allowed": true
+}

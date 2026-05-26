@@ -9,14 +9,338 @@
   ],
   "version_rules": [
     {
-      "id": "example-ui-bundle-family",
-      "version": "2026.2.x",
-      "confidence": 0.72,
-      "notes": "Example placeholder rule. Replace with a lab-derived bundle hash or asset name.",
+      "id": "lab-capture-2026-5-3-1",
+      "version": "2026.5.3-1",
+      "exact": true,
+      "confidence": 0.89,
+      "notes": "Promoted from two short-lived VLAN 30 known-version corpus captures on 2026-05-26. Review before applying to unrelated OpenClaw deployment modes.",
       "all": [
         {
           "type": "script_contains",
-          "value": "dashboard.examplehash.js"
+          "path": "/",
+          "value": "./assets/index-jOv_K1Xj.js"
+        },
+        {
+          "type": "script_contains",
+          "path": "/ws",
+          "value": "./assets/index-jOv_K1Xj.js"
+        },
+        {
+          "type": "script_contains",
+          "path": "/v1/models",
+          "value": "./assets/index-jOv_K1Xj.js"
+        }
+      ]
+    },
+    {
+      "id": "lab-capture-2026-5-25-beta-1",
+      "version": "2026.5.25-beta.1",
+      "exact": true,
+      "confidence": 0.89,
+      "notes": "Promoted from two short-lived VLAN 30 known-version corpus captures on 2026-05-26. Review before applying to unrelated OpenClaw deployment modes.",
+      "all": [
+        {
+          "type": "script_contains",
+          "path": "/",
+          "value": "./assets/index-DPxEDA6-.js"
+        },
+        {
+          "type": "script_contains",
+          "path": "/ws",
+          "value": "./assets/index-DPxEDA6-.js"
+        },
+        {
+          "type": "script_contains",
+          "path": "/v1/models",
+          "value": "./assets/index-DPxEDA6-.js"
+        }
+      ]
+    },
+    {
+      "id": "lab-capture-2026-5-24-beta-2",
+      "version": "2026.5.24-beta.2",
+      "exact": true,
+      "confidence": 0.89,
+      "notes": "Promoted from two short-lived VLAN 30 known-version corpus captures on 2026-05-25. Review before applying to unrelated OpenClaw deployment modes.",
+      "all": [
+        {
+          "type": "script_contains",
+          "path": "/",
+          "value": "./assets/index-Dgs_G3qF.js"
+        },
+        {
+          "type": "script_contains",
+          "path": "/ws",
+          "value": "./assets/index-Dgs_G3qF.js"
+        },
+        {
+          "type": "script_contains",
+          "path": "/v1/models",
+          "value": "./assets/index-Dgs_G3qF.js"
+        }
+      ]
+    },
+    {
+      "id": "lab-capture-2026-5-24-beta-1",
+      "version": "2026.5.24-beta.1",
+      "exact": true,
+      "confidence": 0.89,
+      "notes": "Promoted from two short-lived VLAN 30 known-version corpus captures on 2026-05-24. Review before applying to unrelated OpenClaw deployment modes.",
+      "all": [
+        {
+          "type": "script_contains",
+          "path": "/",
+          "value": "./assets/index-C_W1rzy-.js"
+        },
+        {
+          "type": "script_contains",
+          "path": "/ws",
+          "value": "./assets/index-C_W1rzy-.js"
+        },
+        {
+          "type": "script_contains",
+          "path": "/v1/models",
+          "value": "./assets/index-C_W1rzy-.js"
+        }
+      ]
+    },
+    {
+      "id": "lab-capture-2026-5-22",
+      "version": "2026.5.22",
+      "confidence": 0.89,
+      "exact": true,
+      "notes": "Promoted from two short-lived VLAN 30 known-version corpus captures on 2026-05-24. Review before applying to unrelated OpenClaw deployment modes.",
+      "all": [
+        {
+          "type": "script_contains",
+          "path": "/",
+          "value": "./assets/index-BtIuF4zW.js"
+        },
+        {
+          "type": "script_contains",
+          "path": "/login",
+          "value": "./assets/index-BtIuF4zW.js"
+        },
+        {
+          "type": "body_hash",
+          "path": "/",
+          "value": "c329016b3319a0ab0eaa9315b4413197823adcd0b5c21126d67d83ea34431dff"
+        }
+      ]
+    },
+    {
+      "id": "lab-capture-2026-5-20",
+      "version": "2026.5.20",
+      "confidence": 0.89,
+      "exact": true,
+      "notes": "Promoted from two short-lived VLAN 30 known-version corpus captures on 2026-05-23. Review before applying to unrelated OpenClaw deployment modes.",
+      "all": [
+        {
+          "type": "script_contains",
+          "path": "/",
+          "value": "./assets/index-DIlhMoR6.js"
+        },
+        {
+          "type": "script_contains",
+          "path": "/ws",
+          "value": "./assets/index-DIlhMoR6.js"
+        },
+        {
+          "type": "script_contains",
+          "path": "/v1/models",
+          "value": "./assets/index-DIlhMoR6.js"
+        }
+      ]
+    },
+    {
+      "id": "lab-capture-2026-5-19-beta-1",
+      "version": "2026.5.19-beta.1",
+      "confidence": 0.89,
+      "exact": true,
+      "notes": "Promoted from two short-lived VLAN 30 known-version corpus captures on 2026-05-19. Review before applying to unrelated OpenClaw deployment modes.",
+      "all": [
+        {
+          "type": "script_contains",
+          "path": "/",
+          "value": "./assets/index-B9aIykxh.js"
+        },
+        {
+          "type": "script_contains",
+          "path": "/ws",
+          "value": "./assets/index-B9aIykxh.js"
+        },
+        {
+          "type": "script_contains",
+          "path": "/v1/models",
+          "value": "./assets/index-B9aIykxh.js"
+        }
+      ]
+    },
+    {
+      "id": "lab-capture-2026-5-18",
+      "version": "2026.5.18",
+      "confidence": 0.89,
+      "exact": true,
+      "notes": "Promoted from two short-lived VLAN 30 known-version corpus captures on 2026-05-19. Review before applying to unrelated OpenClaw deployment modes.",
+      "all": [
+        {
+          "type": "script_contains",
+          "path": "/",
+          "value": "./assets/index-quv2B8bV.js"
+        },
+        {
+          "type": "script_contains",
+          "path": "/ws",
+          "value": "./assets/index-quv2B8bV.js"
+        },
+        {
+          "type": "script_contains",
+          "path": "/v1/models",
+          "value": "./assets/index-quv2B8bV.js"
+        }
+      ]
+    },
+    {
+      "id": "lab-capture-2026-5-7",
+      "version": "2026.5.7",
+      "confidence": 0.89,
+      "exact": true,
+      "notes": "Promoted from two short-lived VLAN 30 known-version corpus captures on 2026-05-19. Review before applying to unrelated OpenClaw deployment modes.",
+      "all": [
+        {
+          "type": "script_contains",
+          "path": "/",
+          "value": "./assets/index-NYVkUQrq.js"
+        },
+        {
+          "type": "script_contains",
+          "path": "/ws",
+          "value": "./assets/index-NYVkUQrq.js"
+        },
+        {
+          "type": "script_contains",
+          "path": "/v1/models",
+          "value": "./assets/index-NYVkUQrq.js"
+        }
+      ]
+    },
+    {
+      "id": "lab-capture-2026-2-21",
+      "version": "2026.2.21",
+      "confidence": 0.89,
+      "exact": true,
+      "notes": "Promoted from two short-lived VLAN 30 known-version corpus captures on 2026-05-26 using the isolated legacy deployment path. Review before applying to unrelated OpenClaw deployment modes.",
+      "all": [
+        {
+          "type": "script_contains",
+          "path": "/",
+          "value": "./assets/index-Cx1_w3YP.js"
+        },
+        {
+          "type": "script_contains",
+          "path": "/ws",
+          "value": "./assets/index-Cx1_w3YP.js"
+        },
+        {
+          "type": "script_contains",
+          "path": "/v1/models",
+          "value": "./assets/index-Cx1_w3YP.js"
+        }
+      ]
+    },
+    {
+      "id": "lab-capture-2026-2-13",
+      "version": "2026.2.13",
+      "confidence": 0.89,
+      "exact": true,
+      "notes": "Promoted from two short-lived VLAN 30 known-version corpus captures on 2026-05-26 using the isolated legacy deployment path. Review before applying to unrelated OpenClaw deployment modes.",
+      "all": [
+        {
+          "type": "script_contains",
+          "path": "/",
+          "value": "./assets/index-BVvzkFOb.js"
+        },
+        {
+          "type": "script_contains",
+          "path": "/ws",
+          "value": "./assets/index-BVvzkFOb.js"
+        },
+        {
+          "type": "script_contains",
+          "path": "/v1/models",
+          "value": "./assets/index-BVvzkFOb.js"
+        }
+      ]
+    },
+    {
+      "id": "lab-capture-2026-2-6",
+      "version": "2026.2.6",
+      "confidence": 0.89,
+      "exact": true,
+      "notes": "Promoted from two short-lived VLAN 30 known-version corpus captures on 2026-05-26 using the isolated legacy deployment path. Review before applying to unrelated OpenClaw deployment modes.",
+      "all": [
+        {
+          "type": "script_contains",
+          "path": "/",
+          "value": "./assets/index-Dm6g1E26.js"
+        },
+        {
+          "type": "script_contains",
+          "path": "/ws",
+          "value": "./assets/index-Dm6g1E26.js"
+        },
+        {
+          "type": "script_contains",
+          "path": "/v1/models",
+          "value": "./assets/index-Dm6g1E26.js"
+        }
+      ]
+    },
+    {
+      "id": "lab-capture-2026-2-2-1",
+      "version": "2026.2.2-1",
+      "confidence": 0.89,
+      "exact": true,
+      "notes": "Promoted from two short-lived VLAN 30 known-version corpus captures on 2026-05-26 using the isolated legacy deployment path. Review before applying to unrelated OpenClaw deployment modes.",
+      "all": [
+        {
+          "type": "script_contains",
+          "path": "/",
+          "value": "./assets/index-CYRpW51H.js"
+        },
+        {
+          "type": "script_contains",
+          "path": "/ws",
+          "value": "./assets/index-CYRpW51H.js"
+        },
+        {
+          "type": "script_contains",
+          "path": "/v1/models",
+          "value": "./assets/index-CYRpW51H.js"
+        }
+      ]
+    },
+    {
+      "id": "lab-capture-2026-1-29-beta-1",
+      "version": "2026.1.29-beta.1",
+      "confidence": 0.89,
+      "exact": true,
+      "notes": "Promoted from two short-lived VLAN 30 known-version corpus captures on 2026-05-26 using the isolated legacy deployment path. Review before applying to unrelated OpenClaw deployment modes.",
+      "all": [
+        {
+          "type": "script_contains",
+          "path": "/",
+          "value": "./assets/index-DFDgq9AK.js"
+        },
+        {
+          "type": "script_contains",
+          "path": "/ws",
+          "value": "./assets/index-DFDgq9AK.js"
+        },
+        {
+          "type": "script_contains",
+          "path": "/v1/models",
+          "value": "./assets/index-DFDgq9AK.js"
         }
       ]
     }
@@ -118,6 +442,54 @@
             403,
             429
           ]
+        }
+      ]
+    },
+    {
+      "id": "openclaw-mdns-gateway-advertisement",
+      "family": "openclaw_mdns_gateway_advertisement",
+      "label": "OpenClaw gateway advertised through passive mDNS",
+      "confidence": 0.94,
+      "notes": "Passive Shodan mDNS signal for _openclaw-gw._tcp.local with gateway role and the default gateway port. This confirms OpenClaw-family exposure but does not infer an exact version.",
+      "all": [
+        {
+          "type": "marker_present",
+          "path": "/__shodan__",
+          "value": "mdns_openclaw_gw"
+        },
+        {
+          "type": "marker_present",
+          "path": "/__shodan__",
+          "value": "mdns_role_gateway"
+        },
+        {
+          "type": "marker_present",
+          "path": "/__shodan__",
+          "value": "mdns_gateway_port_18789"
+        }
+      ]
+    },
+    {
+      "id": "clawdbot-mdns-gateway-advertisement",
+      "family": "clawdbot_mdns_gateway_advertisement",
+      "label": "Clawdbot gateway advertised through passive mDNS",
+      "confidence": 0.94,
+      "notes": "Passive Shodan mDNS signal for _clawdbot-gw._tcp.local with gateway role and the default gateway port. This confirms Clawdbot-family exposure but does not infer an exact version.",
+      "all": [
+        {
+          "type": "marker_present",
+          "path": "/__shodan__",
+          "value": "mdns_clawdbot_gw"
+        },
+        {
+          "type": "marker_present",
+          "path": "/__shodan__",
+          "value": "mdns_role_gateway"
+        },
+        {
+          "type": "marker_present",
+          "path": "/__shodan__",
+          "value": "mdns_gateway_port_18789"
         }
       ]
     },

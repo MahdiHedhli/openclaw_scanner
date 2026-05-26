@@ -1,0 +1,53 @@
+{
+  "artifacts": {
+    "preflight": "artifacts/lab/2026-05-23/proxmox-preflight-heartbeat-0459.json",
+    "release_gap": "artifacts/lab/2026-05-23/openclaw-release-gap-heartbeat-0459.json",
+    "saved_capture_inference": "artifacts/lab/2026-05-23/saved-capture-inference-check-promoted-heartbeat-0459.json"
+  },
+  "bundle_type": "openclaw_corpus_heartbeat_check",
+  "decision": "no_vm_needed",
+  "generated_at": "2026-05-26T05:00:13Z",
+  "latest_published_version": "2026.5.24-beta.2",
+  "preflight": {
+    "blockers": [],
+    "vm_inventory": {
+      "created": 0,
+      "destroyed": 0,
+      "next_cleanup_deadline": null,
+      "reused": 0,
+      "shut_down": 0,
+      "still_running": 0
+    },
+    "vm_lifecycle_allowed": true
+  },
+  "published_version_count": 187,
+  "release_gap": {
+    "capture_needed": false,
+    "capture_needed_versions": [],
+    "decision": "no_vm_needed",
+    "latest_captured_version": "2026.5.24-beta.2",
+    "latest_promoted_exact_version": "2026.5.24-beta.2",
+    "latest_published_version": "2026.5.24-beta.2"
+  },
+  "saved_capture_inference": {
+    "bundle_count": 16,
+    "capture_count": 16,
+    "declared_no_exact_match_count": 0,
+    "evaluated_capture_count": 14,
+    "ignored_capture_count": 2,
+    "ignored_versions_present": [
+      "2026.5.22-beta.1"
+    ],
+    "passed": true
+  },
+  "schema_version": 1,
+  "vm_action_recommended": false,
+  "vm_inventory": {
+    "created": 0,
+    "destroyed": 0,
+    "next_cleanup_deadline": null,
+    "reused": 0,
+    "shut_down": 0,
+    "still_running": 0
+  }
+}

@@ -1,0 +1,946 @@
+{
+  "bundle_count": 12,
+  "bundle_type": "openclaw_saved_capture_inference_validation",
+  "capture_count": 12,
+  "declared_exact_match_count": 10,
+  "declared_no_exact_match_count": 0,
+  "declared_versions_without_exact_match": [],
+  "evaluated_capture_count": 10,
+  "generated_at": "2026-05-24T13:56:07Z",
+  "ignored_capture_count": 2,
+  "ignored_declared_no_exact_match_count": 2,
+  "ignored_versions": [
+    "2026.5.22-beta.1"
+  ],
+  "ignored_versions_present": [
+    "2026.5.22-beta.1"
+  ],
+  "input_root": "artifacts/lab",
+  "records": [
+    {
+      "capture_index": 1,
+      "capture_name": "openclaw-2026.5.18-lab",
+      "capture_path": "2026-05-19/openclaw-2026.5.18/capture.json",
+      "declared_exact_match": true,
+      "declared_version": "2026.5.18",
+      "exact_sources": [
+        "lab-capture-2026-5-18"
+      ],
+      "ignored_for_exact_requirement": false,
+      "malformed_observation_count": 0,
+      "matched_version_count": 1,
+      "observation_count": 39,
+      "top_exact": true,
+      "top_source": "lab-capture-2026-5-18",
+      "top_version": "2026.5.18"
+    },
+    {
+      "capture_index": 1,
+      "capture_name": "openclaw-2026.5.18-lab",
+      "capture_path": "2026-05-19/openclaw-2026.5.18-attempt-02/capture.json",
+      "declared_exact_match": true,
+      "declared_version": "2026.5.18",
+      "exact_sources": [
+        "lab-capture-2026-5-18"
+      ],
+      "ignored_for_exact_requirement": false,
+      "malformed_observation_count": 0,
+      "matched_version_count": 1,
+      "observation_count": 39,
+      "top_exact": true,
+      "top_source": "lab-capture-2026-5-18",
+      "top_version": "2026.5.18"
+    },
+    {
+      "capture_index": 1,
+      "capture_name": "openclaw-2026.5.19-beta.1-lab",
+      "capture_path": "2026-05-19/openclaw-2026.5.19-beta.1/capture.json",
+      "declared_exact_match": true,
+      "declared_version": "2026.5.19-beta.1",
+      "exact_sources": [
+        "lab-capture-2026-5-19-beta-1"
+      ],
+      "ignored_for_exact_requirement": false,
+      "malformed_observation_count": 0,
+      "matched_version_count": 1,
+      "observation_count": 39,
+      "top_exact": true,
+      "top_source": "lab-capture-2026-5-19-beta-1",
+      "top_version": "2026.5.19-beta.1"
+    },
+    {
+      "capture_index": 1,
+      "capture_name": "openclaw-2026.5.19-beta.1-lab",
+      "capture_path": "2026-05-19/openclaw-2026.5.19-beta.1-attempt-02/capture.json",
+      "declared_exact_match": true,
+      "declared_version": "2026.5.19-beta.1",
+      "exact_sources": [
+        "lab-capture-2026-5-19-beta-1"
+      ],
+      "ignored_for_exact_requirement": false,
+      "malformed_observation_count": 0,
+      "matched_version_count": 1,
+      "observation_count": 39,
+      "top_exact": true,
+      "top_source": "lab-capture-2026-5-19-beta-1",
+      "top_version": "2026.5.19-beta.1"
+    },
+    {
+      "capture_index": 1,
+      "capture_name": "openclaw-2026.5.7-lab",
+      "capture_path": "2026-05-19/openclaw-2026.5.7/capture.json",
+      "declared_exact_match": true,
+      "declared_version": "2026.5.7",
+      "exact_sources": [
+        "lab-capture-2026-5-7"
+      ],
+      "ignored_for_exact_requirement": false,
+      "malformed_observation_count": 0,
+      "matched_version_count": 1,
+      "observation_count": 39,
+      "top_exact": true,
+      "top_source": "lab-capture-2026-5-7",
+      "top_version": "2026.5.7"
+    },
+    {
+      "capture_index": 1,
+      "capture_name": "openclaw-2026.5.7-lab",
+      "capture_path": "2026-05-19/openclaw-2026.5.7-attempt-05/capture.json",
+      "declared_exact_match": true,
+      "declared_version": "2026.5.7",
+      "exact_sources": [
+        "lab-capture-2026-5-7"
+      ],
+      "ignored_for_exact_requirement": false,
+      "malformed_observation_count": 0,
+      "matched_version_count": 1,
+      "observation_count": 39,
+      "top_exact": true,
+      "top_source": "lab-capture-2026-5-7",
+      "top_version": "2026.5.7"
+    },
+    {
+      "capture_index": 1,
+      "capture_name": "openclaw-2026.5.20-lab",
+      "capture_path": "2026-05-23/openclaw-2026.5.20-attempt-02/capture.json",
+      "declared_exact_match": true,
+      "declared_version": "2026.5.20",
+      "exact_sources": [
+        "lab-capture-2026-5-20"
+      ],
+      "ignored_for_exact_requirement": false,
+      "malformed_observation_count": 0,
+      "matched_version_count": 1,
+      "observation_count": 39,
+      "top_exact": true,
+      "top_source": "lab-capture-2026-5-20",
+      "top_version": "2026.5.20"
+    },
+    {
+      "capture_index": 1,
+      "capture_name": "openclaw-2026.5.20-lab",
+      "capture_path": "2026-05-23/openclaw-2026.5.20-attempt-03/capture.json",
+      "declared_exact_match": true,
+      "declared_version": "2026.5.20",
+      "exact_sources": [
+        "lab-capture-2026-5-20"
+      ],
+      "ignored_for_exact_requirement": false,
+      "malformed_observation_count": 0,
+      "matched_version_count": 1,
+      "observation_count": 39,
+      "top_exact": true,
+      "top_source": "lab-capture-2026-5-20",
+      "top_version": "2026.5.20"
+    },
+    {
+      "capture_index": 1,
+      "capture_name": "openclaw-2026.5.22-lab",
+      "capture_path": "2026-05-23/openclaw-2026.5.22-attempt-01/capture.json",
+      "declared_exact_match": true,
+      "declared_version": "2026.5.22",
+      "exact_sources": [
+        "lab-capture-2026-5-22"
+      ],
+      "ignored_for_exact_requirement": false,
+      "malformed_observation_count": 0,
+      "matched_version_count": 1,
+      "observation_count": 39,
+      "top_exact": true,
+      "top_source": "lab-capture-2026-5-22",
+      "top_version": "2026.5.22"
+    },
+    {
+      "capture_index": 1,
+      "capture_name": "openclaw-2026.5.22-lab",
+      "capture_path": "2026-05-23/openclaw-2026.5.22-attempt-02/capture.json",
+      "declared_exact_match": true,
+      "declared_version": "2026.5.22",
+      "exact_sources": [
+        "lab-capture-2026-5-22"
+      ],
+      "ignored_for_exact_requirement": false,
+      "malformed_observation_count": 0,
+      "matched_version_count": 1,
+      "observation_count": 39,
+      "top_exact": true,
+      "top_source": "lab-capture-2026-5-22",
+      "top_version": "2026.5.22"
+    },
+    {
+      "capture_index": 1,
+      "capture_name": "openclaw-2026.5.22-beta.1-lab",
+      "capture_path": "2026-05-23/openclaw-2026.5.22-beta.1-attempt-03/capture.json",
+      "declared_exact_match": false,
+      "declared_version": "2026.5.22-beta.1",
+      "exact_sources": [],
+      "ignored_for_exact_requirement": true,
+      "malformed_observation_count": 0,
+      "matched_version_count": 0,
+      "observation_count": 39,
+      "top_exact": null,
+      "top_source": null,
+      "top_version": null
+    },
+    {
+      "capture_index": 1,
+      "capture_name": "openclaw-2026.5.22-beta.1-lab",
+      "capture_path": "2026-05-23/openclaw-2026.5.22-beta.1-attempt-04/capture.json",
+      "declared_exact_match": false,
+      "declared_version": "2026.5.22-beta.1",
+      "exact_sources": [],
+      "ignored_for_exact_requirement": true,
+      "malformed_observation_count": 0,
+      "matched_version_count": 0,
+      "observation_count": 39,
+      "top_exact": null,
+      "top_source": null,
+      "top_version": null
+    }
+  ],
+  "rules_file": "/Users/mhedhli/Documents/Codex/OpenClawScanner/openclaw_scanner/data/openclaw_rules.json",
+  "schema_version": 1,
+  "skipped_input_summary": [
+    {
+      "count": 153,
+      "reason": "not an openclaw_blackbox_capture bundle"
+    }
+  ],
+  "skipped_inputs": [
+    {
+      "path": "2026-05-18/manifest.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-18/openclaw-2026.2.13/codex-acl-observation.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-18/openclaw-2026.2.13/ip-discovery.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-18/openclaw-2026.2.13/proxmox-attempt-02.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-18/openclaw-2026.2.13/proxmox-attempt-03.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-18/openclaw-2026.2.13/proxmox-attempt-04.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-18/openclaw-2026.2.13/proxmox-attempt-05.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-18/openclaw-2026.2.13/proxmox-create.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-18/openclaw-2026.2.13/proxmox-lifecycle.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-18/proxmox-preflight-livecheck.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-18/proxmox-preflight.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-18/template-diagnostics/proxmox-template-diagnostic-06.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-18/template-diagnostics/proxmox-template-diagnostic-07.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-18/template-diagnostics/proxmox-template-diagnostic-08.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-18/template-diagnostics/proxmox-template-diagnostic-09.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-18/template-diagnostics/proxmox-template-diagnostic-10.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-18/template-diagnostics/proxmox-template-diagnostic-11.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-18/template-diagnostics/proxmox-template-diagnostic-12-qga-template.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-18/template-repairs/proxmox-template-repair-qga-01.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-18/template-repairs/proxmox-template-repair-qga-02.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-18/template-repairs/proxmox-template-repair-qga-03.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-18/template-repairs/proxmox-template-repair-qga-04.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-18/template-repairs/proxmox-template-repair-qga-05.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/candidate-version-rules.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/manifest.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.18/deploy-command-validation.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.18/ip-discovery.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.18/proxmox-attempt-01.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.18/scan.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.18-attempt-02/ip-discovery.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.18-attempt-02/proxmox-attempt-02.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.18-attempt-02/scan.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.19-beta.1/deploy-command-validation.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.19-beta.1/ip-discovery.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.19-beta.1/proxmox-attempt-01.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.19-beta.1/scan.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.19-beta.1-attempt-02/ip-discovery.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.19-beta.1-attempt-02/proxmox-attempt-02.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.19-beta.1-attempt-02/scan.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.7/deploy-command-validation-02.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.7/deploy-command-validation-03.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.7/deploy-command-validation-04.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.7/deploy-command-validation.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.7/ip-discovery.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.7/proxmox-attempt-01.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.7/proxmox-attempt-02.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.7/proxmox-attempt-03.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.7/proxmox-attempt-04.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.7/scan.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.7-attempt-05/ip-discovery.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.7-attempt-05/proxmox-attempt-05.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/openclaw-2026.5.7-attempt-05/scan.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/proxmox-preflight-after-2026.5.18-attempt-01.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/proxmox-preflight-after-2026.5.18-attempt-02.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/proxmox-preflight-after-2026.5.19-beta.1-attempt-01.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/proxmox-preflight-after-2026.5.19-beta.1-attempt-02.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/proxmox-preflight-after-2026.5.7-attempt-05.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/proxmox-preflight-after-attempt-01.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/proxmox-preflight-after-attempt-02.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/proxmox-preflight-after-attempt-03.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/proxmox-preflight-after-attempt-04.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/proxmox-preflight-before-2026.5.18-attempt-01.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/proxmox-preflight-before-2026.5.19-beta.1-attempt-01.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/proxmox-preflight-before-2026.5.19-beta.1-attempt-02.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/proxmox-preflight-before-attempt-02.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/proxmox-preflight-before-attempt-03.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/proxmox-preflight-before-attempt-04.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/proxmox-preflight-heartbeat-1904.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-19/proxmox-preflight.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/candidate-version-rules.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/manifest.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.20/deploy-command-validation.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.20/ip-discovery.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.20/proxmox-attempt-01.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.20-attempt-02/ip-discovery.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.20-attempt-02/proxmox-attempt-02.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.20-attempt-02/scan.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.20-attempt-03/ip-discovery.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.20-attempt-03/proxmox-attempt-03.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.20-attempt-03/scan.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.22-attempt-01/deploy-command-validation.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.22-attempt-01/ip-discovery.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.22-attempt-01/proxmox-attempt-01.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.22-attempt-01/scan.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.22-attempt-02/ip-discovery.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.22-attempt-02/proxmox-attempt-02.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.22-attempt-02/scan.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.22-beta.1/deploy-command-validation.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.22-beta.1/ip-discovery.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.22-beta.1/proxmox-attempt-01.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.22-beta.1-attempt-02/ip-discovery.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.22-beta.1-attempt-02/proxmox-attempt-02.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.22-beta.1-attempt-03/ip-discovery.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.22-beta.1-attempt-03/proxmox-attempt-03.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.22-beta.1-attempt-03/scan.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.22-beta.1-attempt-04/ip-discovery.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.22-beta.1-attempt-04/proxmox-attempt-04.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-2026.5.22-beta.1-attempt-04/scan.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-corpus-heartbeat-1155.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-corpus-heartbeat-1255.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-release-gap-0855.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-release-gap-0955.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-release-gap-1055.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-release-gap-1155.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-release-gap-heartbeat-1155.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-release-gap-heartbeat-1255.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/openclaw-release-gap-heartbeat-1355.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-after-2026.5.20-attempt-01.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-after-2026.5.20-attempt-02.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-after-2026.5.20-attempt-03.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-after-2026.5.22-beta.1-attempt-01.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-after-2026.5.22-beta.1-attempt-02.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-after-2026.5.22-beta.1-attempt-03.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-after-2026.5.22-beta.1-attempt-04.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-before-2026.5.20-attempt-01.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-before-2026.5.20-attempt-02.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-before-2026.5.20-attempt-03.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-before-2026.5.22-beta.1-attempt-01.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-before-2026.5.22-beta.1-attempt-02.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-before-2026.5.22-beta.1-attempt-03.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-before-2026.5.22-beta.1-attempt-04.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-heartbeat-0055.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-heartbeat-0155.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-heartbeat-0255.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-heartbeat-0355.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-heartbeat-0455.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-heartbeat-0555.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-heartbeat-0655.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-heartbeat-0755.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-heartbeat-0855.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-heartbeat-0955.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-heartbeat-1055.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-heartbeat-1155.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-heartbeat-1255.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-heartbeat-1355.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-heartbeat-2055.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-heartbeat-2155-final.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-heartbeat-2255.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-heartbeat-2355.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-post-2026.5.22-attempt-01.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/proxmox-preflight-post-2026.5.22-attempt-02.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/saved-capture-inference-check-0255.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/saved-capture-inference-check-0355.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/saved-capture-inference-check-0455.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/saved-capture-inference-check-0555.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/saved-capture-inference-check-0655.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/saved-capture-inference-check-promoted-0555.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/saved-capture-inference-check-promoted-0655.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/saved-capture-inference-check-promoted-1055.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/saved-capture-inference-check-promoted-1155.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/saved-capture-inference-check-promoted-heartbeat-1155.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "2026-05-23/saved-capture-inference-check-promoted-heartbeat-1255.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    },
+    {
+      "path": "templates/manifest.template.json",
+      "reason": "not an openclaw_blackbox_capture bundle"
+    }
+  ],
+  "version_summary": [
+    {
+      "capture_count": 2,
+      "declared_exact_match_count": 2,
+      "declared_no_exact_match_count": 0,
+      "declared_version": "2026.5.18",
+      "evaluated_capture_count": 2,
+      "exact_sources": [
+        "lab-capture-2026-5-18"
+      ],
+      "ignored_capture_count": 0,
+      "ignored_declared_no_exact_match_count": 0,
+      "top_version_counts": [
+        {
+          "count": 2,
+          "version": "2026.5.18"
+        }
+      ]
+    },
+    {
+      "capture_count": 2,
+      "declared_exact_match_count": 2,
+      "declared_no_exact_match_count": 0,
+      "declared_version": "2026.5.19-beta.1",
+      "evaluated_capture_count": 2,
+      "exact_sources": [
+        "lab-capture-2026-5-19-beta-1"
+      ],
+      "ignored_capture_count": 0,
+      "ignored_declared_no_exact_match_count": 0,
+      "top_version_counts": [
+        {
+          "count": 2,
+          "version": "2026.5.19-beta.1"
+        }
+      ]
+    },
+    {
+      "capture_count": 2,
+      "declared_exact_match_count": 2,
+      "declared_no_exact_match_count": 0,
+      "declared_version": "2026.5.20",
+      "evaluated_capture_count": 2,
+      "exact_sources": [
+        "lab-capture-2026-5-20"
+      ],
+      "ignored_capture_count": 0,
+      "ignored_declared_no_exact_match_count": 0,
+      "top_version_counts": [
+        {
+          "count": 2,
+          "version": "2026.5.20"
+        }
+      ]
+    },
+    {
+      "capture_count": 2,
+      "declared_exact_match_count": 2,
+      "declared_no_exact_match_count": 0,
+      "declared_version": "2026.5.22",
+      "evaluated_capture_count": 2,
+      "exact_sources": [
+        "lab-capture-2026-5-22"
+      ],
+      "ignored_capture_count": 0,
+      "ignored_declared_no_exact_match_count": 0,
+      "top_version_counts": [
+        {
+          "count": 2,
+          "version": "2026.5.22"
+        }
+      ]
+    },
+    {
+      "capture_count": 2,
+      "declared_exact_match_count": 0,
+      "declared_no_exact_match_count": 0,
+      "declared_version": "2026.5.22-beta.1",
+      "evaluated_capture_count": 0,
+      "exact_sources": [],
+      "ignored_capture_count": 2,
+      "ignored_declared_no_exact_match_count": 2,
+      "top_version_counts": []
+    },
+    {
+      "capture_count": 2,
+      "declared_exact_match_count": 2,
+      "declared_no_exact_match_count": 0,
+      "declared_version": "2026.5.7",
+      "evaluated_capture_count": 2,
+      "exact_sources": [
+        "lab-capture-2026-5-7"
+      ],
+      "ignored_capture_count": 0,
+      "ignored_declared_no_exact_match_count": 0,
+      "top_version_counts": [
+        {
+          "count": 2,
+          "version": "2026.5.7"
+        }
+      ]
+    }
+  ]
+}

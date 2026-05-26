@@ -4,7 +4,12 @@ import unittest
 from unittest.mock import patch
 
 from openclaw_scanner.cli import _observations_from_shodan_record, _scan_single_target, render_results
-from openclaw_scanner.inference import correlate_vulnerabilities, infer_versions, load_rules
+from openclaw_scanner.inference import (
+    correlate_vulnerabilities,
+    infer_fingerprint_matches,
+    infer_versions,
+    load_rules,
+)
 from openclaw_scanner.models import (
     FingerprintMatch,
     HoneypotAssessment,
@@ -112,6 +117,38 @@ class CliTests(unittest.TestCase):
 
         self.assertTrue(any(match.version == "2026.1.24-3" for match in versions))
         self.assertGreaterEqual(observations["/__shodan__"].status, 200)
+
+    def test_offline_mdns_observation_matches_passive_gateway_family(self):
+        shodan_record = {
+            "ip_str": "203.0.113.61",
+            "port": 5353,
+            "product": "mDNS",
+            "mdns": {
+                "services": {
+                    "18789/tcp openclaw-gw": {
+                        "name": "demo (OpenClaw)",
+                        "data": [
+                            "role=gateway",
+                            "gatewayPort=18789",
+                            "lanHost=openclaw.local",
+                            "transport=gateway",
+                        ],
+                        "ptr": "_openclaw-gw._tcp.local",
+                    }
+                },
+                "answers": {
+                    "PTR": ["_openclaw-gw._tcp.local"],
+                },
+            },
+        }
+        rules = load_rules(None)
+        observations = _observations_from_shodan_record(shodan_record)
+        matches = infer_fingerprint_matches(observations, rules)
+
+        self.assertTrue(
+            any(match.family == "openclaw_mdns_gateway_advertisement" for match in matches)
+        )
+        self.assertIn("mdns_openclaw_gw", observations["/__shodan__"].body_markers)
 
     def test_offline_shodan_observation_extracts_favicon_hash(self):
         shodan_record = {

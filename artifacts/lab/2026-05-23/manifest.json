@@ -1,0 +1,1518 @@
+{
+  "created_at": "2026-05-23T21:55:26Z",
+  "defaults": {
+    "destroy_after_capture": true,
+    "disk_gb": 40,
+    "memory_mb": 4096,
+    "vcpu": 2,
+    "vlan": 30
+  },
+  "homelab_docs_read": [
+    "/Users/mhedhli/Documents/Coding/Projects/homelab/docs/infrastructure.md",
+    "/Users/mhedhli/Documents/Coding/Projects/homelab/docs/vlans.md",
+    "/Users/mhedhli/Documents/Coding/Projects/homelab/docs/security.md",
+    "/Users/mhedhli/Documents/Coding/Projects/homelab/docs/todo.md"
+  ],
+  "owner_thread": "openclaw-corpus-heartbeat",
+  "proxmox_preflight": {
+    "checked_at": "2026-05-26T16:45:15Z",
+    "command": "python3 scripts/proxmox_corpus_preflight.py --format json --output artifacts/lab/2026-05-23/proxmox-preflight-final-known-vulnerable-legacy.json --manifest artifacts/lab/2026-05-23/manifest.json",
+    "artifact": "artifacts/lab/2026-05-23/proxmox-preflight-final-known-vulnerable-legacy.json",
+    "passed": true,
+    "vm_lifecycle_allowed": true,
+    "blockers": [],
+    "api_version": "9.1.9",
+    "template_ready": true,
+    "clone_identity_ready": true,
+    "clone_identity_sources": {
+      "has_user_source": true,
+      "has_key_source": true,
+      "env_ciuser_present": true,
+      "env_sshkeys_file_present": true,
+      "env_ssh_public_key_present": false,
+      "env_cicustom_present": false,
+      "template_ciuser_present": true,
+      "template_sshkeys_present": true,
+      "template_cicustom_present": false
+    },
+    "openclaw_related_vms": 0,
+    "openclaw_running_vms": 0
+  },
+  "release_gap": {
+    "artifact": "artifacts/lab/2026-05-23/openclaw-release-gap-prerelease-heartbeat-1359.json",
+    "capture_needed": false,
+    "capture_needed_versions": [],
+    "captured_unpromoted_versions": [
+      "2026.5.22-beta.1"
+    ],
+    "captured_version_count": 9,
+    "checked_at": "2026-05-26T14:00:32Z",
+    "command": "python3 scripts/check_openclaw_release_gap.py --versions-file artifacts/lab/2026-05-23/openclaw-versions-heartbeat-1359.json --capture-root artifacts/lab --rules-file openclaw_scanner/data/openclaw_rules.json --include-prereleases --manifest artifacts/lab/2026-05-23/manifest.json --output artifacts/lab/2026-05-23/openclaw-release-gap-prerelease-heartbeat-1359.json",
+    "decision": "no_vm_needed",
+    "latest_captured_version": "2026.5.25-beta.1",
+    "latest_promoted_exact_version": "2026.5.25-beta.1",
+    "latest_published_version": "2026.5.25-beta.1",
+    "package": "openclaw",
+    "prerelease_uncaptured_versions_after_latest_capture": [],
+    "promoted_exact_version_count": 8,
+    "stable_uncaptured_versions_after_latest_capture": []
+  },
+  "run_id": "2026-05-23-openclaw-corpus",
+  "saved_capture_inference": {
+    "checked_at": "2026-05-26T21:10:01Z",
+    "command": "python3 scripts/validate_saved_capture_inference.py --input-root artifacts/lab --rules-file openclaw_scanner/data/openclaw_rules.json --require-all-exact --ignore-version 2026.5.22-beta.1 --output artifacts/lab/2026-05-23/saved-capture-inference-check-known-vulnerable-legacy.json --manifest artifacts/lab/2026-05-23/manifest.json",
+    "artifact": "artifacts/lab/2026-05-23/saved-capture-inference-check-known-vulnerable-legacy.json",
+    "passed": true,
+    "require_all_exact": true,
+    "bundle_count": 30,
+    "capture_count": 30,
+    "evaluated_capture_count": 28,
+    "ignored_capture_count": 2,
+    "declared_exact_match_count": 28,
+    "declared_no_exact_match_count": 0,
+    "ignored_declared_no_exact_match_count": 2,
+    "declared_versions_without_exact_match": [],
+    "ignored_versions": [
+      "2026.5.22-beta.1"
+    ],
+    "ignored_versions_present": [
+      "2026.5.22-beta.1"
+    ],
+    "version_summary": [
+      {
+        "declared_version": "2026.1.29-beta.1",
+        "capture_count": 2,
+        "evaluated_capture_count": 2,
+        "ignored_capture_count": 0,
+        "declared_exact_match_count": 2,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 0,
+        "exact_sources": [
+          "lab-capture-2026-1-29-beta-1"
+        ],
+        "top_version_counts": [
+          {
+            "version": "2026.1.29-beta.1",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "declared_version": "2026.2.13",
+        "capture_count": 2,
+        "evaluated_capture_count": 2,
+        "ignored_capture_count": 0,
+        "declared_exact_match_count": 2,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 0,
+        "exact_sources": [
+          "lab-capture-2026-2-13"
+        ],
+        "top_version_counts": [
+          {
+            "version": "2026.2.13",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "declared_version": "2026.2.2-1",
+        "capture_count": 2,
+        "evaluated_capture_count": 2,
+        "ignored_capture_count": 0,
+        "declared_exact_match_count": 2,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 0,
+        "exact_sources": [
+          "lab-capture-2026-2-2-1"
+        ],
+        "top_version_counts": [
+          {
+            "version": "2026.2.2-1",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "declared_version": "2026.2.21",
+        "capture_count": 2,
+        "evaluated_capture_count": 2,
+        "ignored_capture_count": 0,
+        "declared_exact_match_count": 2,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 0,
+        "exact_sources": [
+          "lab-capture-2026-2-21"
+        ],
+        "top_version_counts": [
+          {
+            "version": "2026.2.21",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "declared_version": "2026.2.6",
+        "capture_count": 2,
+        "evaluated_capture_count": 2,
+        "ignored_capture_count": 0,
+        "declared_exact_match_count": 2,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 0,
+        "exact_sources": [
+          "lab-capture-2026-2-6"
+        ],
+        "top_version_counts": [
+          {
+            "version": "2026.2.6",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "declared_version": "2026.5.18",
+        "capture_count": 2,
+        "evaluated_capture_count": 2,
+        "ignored_capture_count": 0,
+        "declared_exact_match_count": 2,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 0,
+        "exact_sources": [
+          "lab-capture-2026-5-18"
+        ],
+        "top_version_counts": [
+          {
+            "version": "2026.5.18",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "declared_version": "2026.5.19-beta.1",
+        "capture_count": 2,
+        "evaluated_capture_count": 2,
+        "ignored_capture_count": 0,
+        "declared_exact_match_count": 2,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 0,
+        "exact_sources": [
+          "lab-capture-2026-5-19-beta-1"
+        ],
+        "top_version_counts": [
+          {
+            "version": "2026.5.19-beta.1",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "declared_version": "2026.5.20",
+        "capture_count": 2,
+        "evaluated_capture_count": 2,
+        "ignored_capture_count": 0,
+        "declared_exact_match_count": 2,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 0,
+        "exact_sources": [
+          "lab-capture-2026-5-20"
+        ],
+        "top_version_counts": [
+          {
+            "version": "2026.5.20",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "declared_version": "2026.5.22",
+        "capture_count": 2,
+        "evaluated_capture_count": 2,
+        "ignored_capture_count": 0,
+        "declared_exact_match_count": 2,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 0,
+        "exact_sources": [
+          "lab-capture-2026-5-22"
+        ],
+        "top_version_counts": [
+          {
+            "version": "2026.5.22",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "declared_version": "2026.5.22-beta.1",
+        "capture_count": 2,
+        "evaluated_capture_count": 0,
+        "ignored_capture_count": 2,
+        "declared_exact_match_count": 0,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 2,
+        "exact_sources": [],
+        "top_version_counts": []
+      },
+      {
+        "declared_version": "2026.5.24-beta.1",
+        "capture_count": 2,
+        "evaluated_capture_count": 2,
+        "ignored_capture_count": 0,
+        "declared_exact_match_count": 2,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 0,
+        "exact_sources": [
+          "lab-capture-2026-5-24-beta-1"
+        ],
+        "top_version_counts": [
+          {
+            "version": "2026.5.24-beta.1",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "declared_version": "2026.5.24-beta.2",
+        "capture_count": 2,
+        "evaluated_capture_count": 2,
+        "ignored_capture_count": 0,
+        "declared_exact_match_count": 2,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 0,
+        "exact_sources": [
+          "lab-capture-2026-5-24-beta-2"
+        ],
+        "top_version_counts": [
+          {
+            "version": "2026.5.24-beta.2",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "declared_version": "2026.5.25-beta.1",
+        "capture_count": 2,
+        "evaluated_capture_count": 2,
+        "ignored_capture_count": 0,
+        "declared_exact_match_count": 2,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 0,
+        "exact_sources": [
+          "lab-capture-2026-5-25-beta-1"
+        ],
+        "top_version_counts": [
+          {
+            "version": "2026.5.25-beta.1",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "declared_version": "2026.5.3-1",
+        "capture_count": 2,
+        "evaluated_capture_count": 2,
+        "ignored_capture_count": 0,
+        "declared_exact_match_count": 2,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 0,
+        "exact_sources": [
+          "lab-capture-2026-5-3-1"
+        ],
+        "top_version_counts": [
+          {
+            "version": "2026.5.3-1",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "declared_version": "2026.5.7",
+        "capture_count": 2,
+        "evaluated_capture_count": 2,
+        "ignored_capture_count": 0,
+        "declared_exact_match_count": 2,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 0,
+        "exact_sources": [
+          "lab-capture-2026-5-7"
+        ],
+        "top_version_counts": [
+          {
+            "version": "2026.5.7",
+            "count": 2
+          }
+        ]
+      }
+    ],
+    "skipped_input_summary": [
+      {
+        "reason": "not an openclaw_blackbox_capture bundle",
+        "count": 480
+      }
+    ]
+  },
+  "security_gate": {
+    "credential_incident": "/Users/mhedhli/.local/share/homelab/incidents/2026-05-12-openclaw-scanner-credential-output.md",
+    "credential_rotation_confirmed_by_user": true,
+    "proxmox_access": "allowed-after-user-confirmed-credential-rotation",
+    "public_exposure": false,
+    "secret_handling": "do-not-print-credentials",
+    "tailscale_serve": false
+  },
+  "vm_inventory": {
+    "created": 37,
+    "destroyed": 37,
+    "next_cleanup_deadline": null,
+    "reused": 0,
+    "shut_down": 37,
+    "still_running": 0
+  },
+  "vms": [
+    {
+      "artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.20/proxmox-attempt-01.json",
+      "attempt_id": "01",
+      "auth_mode": "token",
+      "capture_artifact": null,
+      "created_at": "2026-05-23T21:59:15Z",
+      "deleted_at": "2026-05-23T21:59:45Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-install-2026.5.20",
+        "command_recorded": false,
+        "reason": "deploy_command_failed",
+        "status": "failed"
+      },
+      "ip_or_hostname": "10.0.30.134",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": null,
+      "scanner_command": null,
+      "scanner_result": {
+        "reason": "deploy_command_failed",
+        "status": "deployment_failed"
+      },
+      "started_at": "2026-05-23T21:59:18Z",
+      "stopped_at": "2026-05-23T21:59:43Z",
+      "version": "2026.5.20",
+      "vlan": 30,
+      "vm_id": 101,
+      "vm_name": "openclaw-corpus-2026-5-20-01"
+    },
+    {
+      "artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.20-attempt-02/proxmox-attempt-02.json",
+      "attempt_id": "02",
+      "auth_mode": "token",
+      "capture_artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.20-attempt-02/capture.json",
+      "created_at": "2026-05-23T22:02:37Z",
+      "deleted_at": "2026-05-23T22:04:54Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-install-2026.5.20",
+        "command_recorded": false,
+        "reason": null,
+        "status": "passed"
+      },
+      "ip_or_hostname": "10.0.30.115",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.20-attempt-02/scan.json",
+      "scanner_command": "python3 -m openclaw_scanner --target http://<ip>:18789 --capture-version <version> --capture-name <name> --capture-output <capture> --format json --output <scan>",
+      "scanner_result": {
+        "reason": null,
+        "status": "captured"
+      },
+      "started_at": "2026-05-23T22:02:42Z",
+      "stopped_at": "2026-05-23T22:04:53Z",
+      "version": "2026.5.20",
+      "vlan": 30,
+      "vm_id": 101,
+      "vm_name": "openclaw-corpus-2026-5-20-02"
+    },
+    {
+      "artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.22-beta.1/proxmox-attempt-01.json",
+      "attempt_id": "01",
+      "auth_mode": "token",
+      "capture_artifact": null,
+      "created_at": "2026-05-23T22:05:57Z",
+      "deleted_at": "2026-05-23T22:08:09Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-install-2026.5.22-beta.1",
+        "command_recorded": false,
+        "reason": "ssh_unavailable",
+        "status": "failed"
+      },
+      "ip_or_hostname": "10.0.30.111",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": null,
+      "scanner_command": null,
+      "scanner_result": {
+        "reason": "ssh_unavailable",
+        "status": "deployment_failed"
+      },
+      "started_at": "2026-05-23T22:06:27Z",
+      "stopped_at": "2026-05-23T22:08:07Z",
+      "version": "2026.5.22-beta.1",
+      "vlan": 30,
+      "vm_id": 101,
+      "vm_name": "openclaw-corpus-2026-5-22-beta-1-01"
+    },
+    {
+      "artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.22-beta.1-attempt-02/proxmox-attempt-02.json",
+      "attempt_id": "02",
+      "auth_mode": "token",
+      "capture_artifact": null,
+      "created_at": "2026-05-23T22:09:25Z",
+      "deleted_at": "2026-05-23T22:12:25Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-install-2026.5.22-beta.1",
+        "command_recorded": false,
+        "reason": null,
+        "status": "passed"
+      },
+      "ip_or_hostname": "10.0.30.113",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": null,
+      "scanner_command": "python3 -m openclaw_scanner --target http://<ip>:18789 --capture-version <version> --capture-name <name> --capture-output <capture> --format json --output <scan>",
+      "scanner_result": {
+        "reason": "scanner_timeout",
+        "status": "capture_failed"
+      },
+      "started_at": "2026-05-23T22:09:30Z",
+      "stopped_at": "2026-05-23T22:12:24Z",
+      "version": "2026.5.22-beta.1",
+      "vlan": 30,
+      "vm_id": 101,
+      "vm_name": "openclaw-corpus-2026-5-22-beta-1-02"
+    },
+    {
+      "artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.22-beta.1-attempt-03/proxmox-attempt-03.json",
+      "attempt_id": "03",
+      "auth_mode": "token",
+      "capture_artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.22-beta.1-attempt-03/capture.json",
+      "created_at": "2026-05-23T22:13:28Z",
+      "deleted_at": "2026-05-23T22:16:33Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-install-2026.5.22-beta.1",
+        "command_recorded": false,
+        "reason": null,
+        "status": "passed"
+      },
+      "ip_or_hostname": "10.0.30.127",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.22-beta.1-attempt-03/scan.json",
+      "scanner_command": "python3 -m openclaw_scanner --target http://<ip>:18789 --capture-version <version> --capture-name <name> --capture-output <capture> --format json --output <scan>",
+      "scanner_result": {
+        "reason": null,
+        "status": "captured"
+      },
+      "started_at": "2026-05-23T22:13:30Z",
+      "stopped_at": "2026-05-23T22:16:32Z",
+      "version": "2026.5.22-beta.1",
+      "vlan": 30,
+      "vm_id": 101,
+      "vm_name": "openclaw-corpus-2026-5-22-beta-1-03"
+    },
+    {
+      "artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.20-attempt-03/proxmox-attempt-03.json",
+      "attempt_id": "03",
+      "auth_mode": "token",
+      "capture_artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.20-attempt-03/capture.json",
+      "created_at": "2026-05-23T22:17:57Z",
+      "deleted_at": "2026-05-23T22:20:06Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-install-2026.5.20",
+        "command_recorded": false,
+        "reason": null,
+        "status": "passed"
+      },
+      "ip_or_hostname": "10.0.30.193",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.20-attempt-03/scan.json",
+      "scanner_command": "python3 -m openclaw_scanner --target http://<ip>:18789 --capture-version <version> --capture-name <name> --capture-output <capture> --format json --output <scan>",
+      "scanner_result": {
+        "reason": null,
+        "status": "captured"
+      },
+      "started_at": "2026-05-23T22:18:00Z",
+      "stopped_at": "2026-05-23T22:20:03Z",
+      "version": "2026.5.20",
+      "vlan": 30,
+      "vm_id": 101,
+      "vm_name": "openclaw-corpus-2026-5-20-03"
+    },
+    {
+      "artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.22-beta.1-attempt-04/proxmox-attempt-04.json",
+      "attempt_id": "04",
+      "auth_mode": "token",
+      "capture_artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.22-beta.1-attempt-04/capture.json",
+      "created_at": "2026-05-23T22:21:10Z",
+      "deleted_at": "2026-05-23T22:24:46Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-install-2026.5.22-beta.1",
+        "command_recorded": false,
+        "reason": null,
+        "status": "passed"
+      },
+      "ip_or_hostname": "10.0.30.156",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.22-beta.1-attempt-04/scan.json",
+      "scanner_command": "python3 -m openclaw_scanner --target http://<ip>:18789 --capture-version <version> --capture-name <name> --capture-output <capture> --format json --output <scan>",
+      "scanner_result": {
+        "reason": null,
+        "status": "captured"
+      },
+      "started_at": "2026-05-23T22:21:13Z",
+      "stopped_at": "2026-05-23T22:24:45Z",
+      "version": "2026.5.22-beta.1",
+      "vlan": 30,
+      "vm_id": 101,
+      "vm_name": "openclaw-corpus-2026-5-22-beta-1-04"
+    },
+    {
+      "artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.22-attempt-01/proxmox-attempt-01.json",
+      "attempt_id": "01",
+      "auth_mode": "token",
+      "capture_artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.22-attempt-01/capture.json",
+      "created_at": "2026-05-24T03:58:31Z",
+      "deleted_at": "2026-05-24T04:01:34Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-install-2026.5.22",
+        "command_recorded": false,
+        "reason": null,
+        "status": "passed"
+      },
+      "ip_or_hostname": "10.0.30.157",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.22-attempt-01/scan.json",
+      "scanner_command": "python3 -m openclaw_scanner --target http://<ip>:18789 --capture-version <version> --capture-name <name> --capture-output <capture> --format json --output <scan>",
+      "scanner_result": {
+        "reason": null,
+        "status": "captured"
+      },
+      "started_at": "2026-05-24T03:58:34Z",
+      "stopped_at": "2026-05-24T04:01:33Z",
+      "version": "2026.5.22",
+      "vlan": 30,
+      "vm_id": 101,
+      "vm_name": "openclaw-corpus-2026-5-22-01"
+    },
+    {
+      "artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.22-attempt-02/proxmox-attempt-02.json",
+      "attempt_id": "02",
+      "auth_mode": "token",
+      "capture_artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.22-attempt-02/capture.json",
+      "created_at": "2026-05-24T04:02:47Z",
+      "deleted_at": "2026-05-24T04:06:01Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-install-2026.5.22",
+        "command_recorded": false,
+        "reason": null,
+        "status": "passed"
+      },
+      "ip_or_hostname": "10.0.30.112",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.22-attempt-02/scan.json",
+      "scanner_command": "python3 -m openclaw_scanner --target http://<ip>:18789 --capture-version <version> --capture-name <name> --capture-output <capture> --format json --output <scan>",
+      "scanner_result": {
+        "reason": null,
+        "status": "captured"
+      },
+      "started_at": "2026-05-24T04:02:50Z",
+      "stopped_at": "2026-05-24T04:05:59Z",
+      "version": "2026.5.22",
+      "vlan": 30,
+      "vm_id": 101,
+      "vm_name": "openclaw-corpus-2026-5-22-02"
+    },
+    {
+      "artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.24-beta.1-attempt-01/proxmox-attempt-01.json",
+      "attempt_id": "01",
+      "auth_mode": "token",
+      "capture_artifact": null,
+      "created_at": "2026-05-24T14:58:15Z",
+      "deleted_at": "2026-05-24T14:59:33Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-install-2026.5.24-beta.1",
+        "command_recorded": false,
+        "reason": "ssh_unavailable",
+        "status": "failed"
+      },
+      "ip_or_hostname": "10.0.30.109",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": null,
+      "scanner_command": null,
+      "scanner_result": {
+        "reason": "ssh_unavailable",
+        "status": "deployment_failed"
+      },
+      "started_at": "2026-05-24T14:58:17Z",
+      "stopped_at": "2026-05-24T14:59:32Z",
+      "version": "2026.5.24-beta.1",
+      "vlan": 30,
+      "vm_id": 101,
+      "vm_name": "openclaw-corpus-2026-5-24-beta-1-01"
+    },
+    {
+      "artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.24-beta.1-attempt-02/proxmox-attempt-02.json",
+      "attempt_id": "02",
+      "auth_mode": "token",
+      "capture_artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.24-beta.1-attempt-02/capture.json",
+      "created_at": "2026-05-24T15:02:15Z",
+      "deleted_at": "2026-05-24T15:04:21Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-install-2026.5.24-beta.1",
+        "command_recorded": false,
+        "reason": null,
+        "status": "passed"
+      },
+      "ip_or_hostname": "10.0.30.188",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.24-beta.1-attempt-02/scan.json",
+      "scanner_command": "python3 -m openclaw_scanner --target http://<ip>:18789 --capture-version <version> --capture-name <name> --capture-output <capture> --format json --output <scan>",
+      "scanner_result": {
+        "reason": null,
+        "status": "captured"
+      },
+      "started_at": "2026-05-24T15:02:18Z",
+      "stopped_at": "2026-05-24T15:04:20Z",
+      "version": "2026.5.24-beta.1",
+      "vlan": 30,
+      "vm_id": 101,
+      "vm_name": "openclaw-corpus-2026-5-24-beta-1-02"
+    },
+    {
+      "artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.24-beta.1-attempt-03/proxmox-attempt-03.json",
+      "attempt_id": "03",
+      "auth_mode": "token",
+      "capture_artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.24-beta.1-attempt-03/capture.json",
+      "created_at": "2026-05-24T15:05:35Z",
+      "deleted_at": "2026-05-24T15:07:40Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-install-2026.5.24-beta.1",
+        "command_recorded": false,
+        "reason": null,
+        "status": "passed"
+      },
+      "ip_or_hostname": "10.0.30.147",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.24-beta.1-attempt-03/scan.json",
+      "scanner_command": "python3 -m openclaw_scanner --target http://<ip>:18789 --capture-version <version> --capture-name <name> --capture-output <capture> --format json --output <scan>",
+      "scanner_result": {
+        "reason": null,
+        "status": "captured"
+      },
+      "started_at": "2026-05-24T15:05:38Z",
+      "stopped_at": "2026-05-24T15:07:39Z",
+      "version": "2026.5.24-beta.1",
+      "vlan": 30,
+      "vm_id": 101,
+      "vm_name": "openclaw-corpus-2026-5-24-beta-1-03"
+    },
+    {
+      "artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.24-beta.2-attempt-01/proxmox-attempt-01.json",
+      "attempt_id": "01",
+      "auth_mode": "token",
+      "capture_artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.24-beta.2-attempt-01/capture.json",
+      "created_at": "2026-05-25T03:04:02Z",
+      "deleted_at": "2026-05-25T03:06:07Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-install-2026.5.24-beta.2",
+        "command_recorded": false,
+        "reason": null,
+        "status": "passed"
+      },
+      "ip_or_hostname": "10.0.30.106",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.24-beta.2-attempt-01/scan.json",
+      "scanner_command": "python3 -m openclaw_scanner --target http://<ip>:18789 --capture-version <version> --capture-name <name> --capture-output <capture> --format json --output <scan>",
+      "scanner_result": {
+        "reason": null,
+        "status": "captured"
+      },
+      "started_at": "2026-05-25T03:04:05Z",
+      "stopped_at": "2026-05-25T03:06:06Z",
+      "version": "2026.5.24-beta.2",
+      "vlan": 30,
+      "vm_id": 101,
+      "vm_name": "openclaw-corpus-2026-5-24-beta-2-01"
+    },
+    {
+      "artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.24-beta.2-attempt-02/proxmox-attempt-02.json",
+      "attempt_id": "02",
+      "auth_mode": "token",
+      "capture_artifact": null,
+      "created_at": "2026-05-25T03:08:21Z",
+      "deleted_at": "2026-05-25T03:10:08Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-install-2026.5.24-beta.2",
+        "command_recorded": false,
+        "reason": "ssh_unavailable",
+        "status": "failed"
+      },
+      "ip_or_hostname": "10.0.30.193",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": null,
+      "scanner_command": null,
+      "scanner_result": {
+        "reason": "ssh_unavailable",
+        "status": "deployment_failed"
+      },
+      "started_at": "2026-05-25T03:08:23Z",
+      "stopped_at": "2026-05-25T03:09:48Z",
+      "version": "2026.5.24-beta.2",
+      "vlan": 30,
+      "vm_id": 101,
+      "vm_name": "openclaw-corpus-2026-5-24-beta-2-02"
+    },
+    {
+      "artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.24-beta.2-attempt-03/proxmox-attempt-03.json",
+      "attempt_id": "03",
+      "auth_mode": "token",
+      "capture_artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.24-beta.2-attempt-03/capture.json",
+      "created_at": "2026-05-25T03:11:17Z",
+      "deleted_at": "2026-05-25T03:14:02Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-install-2026.5.24-beta.2",
+        "command_recorded": false,
+        "reason": null,
+        "status": "passed"
+      },
+      "ip_or_hostname": "10.0.30.117",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.24-beta.2-attempt-03/scan.json",
+      "scanner_command": "python3 -m openclaw_scanner --target http://<ip>:18789 --capture-version <version> --capture-name <name> --capture-output <capture> --format json --output <scan>",
+      "scanner_result": {
+        "reason": null,
+        "status": "captured"
+      },
+      "started_at": "2026-05-25T03:11:25Z",
+      "stopped_at": "2026-05-25T03:14:01Z",
+      "version": "2026.5.24-beta.2",
+      "vlan": 30,
+      "vm_id": 101,
+      "vm_name": "openclaw-corpus-2026-5-24-beta-2-03"
+    },
+    {
+      "artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.25-beta.1-attempt-01/proxmox-attempt-openclaw-2026.5.25-beta.1-attempt-01.json",
+      "attempt_id": "openclaw-2026.5.25-beta.1-attempt-01",
+      "auth_mode": "token",
+      "capture_artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.25-beta.1-attempt-01/capture.json",
+      "created_at": "2026-05-26T10:01:57Z",
+      "deleted_at": "2026-05-26T10:03:57Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-install-2026.5.25-beta.1",
+        "command_recorded": false,
+        "reason": null,
+        "status": "passed"
+      },
+      "ip_or_hostname": "10.0.30.174",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.25-beta.1-attempt-01/scan.json",
+      "scanner_command": "python3 -m openclaw_scanner --target http://<ip>:18789 --capture-version <version> --capture-name <name> --capture-output <capture> --format json --output <scan>",
+      "scanner_result": {
+        "reason": null,
+        "status": "captured"
+      },
+      "started_at": "2026-05-26T10:02:00Z",
+      "stopped_at": "2026-05-26T10:03:56Z",
+      "version": "2026.5.25-beta.1",
+      "vlan": 30,
+      "vm_id": 101,
+      "vm_name": "openclaw-corpus-2026-5-25-beta-1-openclaw-2026.5.25-beta.1-attempt-01"
+    },
+    {
+      "artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.25-beta.1-attempt-02/proxmox-attempt-openclaw-2026.5.25-beta.1-attempt-02.json",
+      "attempt_id": "openclaw-2026.5.25-beta.1-attempt-02",
+      "auth_mode": "token",
+      "capture_artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.25-beta.1-attempt-02/capture.json",
+      "created_at": "2026-05-26T10:05:12Z",
+      "deleted_at": "2026-05-26T10:07:12Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-install-2026.5.25-beta.1",
+        "command_recorded": false,
+        "reason": null,
+        "status": "passed"
+      },
+      "ip_or_hostname": "10.0.30.125",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.25-beta.1-attempt-02/scan.json",
+      "scanner_command": "python3 -m openclaw_scanner --target http://<ip>:18789 --capture-version <version> --capture-name <name> --capture-output <capture> --format json --output <scan>",
+      "scanner_result": {
+        "reason": null,
+        "status": "captured"
+      },
+      "started_at": "2026-05-26T10:05:14Z",
+      "stopped_at": "2026-05-26T10:07:11Z",
+      "version": "2026.5.25-beta.1",
+      "vlan": 30,
+      "vm_id": 101,
+      "vm_name": "openclaw-corpus-2026-5-25-beta-1-openclaw-2026.5.25-beta.1-attempt-02"
+    },
+    {
+      "artifact": "artifacts/lab/2026-05-23/openclaw-2026.1.29-beta.1-attempt-01/proxmox-attempt-openclaw-2026.1.29-beta.1-attempt-01.json",
+      "attempt_id": "openclaw-2026.1.29-beta.1-attempt-01",
+      "auth_mode": "token",
+      "capture_artifact": null,
+      "created_at": "2026-05-26T14:23:15Z",
+      "deleted_at": "2026-05-26T14:28:42Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-install-2026.1.29-beta.1",
+        "command_recorded": false,
+        "reason": "ssh_unavailable",
+        "status": "failed"
+      },
+      "ip_or_hostname": "10.0.30.115",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": null,
+      "scanner_command": null,
+      "scanner_result": {
+        "reason": "ssh_unavailable",
+        "status": "deployment_failed"
+      },
+      "started_at": "2026-05-26T14:23:19Z",
+      "stopped_at": "2026-05-26T14:28:40Z",
+      "version": "2026.1.29-beta.1",
+      "vlan": 30,
+      "vm_id": 101,
+      "vm_name": "openclaw-corpus-2026-1-29-beta-1-openclaw-2026.1.29-beta.1-attempt-01"
+    },
+    {
+      "artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.3-1-attempt-01/proxmox-attempt-openclaw-2026.5.3-1-attempt-01.json",
+      "attempt_id": "openclaw-2026.5.3-1-attempt-01",
+      "auth_mode": "token",
+      "capture_artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.3-1-attempt-01/capture.json",
+      "created_at": "2026-05-26T14:30:04Z",
+      "deleted_at": "2026-05-26T14:32:21Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-install-2026.5.3-1",
+        "command_recorded": false,
+        "reason": null,
+        "status": "passed"
+      },
+      "ip_or_hostname": "10.0.30.166",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.3-1-attempt-01/scan.json",
+      "scanner_command": "python3 -m openclaw_scanner --target http://<ip>:18789 --capture-version <version> --capture-name <name> --capture-output <capture> --format json --output <scan>",
+      "scanner_result": {
+        "reason": null,
+        "status": "captured"
+      },
+      "started_at": "2026-05-26T14:30:06Z",
+      "stopped_at": "2026-05-26T14:32:20Z",
+      "version": "2026.5.3-1",
+      "vlan": 30,
+      "vm_id": 101,
+      "vm_name": "openclaw-corpus-2026-5-3-1-openclaw-2026.5.3-1-attempt-01"
+    },
+    {
+      "artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.3-1-attempt-02/proxmox-attempt-openclaw-2026.5.3-1-attempt-02.json",
+      "attempt_id": "openclaw-2026.5.3-1-attempt-02",
+      "auth_mode": "token",
+      "capture_artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.3-1-attempt-02/capture.json",
+      "created_at": "2026-05-26T14:33:11Z",
+      "deleted_at": "2026-05-26T14:35:31Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-install-2026.5.3-1",
+        "command_recorded": false,
+        "reason": null,
+        "status": "passed"
+      },
+      "ip_or_hostname": "10.0.30.161",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.3-1-attempt-02/scan.json",
+      "scanner_command": "python3 -m openclaw_scanner --target http://<ip>:18789 --capture-version <version> --capture-name <name> --capture-output <capture> --format json --output <scan>",
+      "scanner_result": {
+        "reason": null,
+        "status": "captured"
+      },
+      "started_at": "2026-05-26T14:33:14Z",
+      "stopped_at": "2026-05-26T14:35:29Z",
+      "version": "2026.5.3-1",
+      "vlan": 30,
+      "vm_id": 101,
+      "vm_name": "openclaw-corpus-2026-5-3-1-openclaw-2026.5.3-1-attempt-02"
+    },
+    {
+      "artifact": "artifacts/lab/2026-05-23/openclaw-2026.2.2-1-attempt-01/proxmox-attempt-openclaw-2026.2.2-1-attempt-01.json",
+      "attempt_id": "openclaw-2026.2.2-1-attempt-01",
+      "auth_mode": "token",
+      "capture_artifact": null,
+      "created_at": "2026-05-26T14:37:49Z",
+      "deleted_at": "2026-05-26T14:41:01Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-install-2026.2.2-1",
+        "command_recorded": false,
+        "reason": "deploy_command_failed",
+        "status": "failed"
+      },
+      "ip_or_hostname": "10.0.30.137",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": null,
+      "scanner_command": null,
+      "scanner_result": {
+        "reason": "deploy_command_failed",
+        "status": "deployment_failed"
+      },
+      "started_at": "2026-05-26T14:37:52Z",
+      "stopped_at": "2026-05-26T14:40:59Z",
+      "version": "2026.2.2-1",
+      "vlan": 30,
+      "vm_id": 101,
+      "vm_name": "openclaw-corpus-2026-2-2-1-openclaw-2026.2.2-1-attempt-01"
+    },
+    {
+      "artifact": "artifacts/lab/2026-05-23/openclaw-2026.2.13-attempt-01/proxmox-attempt-openclaw-2026.2.13-attempt-01.json",
+      "attempt_id": "openclaw-2026.2.13-attempt-01",
+      "auth_mode": "token",
+      "capture_artifact": null,
+      "created_at": "2026-05-26T14:42:49Z",
+      "deleted_at": "2026-05-26T14:48:16Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-install-2026.2.13",
+        "command_recorded": false,
+        "reason": "ssh_unavailable",
+        "status": "failed"
+      },
+      "ip_or_hostname": "10.0.30.134",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": null,
+      "scanner_command": null,
+      "scanner_result": {
+        "reason": "ssh_unavailable",
+        "status": "deployment_failed"
+      },
+      "started_at": "2026-05-26T14:42:54Z",
+      "stopped_at": "2026-05-26T14:48:15Z",
+      "version": "2026.2.13",
+      "vlan": 30,
+      "vm_id": 101,
+      "vm_name": "openclaw-corpus-2026-2-13-openclaw-2026.2.13-attempt-01"
+    },
+    {
+      "artifact": "artifacts/lab/2026-05-23/openclaw-2026.2.6-attempt-01/proxmox-attempt-openclaw-2026.2.6-attempt-01.json",
+      "attempt_id": "openclaw-2026.2.6-attempt-01",
+      "auth_mode": "token",
+      "capture_artifact": null,
+      "created_at": "2026-05-26T14:49:27Z",
+      "deleted_at": "2026-05-26T14:54:54Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-install-2026.2.6",
+        "command_recorded": false,
+        "reason": "ssh_unavailable",
+        "status": "failed"
+      },
+      "ip_or_hostname": "10.0.30.181",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": null,
+      "scanner_command": null,
+      "scanner_result": {
+        "reason": "ssh_unavailable",
+        "status": "deployment_failed"
+      },
+      "started_at": "2026-05-26T14:49:30Z",
+      "stopped_at": "2026-05-26T14:54:53Z",
+      "version": "2026.2.6",
+      "vlan": 30,
+      "vm_id": 101,
+      "vm_name": "openclaw-corpus-2026-2-6-openclaw-2026.2.6-attempt-01"
+    },
+    {
+      "artifact": "artifacts/lab/2026-05-23/openclaw-2026.2.21-attempt-01/proxmox-attempt-openclaw-2026.2.21-attempt-01.json",
+      "attempt_id": "openclaw-2026.2.21-attempt-01",
+      "auth_mode": "token",
+      "capture_artifact": null,
+      "created_at": "2026-05-26T14:57:53Z",
+      "deleted_at": "2026-05-26T15:00:20Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-install-2026.2.21",
+        "command_recorded": false,
+        "reason": "deploy_command_failed",
+        "status": "failed"
+      },
+      "ip_or_hostname": "10.0.30.151",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": null,
+      "scanner_command": null,
+      "scanner_result": {
+        "reason": "deploy_command_failed",
+        "status": "deployment_failed"
+      },
+      "started_at": "2026-05-26T14:57:55Z",
+      "stopped_at": "2026-05-26T15:00:19Z",
+      "version": "2026.2.21",
+      "vlan": 30,
+      "vm_id": 101,
+      "vm_name": "openclaw-corpus-2026-2-21-openclaw-2026.2.21-attempt-01"
+    },
+    {
+      "artifact": "artifacts/lab/2026-05-23/openclaw-2026.2.2-1-attempt-02/proxmox-attempt-openclaw-2026.2.2-1-attempt-02.json",
+      "attempt_id": "openclaw-2026.2.2-1-attempt-02",
+      "auth_mode": "token",
+      "capture_artifact": null,
+      "created_at": "2026-05-26T15:47:00Z",
+      "deleted_at": "2026-05-26T15:47:24Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-legacy-known-vulnerable",
+        "command_recorded": false,
+        "reason": "deploy_command_failed",
+        "status": "failed"
+      },
+      "ip_or_hostname": "10.0.30.183",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": null,
+      "scanner_command": null,
+      "scanner_result": {
+        "reason": "deploy_command_failed",
+        "status": "deployment_failed"
+      },
+      "started_at": "2026-05-26T15:47:02Z",
+      "stopped_at": "2026-05-26T15:47:22Z",
+      "version": "2026.2.2-1",
+      "vlan": 30,
+      "vm_id": 101,
+      "vm_name": "openclaw-corpus-2026-2-2-1-openclaw-2026.2.2-1-attempt-02"
+    },
+    {
+      "artifact": "artifacts/lab/2026-05-23/openclaw-2026.2.2-1-attempt-03/proxmox-attempt-openclaw-2026.2.2-1-attempt-03.json",
+      "attempt_id": "openclaw-2026.2.2-1-attempt-03",
+      "auth_mode": "token",
+      "capture_artifact": "artifacts/lab/2026-05-23/openclaw-2026.2.2-1-attempt-03/capture.json",
+      "created_at": "2026-05-26T15:48:46Z",
+      "deleted_at": "2026-05-26T15:51:20Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-legacy-known-vulnerable",
+        "command_recorded": false,
+        "reason": null,
+        "status": "passed"
+      },
+      "ip_or_hostname": "10.0.30.191",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": "artifacts/lab/2026-05-23/openclaw-2026.2.2-1-attempt-03/scan.json",
+      "scanner_command": "python3 -m openclaw_scanner --target http://<ip>:18789 --capture-version <version> --capture-name <name> --capture-output <capture> --format json --output <scan>",
+      "scanner_result": {
+        "reason": null,
+        "status": "captured"
+      },
+      "started_at": "2026-05-26T15:48:49Z",
+      "stopped_at": "2026-05-26T15:51:19Z",
+      "version": "2026.2.2-1",
+      "vlan": 30,
+      "vm_id": 101,
+      "vm_name": "openclaw-corpus-2026-2-2-1-openclaw-2026.2.2-1-attempt-03"
+    },
+    {
+      "artifact": "artifacts/lab/2026-05-23/openclaw-2026.2.21-attempt-02/proxmox-attempt-openclaw-2026.2.21-attempt-02.json",
+      "attempt_id": "openclaw-2026.2.21-attempt-02",
+      "auth_mode": "token",
+      "capture_artifact": "artifacts/lab/2026-05-23/openclaw-2026.2.21-attempt-02/capture.json",
+      "created_at": "2026-05-26T15:52:14Z",
+      "deleted_at": "2026-05-26T15:55:16Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-legacy-known-vulnerable",
+        "command_recorded": false,
+        "reason": null,
+        "status": "passed"
+      },
+      "ip_or_hostname": "10.0.30.184",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": "artifacts/lab/2026-05-23/openclaw-2026.2.21-attempt-02/scan.json",
+      "scanner_command": "python3 -m openclaw_scanner --target http://<ip>:18789 --capture-version <version> --capture-name <name> --capture-output <capture> --format json --output <scan>",
+      "scanner_result": {
+        "reason": null,
+        "status": "captured"
+      },
+      "started_at": "2026-05-26T15:52:17Z",
+      "stopped_at": "2026-05-26T15:55:14Z",
+      "version": "2026.2.21",
+      "vlan": 30,
+      "vm_id": 101,
+      "vm_name": "openclaw-corpus-2026-2-21-openclaw-2026.2.21-attempt-02"
+    },
+    {
+      "artifact": "artifacts/lab/2026-05-23/openclaw-2026.2.6-attempt-02/proxmox-attempt-openclaw-2026.2.6-attempt-02.json",
+      "attempt_id": "openclaw-2026.2.6-attempt-02",
+      "auth_mode": "token",
+      "capture_artifact": "artifacts/lab/2026-05-23/openclaw-2026.2.6-attempt-02/capture.json",
+      "created_at": "2026-05-26T15:55:59Z",
+      "deleted_at": "2026-05-26T15:58:28Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-legacy-known-vulnerable",
+        "command_recorded": false,
+        "reason": null,
+        "status": "passed"
+      },
+      "ip_or_hostname": "10.0.30.110",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": "artifacts/lab/2026-05-23/openclaw-2026.2.6-attempt-02/scan.json",
+      "scanner_command": "python3 -m openclaw_scanner --target http://<ip>:18789 --capture-version <version> --capture-name <name> --capture-output <capture> --format json --output <scan>",
+      "scanner_result": {
+        "reason": null,
+        "status": "captured"
+      },
+      "started_at": "2026-05-26T15:56:02Z",
+      "stopped_at": "2026-05-26T15:58:27Z",
+      "version": "2026.2.6",
+      "vlan": 30,
+      "vm_id": 101,
+      "vm_name": "openclaw-corpus-2026-2-6-openclaw-2026.2.6-attempt-02"
+    },
+    {
+      "artifact": "artifacts/lab/2026-05-23/openclaw-2026.2.13-attempt-02/proxmox-attempt-openclaw-2026.2.13-attempt-02.json",
+      "attempt_id": "openclaw-2026.2.13-attempt-02",
+      "auth_mode": "token",
+      "capture_artifact": "artifacts/lab/2026-05-23/openclaw-2026.2.13-attempt-02/capture.json",
+      "created_at": "2026-05-26T15:59:04Z",
+      "deleted_at": "2026-05-26T16:01:40Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-legacy-known-vulnerable",
+        "command_recorded": false,
+        "reason": null,
+        "status": "passed"
+      },
+      "ip_or_hostname": "10.0.30.160",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": "artifacts/lab/2026-05-23/openclaw-2026.2.13-attempt-02/scan.json",
+      "scanner_command": "python3 -m openclaw_scanner --target http://<ip>:18789 --capture-version <version> --capture-name <name> --capture-output <capture> --format json --output <scan>",
+      "scanner_result": {
+        "reason": null,
+        "status": "captured"
+      },
+      "started_at": "2026-05-26T15:59:09Z",
+      "stopped_at": "2026-05-26T16:01:39Z",
+      "version": "2026.2.13",
+      "vlan": 30,
+      "vm_id": 101,
+      "vm_name": "openclaw-corpus-2026-2-13-openclaw-2026.2.13-attempt-02"
+    },
+    {
+      "artifact": "artifacts/lab/2026-05-23/openclaw-2026.1.29-beta.1-attempt-02/proxmox-attempt-openclaw-2026.1.29-beta.1-attempt-02.json",
+      "attempt_id": "openclaw-2026.1.29-beta.1-attempt-02",
+      "auth_mode": "token",
+      "capture_artifact": "artifacts/lab/2026-05-23/openclaw-2026.1.29-beta.1-attempt-02/capture.json",
+      "created_at": "2026-05-26T16:02:21Z",
+      "deleted_at": "2026-05-26T16:05:09Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-legacy-known-vulnerable",
+        "command_recorded": false,
+        "reason": null,
+        "status": "passed"
+      },
+      "ip_or_hostname": "10.0.30.114",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": "artifacts/lab/2026-05-23/openclaw-2026.1.29-beta.1-attempt-02/scan.json",
+      "scanner_command": "python3 -m openclaw_scanner --target http://<ip>:18789 --capture-version <version> --capture-name <name> --capture-output <capture> --format json --output <scan>",
+      "scanner_result": {
+        "reason": null,
+        "status": "captured"
+      },
+      "started_at": "2026-05-26T16:02:27Z",
+      "stopped_at": "2026-05-26T16:05:08Z",
+      "version": "2026.1.29-beta.1",
+      "vlan": 30,
+      "vm_id": 101,
+      "vm_name": "openclaw-corpus-2026-1-29-beta-1-openclaw-2026.1.29-beta.1-attempt-02"
+    },
+    {
+      "artifact": "artifacts/lab/2026-05-23/openclaw-2026.1.29-beta.1-attempt-03/proxmox-attempt-openclaw-2026.1.29-beta.1-attempt-03.json",
+      "attempt_id": "openclaw-2026.1.29-beta.1-attempt-03",
+      "auth_mode": "token",
+      "capture_artifact": "artifacts/lab/2026-05-23/openclaw-2026.1.29-beta.1-attempt-03/capture.json",
+      "created_at": "2026-05-26T16:06:05Z",
+      "deleted_at": "2026-05-26T16:09:26Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-legacy-known-vulnerable",
+        "command_recorded": false,
+        "reason": null,
+        "status": "passed"
+      },
+      "ip_or_hostname": "10.0.30.136",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": "artifacts/lab/2026-05-23/openclaw-2026.1.29-beta.1-attempt-03/scan.json",
+      "scanner_command": "python3 -m openclaw_scanner --target http://<ip>:18789 --capture-version <version> --capture-name <name> --capture-output <capture> --format json --output <scan>",
+      "scanner_result": {
+        "reason": null,
+        "status": "captured"
+      },
+      "started_at": "2026-05-26T16:06:11Z",
+      "stopped_at": "2026-05-26T16:09:22Z",
+      "version": "2026.1.29-beta.1",
+      "vlan": 30,
+      "vm_id": 101,
+      "vm_name": "openclaw-corpus-2026-1-29-beta-1-openclaw-2026.1.29-beta.1-attempt-03"
+    },
+    {
+      "artifact": "artifacts/lab/2026-05-23/openclaw-2026.2.2-1-attempt-04/proxmox-attempt-openclaw-2026.2.2-1-attempt-04.json",
+      "attempt_id": "openclaw-2026.2.2-1-attempt-04",
+      "auth_mode": "token",
+      "capture_artifact": "artifacts/lab/2026-05-23/openclaw-2026.2.2-1-attempt-04/capture.json",
+      "created_at": "2026-05-26T16:10:17Z",
+      "deleted_at": "2026-05-26T16:13:42Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-legacy-known-vulnerable",
+        "command_recorded": false,
+        "reason": null,
+        "status": "passed"
+      },
+      "ip_or_hostname": "10.0.30.173",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": "artifacts/lab/2026-05-23/openclaw-2026.2.2-1-attempt-04/scan.json",
+      "scanner_command": "python3 -m openclaw_scanner --target http://<ip>:18789 --capture-version <version> --capture-name <name> --capture-output <capture> --format json --output <scan>",
+      "scanner_result": {
+        "reason": null,
+        "status": "captured"
+      },
+      "started_at": "2026-05-26T16:10:39Z",
+      "stopped_at": "2026-05-26T16:13:41Z",
+      "version": "2026.2.2-1",
+      "vlan": 30,
+      "vm_id": 101,
+      "vm_name": "openclaw-corpus-2026-2-2-1-openclaw-2026.2.2-1-attempt-04"
+    },
+    {
+      "artifact": "artifacts/lab/2026-05-23/openclaw-2026.2.6-attempt-03/proxmox-attempt-openclaw-2026.2.6-attempt-03.json",
+      "attempt_id": "openclaw-2026.2.6-attempt-03",
+      "auth_mode": "token",
+      "capture_artifact": "artifacts/lab/2026-05-23/openclaw-2026.2.6-attempt-03/capture.json",
+      "created_at": "2026-05-26T16:13:58Z",
+      "deleted_at": "2026-05-26T16:16:32Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-legacy-known-vulnerable",
+        "command_recorded": false,
+        "reason": null,
+        "status": "passed"
+      },
+      "ip_or_hostname": "10.0.30.163",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": "artifacts/lab/2026-05-23/openclaw-2026.2.6-attempt-03/scan.json",
+      "scanner_command": "python3 -m openclaw_scanner --target http://<ip>:18789 --capture-version <version> --capture-name <name> --capture-output <capture> --format json --output <scan>",
+      "scanner_result": {
+        "reason": null,
+        "status": "captured"
+      },
+      "started_at": "2026-05-26T16:14:01Z",
+      "stopped_at": "2026-05-26T16:16:31Z",
+      "version": "2026.2.6",
+      "vlan": 30,
+      "vm_id": 101,
+      "vm_name": "openclaw-corpus-2026-2-6-openclaw-2026.2.6-attempt-03"
+    },
+    {
+      "artifact": "artifacts/lab/2026-05-23/openclaw-2026.2.13-attempt-03/proxmox-attempt-openclaw-2026.2.13-attempt-03.json",
+      "attempt_id": "openclaw-2026.2.13-attempt-03",
+      "auth_mode": "token",
+      "capture_artifact": null,
+      "created_at": "2026-05-26T16:16:52Z",
+      "deleted_at": "2026-05-26T16:25:01Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-legacy-known-vulnerable",
+        "command_recorded": false,
+        "reason": "ssh_unavailable",
+        "status": "failed"
+      },
+      "ip_or_hostname": "10.0.30.188",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": null,
+      "scanner_command": null,
+      "scanner_result": {
+        "reason": "ssh_unavailable",
+        "status": "deployment_failed"
+      },
+      "started_at": "2026-05-26T16:16:56Z",
+      "stopped_at": "2026-05-26T16:25:00Z",
+      "version": "2026.2.13",
+      "vlan": 30,
+      "vm_id": 101,
+      "vm_name": "openclaw-corpus-2026-2-13-openclaw-2026.2.13-attempt-03"
+    },
+    {
+      "artifact": "artifacts/lab/2026-05-23/openclaw-2026.2.13-attempt-04/proxmox-attempt-openclaw-2026.2.13-attempt-04.json",
+      "attempt_id": "openclaw-2026.2.13-attempt-04",
+      "auth_mode": "token",
+      "capture_artifact": null,
+      "created_at": "2026-05-26T16:25:43Z",
+      "deleted_at": "2026-05-26T16:33:47Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-legacy-known-vulnerable",
+        "command_recorded": false,
+        "reason": "ssh_unavailable",
+        "status": "failed"
+      },
+      "ip_or_hostname": "10.0.30.109",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": null,
+      "scanner_command": null,
+      "scanner_result": {
+        "reason": "ssh_unavailable",
+        "status": "deployment_failed"
+      },
+      "started_at": "2026-05-26T16:25:46Z",
+      "stopped_at": "2026-05-26T16:33:46Z",
+      "version": "2026.2.13",
+      "vlan": 30,
+      "vm_id": 101,
+      "vm_name": "openclaw-corpus-2026-2-13-openclaw-2026.2.13-attempt-04"
+    },
+    {
+      "artifact": "artifacts/lab/2026-05-23/openclaw-2026.2.21-attempt-03/proxmox-attempt-openclaw-2026.2.21-attempt-03.json",
+      "attempt_id": "openclaw-2026.2.21-attempt-03",
+      "auth_mode": "token",
+      "capture_artifact": "artifacts/lab/2026-05-23/openclaw-2026.2.21-attempt-03/capture.json",
+      "created_at": "2026-05-26T16:34:31Z",
+      "deleted_at": "2026-05-26T16:37:14Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-legacy-known-vulnerable",
+        "command_recorded": false,
+        "reason": null,
+        "status": "passed"
+      },
+      "ip_or_hostname": "10.0.30.162",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": "artifacts/lab/2026-05-23/openclaw-2026.2.21-attempt-03/scan.json",
+      "scanner_command": "python3 -m openclaw_scanner --target http://<ip>:18789 --capture-version <version> --capture-name <name> --capture-output <capture> --format json --output <scan>",
+      "scanner_result": {
+        "reason": null,
+        "status": "captured"
+      },
+      "started_at": "2026-05-26T16:34:34Z",
+      "stopped_at": "2026-05-26T16:37:13Z",
+      "version": "2026.2.21",
+      "vlan": 30,
+      "vm_id": 101,
+      "vm_name": "openclaw-corpus-2026-2-21-openclaw-2026.2.21-attempt-03"
+    },
+    {
+      "artifact": "artifacts/lab/2026-05-23/openclaw-2026.2.13-attempt-05/proxmox-attempt-openclaw-2026.2.13-attempt-05.json",
+      "attempt_id": "openclaw-2026.2.13-attempt-05",
+      "auth_mode": "token",
+      "capture_artifact": "artifacts/lab/2026-05-23/openclaw-2026.2.13-attempt-05/capture.json",
+      "created_at": "2026-05-26T16:38:02Z",
+      "deleted_at": "2026-05-26T16:40:32Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-legacy-known-vulnerable",
+        "command_recorded": false,
+        "reason": null,
+        "status": "passed"
+      },
+      "ip_or_hostname": "10.0.30.197",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": "artifacts/lab/2026-05-23/openclaw-2026.2.13-attempt-05/scan.json",
+      "scanner_command": "python3 -m openclaw_scanner --target http://<ip>:18789 --capture-version <version> --capture-name <name> --capture-output <capture> --format json --output <scan>",
+      "scanner_result": {
+        "reason": null,
+        "status": "captured"
+      },
+      "started_at": "2026-05-26T16:38:05Z",
+      "stopped_at": "2026-05-26T16:40:30Z",
+      "version": "2026.2.13",
+      "vlan": 30,
+      "vm_id": 101,
+      "vm_name": "openclaw-corpus-2026-2-13-openclaw-2026.2.13-attempt-05"
+    }
+  ]
+}

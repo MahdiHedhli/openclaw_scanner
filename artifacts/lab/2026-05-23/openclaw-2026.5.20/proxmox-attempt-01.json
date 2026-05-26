@@ -1,0 +1,144 @@
+{
+  "allowed_subnet": "10.0.30.0/24",
+  "artifact": "artifacts/lab/2026-05-23/openclaw-2026.5.20/proxmox-attempt-01.json",
+  "attempt_id": "01",
+  "checked_at": "2026-05-23T21:58:59Z",
+  "deployment_method": "proxmox-vm-ssh-deploy",
+  "deployment_result": {
+    "command_label": "openclaw-install-2026.5.20",
+    "command_recorded": false,
+    "command_source": "file",
+    "method": "ssh-command",
+    "ok": false,
+    "placeholders_used": [
+      "version",
+      "ip",
+      "port"
+    ],
+    "reason": "deploy_command_failed",
+    "returncode": 255,
+    "stderr_recorded": false,
+    "stdout_recorded": false
+  },
+  "ip": "10.0.30.134",
+  "ip_discovery": {
+    "attempts": 3,
+    "evidence": [
+      {
+        "attempt": 1,
+        "guest_agent_http_status": 500
+      },
+      {
+        "attempt": 1,
+        "mac_digest": "c7e34acda5c8e00a",
+        "passive_sources_checked": 2
+      },
+      {
+        "attempt": 2,
+        "guest_agent_http_status": 500
+      },
+      {
+        "attempt": 2,
+        "mac_digest": "c7e34acda5c8e00a",
+        "passive_sources_checked": 2
+      }
+    ],
+    "ip": "10.0.30.134",
+    "method": "guest-agent",
+    "ok": true
+  },
+  "lifecycle": {
+    "created_at": "2026-05-23T21:59:15Z",
+    "deleted_at": "2026-05-23T21:59:45Z",
+    "started_at": "2026-05-23T21:59:18Z",
+    "stopped_at": "2026-05-23T21:59:43Z"
+  },
+  "mac": "bc:24:11:32:61:d7",
+  "mac_digest": "c7e34acda5c8e00a",
+  "network_facts": {
+    "bridge": "vmbr0",
+    "device": "net0",
+    "mac": "bc:24:11:32:61:d7",
+    "mac_digest": "c7e34acda5c8e00a",
+    "ok": true,
+    "reason": null,
+    "vlan": "30"
+  },
+  "outcome": "deployment_failed",
+  "port": 18789,
+  "preflight": {
+    "blockers": [],
+    "checked_at": "2026-05-23T21:58:59Z",
+    "vm_lifecycle_allowed": true
+  },
+  "reason": "deploy_command_failed",
+  "scanner_capture_attempted": false,
+  "schema_version": 1,
+  "secret_values_recorded": false,
+  "steps": [
+    {
+      "exitstatus": "OK",
+      "http_status": 200,
+      "name": "clone",
+      "ok": true,
+      "task_status": "stopped",
+      "upid_redacted": true
+    },
+    {
+      "http_status": 200,
+      "name": "config:resources",
+      "ok": true
+    },
+    {
+      "http_status": 200,
+      "name": "config:network",
+      "ok": true
+    },
+    {
+      "http_status": 200,
+      "name": "config:cloudinit_identity",
+      "ok": true
+    },
+    {
+      "http_status": 200,
+      "name": "config:cloudinit",
+      "ok": true
+    },
+    {
+      "exitstatus": "OK",
+      "http_status": 200,
+      "name": "resize:scsi0",
+      "ok": true,
+      "task_status": "stopped",
+      "upid_redacted": true
+    },
+    {
+      "exitstatus": "OK",
+      "http_status": 200,
+      "name": "start",
+      "ok": true,
+      "task_status": "stopped",
+      "upid_redacted": true
+    },
+    {
+      "exitstatus": "OK",
+      "http_status": 200,
+      "name": "stop",
+      "ok": true,
+      "task_status": "stopped",
+      "upid_redacted": true
+    },
+    {
+      "exitstatus": "OK",
+      "http_status": 200,
+      "name": "delete",
+      "ok": true,
+      "task_status": "stopped",
+      "upid_redacted": true
+    }
+  ],
+  "version": "2026.5.20",
+  "vlan": 30,
+  "vm_name": "openclaw-corpus-2026-5-20-01",
+  "vmid": 101
+}
