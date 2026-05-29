@@ -1,0 +1,393 @@
+{
+  "run_id": "2026-05-29-openclaw-release-watch",
+  "created_at": "2026-05-29T13:00:43Z",
+  "owner_thread": "019cfbe9-834e-7381-b2d2-a3c3f6163560",
+  "homelab_docs_read": [
+    "/Users/mhedhli/Documents/Coding/Projects/homelab/docs/infrastructure.md",
+    "/Users/mhedhli/Documents/Coding/Projects/homelab/docs/vlans.md",
+    "/Users/mhedhli/Documents/Coding/Projects/homelab/docs/security.md",
+    "/Users/mhedhli/Documents/Coding/Projects/homelab/docs/todo.md"
+  ],
+  "security_gate": {
+    "credential_rotation_confirmed": false,
+    "public_exposure": false,
+    "tailscale_serve": false,
+    "host_side_scanning": false
+  },
+  "defaults": {
+    "vlan": 30,
+    "vcpu": 2,
+    "memory_mb": 4096,
+    "disk_gb": 40,
+    "destroy_after_capture": true
+  },
+  "proxmox_preflight": {
+    "checked_at": null,
+    "command": "python3 scripts/proxmox_corpus_preflight.py --format json --output artifacts/lab/YYYY-MM-DD/proxmox-preflight.json --manifest artifacts/lab/YYYY-MM-DD/manifest.json",
+    "artifact": "artifacts/lab/YYYY-MM-DD/proxmox-preflight.json",
+    "passed": false,
+    "vm_lifecycle_allowed": false,
+    "blockers": [],
+    "api_version": null,
+    "template_ready": false,
+    "clone_identity_ready": false,
+    "clone_identity_sources": {
+      "has_user_source": false,
+      "has_key_source": false,
+      "env_ciuser_present": false,
+      "env_sshkeys_file_present": false,
+      "env_ssh_public_key_present": false,
+      "env_cicustom_present": false,
+      "template_ciuser_present": false,
+      "template_sshkeys_present": false,
+      "template_cicustom_present": false
+    },
+    "openclaw_related_vms": 0,
+    "openclaw_running_vms": 0
+  },
+  "release_gap": {
+    "checked_at": "2026-05-29T13:01:50Z",
+    "command": "python3 scripts/check_openclaw_release_gap.py --versions-file artifacts/lab/2026-05-29/openclaw-versions.json --capture-root artifacts/lab --output artifacts/lab/2026-05-29/openclaw-release-gap.json --manifest artifacts/lab/2026-05-29/manifest.json",
+    "artifact": "artifacts/lab/2026-05-29/openclaw-release-gap.json",
+    "package": "openclaw",
+    "decision": "launch_single_vm_capture",
+    "capture_needed": true,
+    "capture_needed_versions": [
+      "2026.5.26",
+      "2026.5.27"
+    ],
+    "latest_published_version": "2026.5.28-beta.1",
+    "latest_captured_version": "2026.5.25-beta.1",
+    "latest_promoted_exact_version": "2026.5.25-beta.1",
+    "captured_version_count": 15,
+    "promoted_exact_version_count": 14,
+    "captured_unpromoted_versions": [
+      "2026.5.22-beta.1"
+    ],
+    "stable_uncaptured_versions_after_latest_capture": [
+      "2026.5.26",
+      "2026.5.27"
+    ],
+    "prerelease_uncaptured_versions_after_latest_capture": [
+      "2026.5.26-beta.1",
+      "2026.5.26-beta.2",
+      "2026.5.27-beta.1",
+      "2026.5.28-beta.1"
+    ]
+  },
+  "saved_capture_inference": {
+    "checked_at": "2026-05-29T13:02:16Z",
+    "command": "python3 scripts/validate_saved_capture_inference.py --input-root artifacts/lab --rules-file openclaw_scanner/data/openclaw_rules.json --require-all-exact --ignore-version 2026.5.22-beta.1 --output artifacts/lab/2026-05-29/saved-capture-inference-check.json --manifest artifacts/lab/2026-05-29/manifest.json",
+    "artifact": "artifacts/lab/2026-05-29/saved-capture-inference-check.json",
+    "passed": true,
+    "require_all_exact": true,
+    "bundle_count": 30,
+    "capture_count": 30,
+    "evaluated_capture_count": 28,
+    "ignored_capture_count": 2,
+    "declared_exact_match_count": 28,
+    "declared_no_exact_match_count": 0,
+    "ignored_declared_no_exact_match_count": 2,
+    "declared_versions_without_exact_match": [],
+    "ignored_versions": [
+      "2026.5.22-beta.1"
+    ],
+    "ignored_versions_present": [
+      "2026.5.22-beta.1"
+    ],
+    "version_summary": [
+      {
+        "declared_version": "2026.1.29-beta.1",
+        "capture_count": 2,
+        "evaluated_capture_count": 2,
+        "ignored_capture_count": 0,
+        "declared_exact_match_count": 2,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 0,
+        "exact_sources": [
+          "lab-capture-2026-1-29-beta-1"
+        ],
+        "top_version_counts": [
+          {
+            "version": "2026.1.29-beta.1",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "declared_version": "2026.2.13",
+        "capture_count": 2,
+        "evaluated_capture_count": 2,
+        "ignored_capture_count": 0,
+        "declared_exact_match_count": 2,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 0,
+        "exact_sources": [
+          "lab-capture-2026-2-13"
+        ],
+        "top_version_counts": [
+          {
+            "version": "2026.2.13",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "declared_version": "2026.2.2-1",
+        "capture_count": 2,
+        "evaluated_capture_count": 2,
+        "ignored_capture_count": 0,
+        "declared_exact_match_count": 2,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 0,
+        "exact_sources": [
+          "lab-capture-2026-2-2-1"
+        ],
+        "top_version_counts": [
+          {
+            "version": "2026.2.2-1",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "declared_version": "2026.2.21",
+        "capture_count": 2,
+        "evaluated_capture_count": 2,
+        "ignored_capture_count": 0,
+        "declared_exact_match_count": 2,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 0,
+        "exact_sources": [
+          "lab-capture-2026-2-21"
+        ],
+        "top_version_counts": [
+          {
+            "version": "2026.2.21",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "declared_version": "2026.2.6",
+        "capture_count": 2,
+        "evaluated_capture_count": 2,
+        "ignored_capture_count": 0,
+        "declared_exact_match_count": 2,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 0,
+        "exact_sources": [
+          "lab-capture-2026-2-6"
+        ],
+        "top_version_counts": [
+          {
+            "version": "2026.2.6",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "declared_version": "2026.5.18",
+        "capture_count": 2,
+        "evaluated_capture_count": 2,
+        "ignored_capture_count": 0,
+        "declared_exact_match_count": 2,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 0,
+        "exact_sources": [
+          "lab-capture-2026-5-18"
+        ],
+        "top_version_counts": [
+          {
+            "version": "2026.5.18",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "declared_version": "2026.5.19-beta.1",
+        "capture_count": 2,
+        "evaluated_capture_count": 2,
+        "ignored_capture_count": 0,
+        "declared_exact_match_count": 2,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 0,
+        "exact_sources": [
+          "lab-capture-2026-5-19-beta-1"
+        ],
+        "top_version_counts": [
+          {
+            "version": "2026.5.19-beta.1",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "declared_version": "2026.5.20",
+        "capture_count": 2,
+        "evaluated_capture_count": 2,
+        "ignored_capture_count": 0,
+        "declared_exact_match_count": 2,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 0,
+        "exact_sources": [
+          "lab-capture-2026-5-20"
+        ],
+        "top_version_counts": [
+          {
+            "version": "2026.5.20",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "declared_version": "2026.5.22",
+        "capture_count": 2,
+        "evaluated_capture_count": 2,
+        "ignored_capture_count": 0,
+        "declared_exact_match_count": 2,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 0,
+        "exact_sources": [
+          "lab-capture-2026-5-22"
+        ],
+        "top_version_counts": [
+          {
+            "version": "2026.5.22",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "declared_version": "2026.5.22-beta.1",
+        "capture_count": 2,
+        "evaluated_capture_count": 0,
+        "ignored_capture_count": 2,
+        "declared_exact_match_count": 0,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 2,
+        "exact_sources": [],
+        "top_version_counts": []
+      },
+      {
+        "declared_version": "2026.5.24-beta.1",
+        "capture_count": 2,
+        "evaluated_capture_count": 2,
+        "ignored_capture_count": 0,
+        "declared_exact_match_count": 2,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 0,
+        "exact_sources": [
+          "lab-capture-2026-5-24-beta-1"
+        ],
+        "top_version_counts": [
+          {
+            "version": "2026.5.24-beta.1",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "declared_version": "2026.5.24-beta.2",
+        "capture_count": 2,
+        "evaluated_capture_count": 2,
+        "ignored_capture_count": 0,
+        "declared_exact_match_count": 2,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 0,
+        "exact_sources": [
+          "lab-capture-2026-5-24-beta-2"
+        ],
+        "top_version_counts": [
+          {
+            "version": "2026.5.24-beta.2",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "declared_version": "2026.5.25-beta.1",
+        "capture_count": 2,
+        "evaluated_capture_count": 2,
+        "ignored_capture_count": 0,
+        "declared_exact_match_count": 2,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 0,
+        "exact_sources": [
+          "lab-capture-2026-5-25-beta-1"
+        ],
+        "top_version_counts": [
+          {
+            "version": "2026.5.25-beta.1",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "declared_version": "2026.5.3-1",
+        "capture_count": 2,
+        "evaluated_capture_count": 2,
+        "ignored_capture_count": 0,
+        "declared_exact_match_count": 2,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 0,
+        "exact_sources": [
+          "lab-capture-2026-5-3-1"
+        ],
+        "top_version_counts": [
+          {
+            "version": "2026.5.3-1",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "declared_version": "2026.5.7",
+        "capture_count": 2,
+        "evaluated_capture_count": 2,
+        "ignored_capture_count": 0,
+        "declared_exact_match_count": 2,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 0,
+        "exact_sources": [
+          "lab-capture-2026-5-7"
+        ],
+        "top_version_counts": [
+          {
+            "version": "2026.5.7",
+            "count": 2
+          }
+        ]
+      }
+    ],
+    "skipped_input_summary": [
+      {
+        "reason": "not an openclaw_blackbox_capture bundle",
+        "count": 483
+      }
+    ]
+  },
+  "vms": [],
+  "vm_inventory": {
+    "created": 0,
+    "reused": 0,
+    "shut_down": 0,
+    "destroyed": 0,
+    "still_running": 0,
+    "next_cleanup_deadline": null
+  },
+  "heartbeat_summary": {
+    "checked_at": "2026-05-29T13:00:43Z",
+    "decision": "notify_release_gap_blocked_by_security_gate",
+    "release_gap_capture_needed": true,
+    "capture_needed_versions": [
+      "2026.5.26",
+      "2026.5.27"
+    ],
+    "latest_published_version": "2026.5.28-beta.1",
+    "latest_captured_version": "2026.5.25-beta.1",
+    "latest_promoted_exact_version": "2026.5.25-beta.1",
+    "proxmox_action": "not_attempted",
+    "blocker": "credential_gate_active_in_homelab_security_docs"
+  }
+}
