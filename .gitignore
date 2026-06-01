@@ -13,6 +13,7 @@ OPENCLAW_PROXMOX_CREDENTIALS.local.md
 *.local.json
 .shodanapi
 .shodanapi.*
+artifacts/lab/**/ssh_known_hosts
 __pycache__/
 *.py[cod]
 *.egg-info/

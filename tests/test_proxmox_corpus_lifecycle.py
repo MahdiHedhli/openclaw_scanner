@@ -295,7 +295,7 @@ class ProxmoxCorpusLifecycleTests(unittest.TestCase):
     def test_ssh_qga_repair_runs_bounded_install_sequence(self):
         calls = []
 
-        def fake_ssh(target, command, connect_timeout, timeout, max_output_chars=800):
+        def fake_ssh(target, command, connect_timeout, timeout, max_output_chars=800, **kwargs):
             calls.append(command)
             if "dpkg-query" in command:
                 return {
@@ -318,7 +318,7 @@ class ProxmoxCorpusLifecycleTests(unittest.TestCase):
         self.assertIn("systemctl enable --now qemu-guest-agent", calls[3])
 
     def test_ssh_qga_repair_accepts_static_service_before_reboot(self):
-        def fake_ssh(target, command, connect_timeout, timeout, max_output_chars=800):
+        def fake_ssh(target, command, connect_timeout, timeout, max_output_chars=800, **kwargs):
             if "dpkg-query" in command:
                 return {
                     "ok": True,
@@ -500,15 +500,15 @@ class ProxmoxCorpusLifecycleTests(unittest.TestCase):
     def test_run_known_version_deploy_records_no_command_or_output(self):
         seen = {}
 
-        def fake_ssh(target, command, connect_timeout, timeout, max_output_chars=800):
+        def fake_ssh(target, command, connect_timeout, timeout, max_output_chars=800, **kwargs):
             seen["target"] = target
             seen["command"] = command
             seen["max_output_chars"] = max_output_chars
             return {
                 "ok": False,
                 "returncode": 42,
-                "stdout_excerpt": "SECRET=do-not-record",
-                "stderr_excerpt": "TOKEN=do-not-record",
+                "stdout_excerpt": "LEAK_SENTINEL_DO_NOT_RECORD",
+                "stderr_excerpt": "LEAK_SENTINEL_DO_NOT_RECORD",
             }
 
         with patch.object(lifecycle, "ssh_exec_capture", side_effect=fake_ssh):
@@ -532,7 +532,7 @@ class ProxmoxCorpusLifecycleTests(unittest.TestCase):
         self.assertFalse(report["command_recorded"])
         self.assertFalse(report["stdout_recorded"])
         self.assertFalse(report["stderr_recorded"])
-        self.assertNotIn("SECRET", json.dumps(report))
+        self.assertNotIn("LEAK_SENTINEL", json.dumps(report))
         self.assertNotIn("TOKEN", json.dumps(report))
         self.assertEqual(seen["target"], "claude@10.0.30.55")
         self.assertEqual(seen["max_output_chars"], 0)
@@ -540,8 +540,8 @@ class ProxmoxCorpusLifecycleTests(unittest.TestCase):
     def test_run_known_version_deploy_waits_for_ssh_before_command(self):
         calls = []
 
-        def fake_ssh(target, command, connect_timeout, timeout, max_output_chars=800):
-            calls.append(command)
+        def fake_ssh(target, command, connect_timeout, timeout, max_output_chars=800, **kwargs):
+            calls.append((command, kwargs.get("known_hosts_file")))
             if command == "true" and len(calls) == 1:
                 return {"ok": False, "returncode": 255}
             return {"ok": True, "returncode": 0}
@@ -560,18 +560,26 @@ class ProxmoxCorpusLifecycleTests(unittest.TestCase):
                     command_source="file",
                     ssh_ready_attempts=3,
                     ssh_ready_interval=0.5,
+                    known_hosts_file="/tmp/openclaw-known-hosts",
                 )
 
         self.assertTrue(report["ok"])
-        self.assertEqual(calls, ["true", "true", "deploy --version 2026.2.13"])
+        self.assertEqual(
+            calls,
+            [
+                ("true", "/tmp/openclaw-known-hosts"),
+                ("true", "/tmp/openclaw-known-hosts"),
+                ("deploy --version 2026.2.13", "/tmp/openclaw-known-hosts"),
+            ],
+        )
         self.assertEqual(report["ssh_ready"]["attempts"], 2)
         self.assertFalse(report["ssh_ready"]["stdout_recorded"])
         self.assertFalse(report["ssh_ready"]["stderr_recorded"])
         sleep.assert_called_once_with(0.5)
 
     def test_run_known_version_deploy_fails_closed_when_ssh_never_ready(self):
-        def fake_ssh(target, command, connect_timeout, timeout, max_output_chars=800):
-            return {"ok": False, "returncode": 255, "stdout_excerpt": "SECRET=x"}
+        def fake_ssh(target, command, connect_timeout, timeout, max_output_chars=800, **kwargs):
+            return {"ok": False, "returncode": 255, "stdout_excerpt": "LEAK_SENTINEL"}
 
         with patch.object(lifecycle, "ssh_exec_capture", side_effect=fake_ssh):
             with patch.object(lifecycle.time, "sleep"):
@@ -595,7 +603,7 @@ class ProxmoxCorpusLifecycleTests(unittest.TestCase):
         self.assertFalse(report["command_recorded"])
         self.assertFalse(report["stdout_recorded"])
         self.assertFalse(report["stderr_recorded"])
-        self.assertNotIn("SECRET", json.dumps(report))
+        self.assertNotIn("LEAK_SENTINEL", json.dumps(report))
 
     def test_wait_for_gateway_health_retries_until_reachable(self):
         calls = []
@@ -651,7 +659,7 @@ class ProxmoxCorpusLifecycleTests(unittest.TestCase):
     def test_ssh_template_cleanup_cleans_cloud_init_and_machine_id(self):
         seen = {}
 
-        def fake_ssh(target, command, connect_timeout, timeout, max_output_chars=800):
+        def fake_ssh(target, command, connect_timeout, timeout, max_output_chars=800, **kwargs):
             seen["command"] = command
             return {"ok": True, "stdout_excerpt": "template_cleaned\n"}
 

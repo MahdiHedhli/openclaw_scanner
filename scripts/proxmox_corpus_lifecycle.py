@@ -597,15 +597,24 @@ def ssh_exec_capture(
     connect_timeout: int,
     timeout: float,
     max_output_chars: int = 800,
+    known_hosts_file: str | Path | None = None,
 ) -> Dict[str, Any]:
-    ssh_command = [
-        "ssh",
+    ssh_options = [
         "-o",
         "BatchMode=yes",
         "-o",
         f"ConnectTimeout={max(connect_timeout, 1)}",
         "-o",
         "StrictHostKeyChecking=accept-new",
+    ]
+    if known_hosts_file:
+        path = Path(known_hosts_file)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        ssh_options.extend(["-o", f"UserKnownHostsFile={path}"])
+
+    ssh_command = [
+        "ssh",
+        *ssh_options,
         target,
         "sh",
         "-lc",
@@ -1357,6 +1366,7 @@ def wait_for_ssh_ready(
     interval_seconds: float,
     connect_timeout: int,
     command_timeout: float,
+    known_hosts_file: str | Path | None = None,
 ) -> Dict[str, Any]:
     report: Dict[str, Any] = {
         "ok": False,
@@ -1373,6 +1383,7 @@ def wait_for_ssh_ready(
             connect_timeout=connect_timeout,
             timeout=command_timeout,
             max_output_chars=0,
+            known_hosts_file=known_hosts_file,
         )
         last_probe = probe
         if probe.get("ok"):
@@ -1463,6 +1474,7 @@ def run_known_version_deploy(
     command_source: str = "argument",
     ssh_ready_attempts: int = 0,
     ssh_ready_interval: float = 0.0,
+    known_hosts_file: str | Path | None = None,
 ) -> Dict[str, Any]:
     if skip_deploy:
         return {
@@ -1492,6 +1504,7 @@ def run_known_version_deploy(
             interval_seconds=ssh_ready_interval,
             connect_timeout=connect_timeout,
             command_timeout=min(max(timeout, 1.0), max(connect_timeout + 5, 6)),
+            known_hosts_file=known_hosts_file,
         )
         if not ssh_ready.get("ok"):
             return {
@@ -1514,6 +1527,7 @@ def run_known_version_deploy(
         connect_timeout=connect_timeout,
         timeout=timeout,
         max_output_chars=0,
+        known_hosts_file=known_hosts_file,
     )
     report = {
         "ok": raw.get("ok") is True,
@@ -2844,6 +2858,7 @@ def run_once(values: Dict[str, str], args: argparse.Namespace) -> Tuple[int, Dic
 
         report["ip"] = discovery.get("ip")
         ssh_user = args.deploy_ssh_user or values.get("OPENCLAW_PROXMOX_CIUSER") or "claude"
+        deploy_known_hosts_file = output_dir / "ssh_known_hosts"
         deployment = run_known_version_deploy(
             str(report["ip"]),
             args.version,
@@ -2857,6 +2872,7 @@ def run_once(values: Dict[str, str], args: argparse.Namespace) -> Tuple[int, Dic
             command_source=deploy_command_source or "argument",
             ssh_ready_attempts=max(args.deploy_ssh_ready_attempts, 0),
             ssh_ready_interval=max(args.deploy_ssh_ready_interval, 0.0),
+            known_hosts_file=deploy_known_hosts_file,
         )
         report["deployment_result"] = deployment
         if not deployment.get("ok"):

@@ -8,12 +8,12 @@ out of scope unless explicitly approved.
 ## Current State
 
 - Exact version fingerprinting is now usable for the promoted lab corpus, not
-  merely blocked on corpus availability. The bundled rule set includes 14
+  merely blocked on corpus availability. The bundled rule set includes 15
   exact, lab-promoted OpenClaw versions from short-lived VLAN 30 captures:
   `2026.1.29-beta.1`, `2026.2.2-1`, `2026.2.6`, `2026.2.13`, `2026.2.21`,
   `2026.5.3-1`, `2026.5.7`, `2026.5.18`, `2026.5.19-beta.1`, `2026.5.20`,
   `2026.5.22`, `2026.5.24-beta.1`, `2026.5.24-beta.2`, and
-  `2026.5.25-beta.1`.
+  `2026.5.25-beta.1`, and `2026.5.26`.
 - Family classification is useful today, but many live signals do not map to a
   specific release without lab calibration.
 - Proxy, WAF, TLS termination, and deployment-specific auth modes can hide or
@@ -36,7 +36,7 @@ out of scope unless explicitly approved.
 
 ## Priority Roadmap
 
-1. Continue expanding the known-version corpus beyond the 14 promoted exact
+1. Continue expanding the known-version corpus beyond the 15 promoted exact
    rules, with at least two captures per version before promotion.
 2. Improve `--suggest-rules-from` with stability, uniqueness, and weighted
    confidence scoring.
