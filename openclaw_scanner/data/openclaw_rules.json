@@ -9,6 +9,54 @@
   ],
   "version_rules": [
     {
+      "id": "lab-capture-2026-5-28",
+      "version": "2026.5.28",
+      "exact": true,
+      "confidence": 0.89,
+      "notes": "Promoted from two short-lived VLAN 30 known-version corpus captures on 2026-06-02. Review before applying to unrelated OpenClaw deployment modes.",
+      "all": [
+        {
+          "type": "script_contains",
+          "path": "/",
+          "value": "./assets/index-B5x_BDbc.js"
+        },
+        {
+          "type": "script_contains",
+          "path": "/ws",
+          "value": "./assets/index-B5x_BDbc.js"
+        },
+        {
+          "type": "script_contains",
+          "path": "/v1/models",
+          "value": "./assets/index-B5x_BDbc.js"
+        }
+      ]
+    },
+    {
+      "id": "lab-capture-2026-5-27",
+      "version": "2026.5.27",
+      "exact": true,
+      "confidence": 0.89,
+      "notes": "Promoted from two short-lived VLAN 30 known-version corpus captures on 2026-06-02. Review before applying to unrelated OpenClaw deployment modes.",
+      "all": [
+        {
+          "type": "script_contains",
+          "path": "/",
+          "value": "./assets/index-89Mm3xEP.js"
+        },
+        {
+          "type": "script_contains",
+          "path": "/ws",
+          "value": "./assets/index-89Mm3xEP.js"
+        },
+        {
+          "type": "script_contains",
+          "path": "/v1/models",
+          "value": "./assets/index-89Mm3xEP.js"
+        }
+      ]
+    },
+    {
       "id": "lab-capture-2026-5-26",
       "version": "2026.5.26",
       "exact": true,

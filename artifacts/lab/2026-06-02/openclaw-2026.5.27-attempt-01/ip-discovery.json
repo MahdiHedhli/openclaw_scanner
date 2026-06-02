@@ -1,0 +1,35 @@
+{
+  "attempts": 4,
+  "evidence": [
+    {
+      "attempt": 1,
+      "guest_agent_http_status": 500
+    },
+    {
+      "attempt": 1,
+      "mac_digest": "b4ed2c1e1fd56c55",
+      "passive_sources_checked": 2
+    },
+    {
+      "attempt": 2,
+      "guest_agent_http_status": 500
+    },
+    {
+      "attempt": 2,
+      "mac_digest": "b4ed2c1e1fd56c55",
+      "passive_sources_checked": 2
+    },
+    {
+      "attempt": 3,
+      "guest_agent_http_status": 500
+    },
+    {
+      "attempt": 3,
+      "mac_digest": "b4ed2c1e1fd56c55",
+      "passive_sources_checked": 2
+    }
+  ],
+  "ip": "10.0.30.196",
+  "method": "guest-agent",
+  "ok": true
+}

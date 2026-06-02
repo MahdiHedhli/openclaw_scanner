@@ -1,0 +1,17 @@
+{
+  "command_label": "openclaw-install-2026.5.27",
+  "command_recorded": false,
+  "command_source": "file",
+  "ok": true,
+  "placeholders_used": [
+    "version",
+    "ip",
+    "port"
+  ],
+  "reason": null,
+  "stderr_recorded": false,
+  "stdout_recorded": false,
+  "uses_ip_placeholder": true,
+  "uses_port_placeholder": true,
+  "uses_version_placeholder": true
+}

@@ -133,7 +133,7 @@ The Proxmox-backed known-version corpus workflow lives in
 That lifecycle requires a bounded known-version deployment command or an
 explicit pre-deployed image override before scanner capture.
 
-The bundled exact-version rules currently include 15 lab-promoted OpenClaw
+The bundled exact-version rules currently include 17 lab-promoted OpenClaw
 releases:
 
 - `2026.1.29-beta.1`
@@ -151,11 +151,16 @@ releases:
 - `2026.5.24-beta.2`
 - `2026.5.25-beta.1`
 - `2026.5.26`
+- `2026.5.27`
+- `2026.5.28`
 
 These rules are based on short-lived VLAN 30 captures and should be treated as
 high-value triage evidence. They are not exploit proof, and unusual deployment
 modes, proxies, custom builds, or hidden static assets can still reduce a scan
-to family-level confidence.
+to family-level confidence. As of the 2026-06-02 release-watch run, the stable
+package gap is closed through `2026.5.28`; newer prereleases are reported by
+the release-gap helper but are not captured unless prerelease coverage is
+explicitly requested.
 
 Create a black-box calibration capture bundle from known-version test nodes:
 
