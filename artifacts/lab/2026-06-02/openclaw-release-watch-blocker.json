@@ -1,0 +1,26 @@
+{
+  "automation_id": "openclaw-corpus-heartbeat",
+  "blocker": "security_gate_active_in_homelab_security_docs",
+  "bundle_type": "openclaw_release_watch_blocker",
+  "capture_needed": true,
+  "capture_needed_versions": [
+    "2026.5.27",
+    "2026.5.28"
+  ],
+  "decision": "blocked_before_vm_security_gate_active",
+  "generated_at": "2026-06-02T13:11:01Z",
+  "latest_captured_version": "2026.5.26",
+  "latest_promoted_exact_version": "2026.5.26",
+  "latest_published_version": "2026.6.1-beta.1",
+  "notes": "No Proxmox preflight, VM clone, token creation, or credential-file read was performed because the required homelab security document still marks the credential-output incident as ACTIVE.",
+  "proxmox_action": "not_attempted",
+  "schema_version": 1,
+  "vm_inventory": {
+    "created": 0,
+    "destroyed": 0,
+    "next_cleanup_deadline": null,
+    "reused": 0,
+    "shut_down": 0,
+    "still_running": 0
+  }
+}
