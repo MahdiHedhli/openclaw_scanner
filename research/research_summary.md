@@ -69,13 +69,21 @@ staying within the remote-only, unauthenticated scanning boundary.
 - POST probes remain opt-in through `--enable-post-probes`; the scanner does not
   authenticate, send tool-execution payloads, connect to debugger WebSockets,
   or interact with VNC.
+- The 2026-06-03 Shodan title-query calibration processed 500 passive
+  candidates and actively validated a 100-host shortlist. Passive-only
+  metadata produced 0 family matches, 0 exact versions, and 0 vulnerability
+  correlations. Active default validation produced 70 family matches, 25
+  exact-version matches, and 10 vulnerability correlations. Conditional deep
+  validation with POST probes disabled preserved those counts while collecting
+  richer status-distribution evidence.
 
 **Scanner implication:** passive discovery is useful for candidate discovery
 but is not reliable exact-version evidence in the current field data. Discovery
 confidence, CDP/Chromium, Socket.IO, noVNC, websockify, TLS/JARM, and CT signals
 can improve triage and clustering, but exact versions still require
 lab-promoted rules or explicit correlation-grade package metadata such as mDNS
-`cliPath` versions.
+`cliPath` versions. Status-distribution signatures should remain clustering and
+reporting evidence until saved-capture validation proves a stronger claim.
 
 ---
 

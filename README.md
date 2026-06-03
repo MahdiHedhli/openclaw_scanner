@@ -180,6 +180,11 @@ python3 -m openclaw_scanner \
 
 ## Field Calibration Snapshot
 
+OpenClaw Scanner now has two public-safe calibration passes that demonstrate
+the value of separating discovery from identification.
+
+### 2026-06-02 mDNS-oriented pass
+
 The first public-facing calibration pass used anonymized data from 500 passive
 Shodan rows and a 100-target active shortlist:
 
@@ -195,18 +200,51 @@ Shodan rows and a 100-target active shortlist:
 | Passive-to-family-match rate | 2.6% |
 
 The active sample also produced clustered `status_distribution_signature`
-values such as `200:13;401:1;404:23` and `200:13;401:3;404:21`. These are
-tracked as correlation signals for future version, deployment-mode, and reverse
-proxy analysis, but they are not treated as exact-version proof by themselves.
+values such as `200:13;401:1;404:23` and `200:13;401:3;404:21`.
 
-Public-safe anonymized artifacts live under
-`artifacts/shodan/2026-06-02/public/`.
+### 2026-06-03 title-query follow-up
+
+The follow-up pass used the expanded discovery query support against
+`http.title:"OpenClaw Control"`, normalized 500 passive candidates, and actively
+validated a 100-host shortlist twice: once in the default low-impact mode and
+once with `--deep-validation` enabled but POST probes still disabled.
+
+| Metric | Passive candidates | Active default | Active deep, no POST |
+| --- | ---: | ---: | ---: |
+| Results processed | 500 | 100 | 100 |
+| Responsive active hosts | N/A | 100 | 100 |
+| OpenClaw family matches | 0 | 70 | 70 |
+| Exact version matches | 0 | 25 | 25 |
+| Vulnerability correlations | 0 | 10 | 10 |
+
+Key rates from the title-query pass:
+
+- Active candidate-to-family-match rate: 70 / 100, or 70%.
+- Active candidate-to-exact-version rate: 25 / 100, or 25%.
+- Passive-to-family-match rate: 70 / 500, or 14%.
+
+Deep validation did not change family, exact-version, or vulnerability counts
+in this sample, but it added richer response-shape evidence. The most common
+default status signatures were `200:19;404:19`, `200:17;404:19`, and
+`101:2;200:17;404:19`; the most common deep-validation signatures were
+`200:34;404:23;405:1`, `200:32;404:23;405:1`, and
+`101:2;200:32;404:23;405:1`.
+
+These signatures are tracked as correlation signals for future version,
+deployment-mode, and reverse-proxy analysis, but they are not treated as
+exact-version proof by themselves.
+
+Public-safe anonymized artifacts live under:
+
+- `artifacts/shodan/2026-06-02/public/`
+- `artifacts/shodan/2026-06-03/public/`
 
 ## Documentation
 
 - [Roadmap](docs/roadmap.md)
 - [Known-version corpus workflow](docs/corpus-workflow.md)
 - [Announcement draft](docs/openclaw-scanner-announcement.md)
+- [June 2026 calibration blog update](docs/openclaw-scanner-blog-update-2026-06-03.md)
 
 ## Known-Version Corpus
 

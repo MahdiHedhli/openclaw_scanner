@@ -1,0 +1,109 @@
+{
+  "active_deep_validation_no_post": {
+    "exact_version_results": 25,
+    "family_matches": 70,
+    "hosts_with_extra_deep_observations": 70,
+    "max_observation_count": 58,
+    "responsive": 100,
+    "result_count": 100,
+    "status_distribution_signature_counts": {
+      "101:2;200:17;404:19": 1,
+      "101:2;200:17;404:1;502:18": 1,
+      "101:2;200:1;404:35": 1,
+      "101:2;200:31;404:24;405:1": 1,
+      "101:2;200:32;404:23;405:1": 14,
+      "101:2;200:47;404:7;405:2": 1,
+      "101:2;200:54;405:2": 1,
+      "200:16;404:18": 1,
+      "200:17;404:11": 1,
+      "200:17;404:19": 1,
+      "200:19;404:19": 8,
+      "200:1;500:37": 1,
+      "200:24;404:1": 2,
+      "200:28;401:2;404:23;405:3": 1,
+      "200:29;404:7": 1,
+      "200:30;400:2;401:5;404:1": 1,
+      "200:31;404:23;405:2": 2,
+      "200:32;404:22;405:1": 1,
+      "200:32;404:23;405:1": 16,
+      "200:33;404:23;405:1": 1,
+      "200:33;404:24;405:1": 1,
+      "200:34;404:22;405:1": 1,
+      "200:34;404:23;405:1": 20,
+      "200:35;400:2;404:1": 5,
+      "200:47;404:7;405:2": 1,
+      "200:53;405:3": 1,
+      "200:55;405:3": 2,
+      "200:56;405:2": 6
+    },
+    "top_family_counts": {
+      "openclaw_spa_fallback_all_200": 12,
+      "openclaw_ui_only_404_api": 58
+    },
+    "vulnerability_correlation_results": 10
+  },
+  "active_default": {
+    "exact_version_results": 25,
+    "family_matches": 70,
+    "responsive": 100,
+    "result_count": 100,
+    "status_distribution_signature_counts": {
+      "101:2;200:16;404:20": 1,
+      "101:2;200:17;404:19": 15,
+      "101:2;200:17;404:1;502:18": 1,
+      "101:2;200:1;404:35": 1,
+      "101:2;200:29;404:7": 1,
+      "101:2;200:36": 1,
+      "200:14;404:10": 1,
+      "200:15;401:2;404:19": 1,
+      "200:15;404:17": 1,
+      "200:17;404:19": 20,
+      "200:18;404:20": 1,
+      "200:19;404:19": 30,
+      "200:1;500:37": 1,
+      "200:28;400:2;401:7;404:1": 1,
+      "200:29;404:7": 2,
+      "200:35;400:2;404:1": 7,
+      "200:36": 1,
+      "200:38": 8
+    },
+    "top_family_counts": {
+      "openclaw_spa_fallback_all_200": 12,
+      "openclaw_ui_only_404_api": 58
+    },
+    "vulnerability_correlation_results": 10
+  },
+  "artifacts": {
+    "public_active_deep_csv": "artifacts/shodan/2026-06-03/public/openclaw-active-deep-100-anonymized.csv",
+    "public_active_default_csv": "artifacts/shodan/2026-06-03/public/openclaw-active-default-100-anonymized.csv",
+    "public_passive_csv": "artifacts/shodan/2026-06-03/public/openclaw-passive-500-anonymized.csv",
+    "raw_active_deep_json": "artifacts/shodan/2026-06-03/openclaw-active-deep-100.json",
+    "raw_active_default_json": "artifacts/shodan/2026-06-03/openclaw-active-default-100.json",
+    "raw_passive_json": "artifacts/shodan/2026-06-03/openclaw-passive-scan-500.json"
+  },
+  "authorization_scope": "user-requested public-safe calibration against Shodan-derived candidates",
+  "comparison": {
+    "active_shortlist": 100,
+    "deep_exact_version_results": 25,
+    "deep_family_matches": 70,
+    "deep_vulnerability_correlation_results": 10,
+    "default_exact_version_results": 25,
+    "default_family_matches": 70,
+    "default_vulnerability_correlation_results": 10,
+    "passive_candidates": 500
+  },
+  "passive_candidates": {
+    "exact_version_results": 0,
+    "family_matches": 0,
+    "responsive": 500,
+    "result_count": 500,
+    "status_distribution_signature_counts": {
+      "200:1": 497,
+      "401:1": 3
+    },
+    "top_family_counts": {},
+    "vulnerability_correlation_results": 0
+  },
+  "post_probes_enabled": false,
+  "run_date": "2026-06-03"
+}

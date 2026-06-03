@@ -79,6 +79,49 @@ are not enough to claim a specific OpenClaw version. Exact version claims remain
 reserved for static assets or other stable remote-visible signals observed on a
 live service.
 
+## June 3 Follow-Up: Title Query Calibration
+
+The next calibration pass used the expanded Shodan discovery query support for
+`http.title:"OpenClaw Control"`. We normalized 500 passive candidates and
+actively validated a 100-host shortlist in two modes:
+
+- Pass A: default low-impact mode.
+- Pass B: `--deep-validation` enabled, with POST probes still disabled.
+
+Sanitized funnel results:
+
+| Metric | Passive candidates | Active default | Active deep, no POST |
+| --- | ---: | ---: | ---: |
+| Results processed | 500 | 100 | 100 |
+| Responsive active hosts | N/A | 100 | 100 |
+| OpenClaw family matches | 0 | 70 | 70 |
+| Exact version matches | 0 | 25 | 25 |
+| Vulnerability correlations | 0 | 10 | 10 |
+
+The main takeaway: title-based passive discovery produced a much stronger active
+shortlist than the first mDNS-oriented sample, but passive metadata alone still
+produced zero family matches, zero exact versions, and zero vulnerability
+correlations. Discovery found candidates; active evidence produced
+identification.
+
+The title-query pass also reinforced the value of status-distribution
+fingerprinting. The most common default signatures were:
+
+- `200:19;404:19`: 30 hosts.
+- `200:17;404:19`: 20 hosts.
+- `101:2;200:17;404:19`: 15 hosts.
+
+With conditional deep validation enabled, the top signatures shifted as
+additional low-impact GET/OPTIONS/WebSocket evidence was collected:
+
+- `200:34;404:23;405:1`: 20 hosts.
+- `200:32;404:23;405:1`: 16 hosts.
+- `101:2;200:32;404:23;405:1`: 14 hosts.
+
+Deep validation did not change family, exact-version, or vulnerability counts
+for this sample. It did, however, enrich the observation set for future
+clustering work.
+
 ## Public-Safe Data
 
 The working dataset has been anonymized before publication. Real IP addresses,
@@ -93,6 +136,10 @@ Prepared artifacts:
 - `artifacts/shodan/2026-06-02/public/openclaw-active-100-anonymized.csv`
 - `artifacts/shodan/2026-06-02/public/openclaw-active-responsive-14-anonymized.csv`
 - `artifacts/shodan/2026-06-02/public/openclaw-passive-plus-active-500-anonymized.csv`
+- `artifacts/shodan/2026-06-03/public/openclaw-passive-500-anonymized.csv`
+- `artifacts/shodan/2026-06-03/public/openclaw-active-default-100-anonymized.csv`
+- `artifacts/shodan/2026-06-03/public/openclaw-active-deep-100-anonymized.csv`
+- `artifacts/shodan/2026-06-03/public/openclaw-calibration-comparison-summary.json`
 
 ## Why Conservative Fingerprinting Matters
 
@@ -128,9 +175,10 @@ The bundled exact-version corpus currently includes 17 lab-promoted OpenClaw
 releases through `2026.5.28`. Those rules come from short-lived known-version
 lab deployments and are validated against saved captures before promotion.
 
-The field scan above did not produce exact version matches, which is still a
-useful result: the scanner can distinguish exposed candidates from hosts where
-we do not yet have enough active evidence to make a version claim.
+The first mDNS-oriented field scan did not produce exact version matches. The
+June 3 title-query follow-up did produce 25 exact-version matches and 10
+vulnerability correlations, all driven by correlation-grade evidence rather
+than passive discovery confidence.
 
 ## Getting Started
 

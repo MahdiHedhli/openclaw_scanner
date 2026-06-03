@@ -32,6 +32,12 @@ out of scope unless explicitly approved.
   reliable exact-version fingerprinting in the current field data. Discovery
   confidence, passive TLS/JARM, passive CT names, and generic passive banner
   text must not drive vulnerability correlation.
+- A 2026-06-03 title-query calibration processed 500 passive Shodan candidates
+  and actively validated a 100-host shortlist. Passive metadata alone produced
+  0 family matches, 0 exact versions, and 0 vulnerability correlations. Active
+  default validation produced 70 family matches, 25 exact-version matches, and
+  10 vulnerability correlations; `--deep-validation` with POST probes disabled
+  preserved those counts while increasing response-shape detail.
 - Exact-version attribution still requires lab-promoted remote-visible rules or
   explicit correlation-grade metadata such as package or `cliPath` mDNS
   versions. CDP/Chromium signals are browser-agent evidence and not standalone
@@ -60,19 +66,23 @@ out of scope unless explicitly approved.
    rules, with at least two captures per version before promotion.
 2. Derive stable favicon hashes from saved lab captures and validate them before
    adding favicon-driven discovery queries or family rules.
-3. Improve `--suggest-rules-from` with stability, uniqueness, and weighted
+3. Promote `status_distribution_signature` from a raw observation into an
+   offline clustering/reporting helper for deployment-mode and reverse-proxy
+   analysis. Keep it out of exact-version and vulnerability-correlation logic
+   until supported by saved-capture validation.
+4. Improve `--suggest-rules-from` with stability, uniqueness, and weighted
    confidence scoring.
-4. Deepen static asset analysis for `/asset-manifest.json`, `/manifest.json`,
+5. Deepen static asset analysis for `/asset-manifest.json`, `/manifest.json`,
    JS/CSS chunks, build hashes, and runtime/version strings.
-5. Expand passive enrichment for CPE, JARM, favicon hashes, hostnames, domains,
+6. Expand passive enrichment for CPE, JARM, favicon hashes, hostnames, domains,
    mDNS TXT records, Shodan CVE context, Censys/FOFA title/TLS fields, and CT
    naming indicators.
-6. Add a risk score that combines version confidence, auth exposure, exposed
+7. Add a risk score that combines version confidence, auth exposure, exposed
    endpoint families, proxy/honeypot assessment, and vulnerability severity.
-7. Add safer internet-facing scan ergonomics such as explicit authorization
-   warnings, rate-limit controls, and conservative defaults for public target
-   lists.
-8. Calibrate conditional deep-validation presence signals so Socket.IO, noVNC,
+8. Add safer internet-facing scan ergonomics such as explicit authorization
+   warnings, rate-limit controls, active scan deadlines, resume files, and
+   conservative defaults for public target lists.
+9. Calibrate conditional deep-validation presence signals so Socket.IO, noVNC,
    websockify, and CORS behavior improve clustering without becoming exact
    version or vulnerability-correlation evidence.
 
