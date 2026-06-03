@@ -2,7 +2,6 @@ import argparse
 import csv
 import json
 import io
-import re
 import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
@@ -14,6 +13,14 @@ from .blackbox import (
     load_capture_bundle_inputs,
     render_rule_suggestions,
 )
+from .cdp import cdp_version_candidates
+from .discovery import (
+    DEFAULT_DISCOVERY_PROBE_PORTS,
+    discovery_queries,
+    render_discovery_queries,
+    safe_headers,
+    select_discovery_queries,
+)
 from .honeypot import assess_honeypot
 from .inference import (
     correlate_vulnerabilities,
@@ -21,15 +28,20 @@ from .inference import (
     infer_product_confidence,
     infer_versions,
     load_rules,
+    mdns_version_candidates,
 )
-from .models import ProbeObservation, ScanResult
-from .probe import build_probe_configs, has_signal, probe_candidate
+from .models import ProbeObservation, ScanResult, VersionMatch
+from .probe import (
+    build_conditional_deep_probe_configs,
+    build_probe_configs,
+    has_signal,
+    probe_candidate,
+)
 from .proxy import detect_proxy
 from .shodan_meta import cross_reference_vulns
 from .shodan_api import ShodanAPIError, resolve_shodan_api_key, search_shodan
 from .sources import load_targets
-
-VERSION_RE = re.compile(r"(?<![0-9A-Za-z])(20\d{2}\.\d+\.\d+(?:-[A-Za-z0-9]+)?)(?=$|[^0-9A-Za-z])")
+from .versions import find_versions, version_sort_key
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -39,6 +51,12 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--target", action="append", default=[], help="Target base URL or host.")
     parser.add_argument("--targets-file", help="Path to a newline-delimited target list.")
     parser.add_argument("--shodan-file", help="Path to a Shodan export JSON or JSONL file.")
+    parser.add_argument("--censys-file", help="Path to a Censys export JSON, JSONL, or CSV file.")
+    parser.add_argument("--fofa-file", help="Path to a FOFA export JSON, JSONL, or CSV file.")
+    parser.add_argument(
+        "--ct-file",
+        help="Path to a passive certificate-transparency export JSON, JSONL, or CSV file.",
+    )
     parser.add_argument(
         "--capture-output",
         help="Write a black-box capture bundle JSON file with remote-visible signals from this scan.",
@@ -97,10 +115,46 @@ def build_parser() -> argparse.ArgumentParser:
         help="Timeout in seconds for live Shodan API requests.",
     )
     parser.add_argument(
+        "--list-discovery-queries",
+        action="store_true",
+        help="List built-in passive discovery query definitions and exit.",
+    )
+    parser.add_argument(
+        "--discovery-query",
+        action="append",
+        default=[],
+        help=(
+            "Built-in discovery query id to run through Shodan. Use 'all' to run "
+            "all Shodan discovery queries. Can be repeated."
+        ),
+    )
+    parser.add_argument(
         "--probe-path",
         action="append",
         default=[],
         help="Additional path to probe. Can be repeated.",
+    )
+    parser.add_argument(
+        "--probe-ports",
+        nargs="?",
+        const=",".join(str(port) for port in DEFAULT_DISCOVERY_PROBE_PORTS),
+        help=(
+            "Opt-in alternate ports for discovery-derived hosts. Omit a value to "
+            "use 18789,8080,8443,9000,3000,5000."
+        ),
+    )
+    parser.add_argument(
+        "--deep-validation",
+        action="store_true",
+        help=(
+            "Run additional low-impact GET/WebSocket/OPTIONS probes only after "
+            "a strong OpenClaw-family fingerprint."
+        ),
+    )
+    parser.add_argument(
+        "--enable-post-probes",
+        action="store_true",
+        help="Permit empty-body/{} POST probes during conditional deep validation.",
     )
     parser.add_argument("--timeout", type=float, default=5.0, help="HTTP timeout in seconds.")
     parser.add_argument(
@@ -152,7 +206,11 @@ def main(argv: Optional[List[str]] = None) -> int:
         args.target
         or args.targets_file
         or args.shodan_file
+        or args.censys_file
+        or args.fofa_file
+        or args.ct_file
         or args.shodan_query
+        or args.discovery_query
     )
 
     if args.suggest_rules_from:
@@ -178,6 +236,28 @@ def main(argv: Optional[List[str]] = None) -> int:
             "--capture-version, --capture-name, and --capture-notes require --capture-output."
         )
 
+    rules = load_rules(args.rules_file)
+    available_discovery_queries = discovery_queries(rules=rules, engine="shodan")
+    if args.list_discovery_queries:
+        rendered = render_discovery_queries(available_discovery_queries, args.format)
+        if args.output:
+            Path(args.output).write_text(rendered, encoding="utf-8")
+        else:
+            sys.stdout.write(rendered)
+            if rendered and not rendered.endswith("\n"):
+                sys.stdout.write("\n")
+        return 0
+
+    if args.discovery_query:
+        try:
+            selected_queries = select_discovery_queries(
+                args.discovery_query,
+                available_discovery_queries,
+            )
+        except ValueError as exc:
+            parser.error(str(exc))
+        args.shodan_query.extend(query.query for query in selected_queries)
+
     shodan_records = []
     if args.shodan_query:
         api_key = resolve_shodan_api_key(args.shodan_key)
@@ -201,23 +281,32 @@ def main(argv: Optional[List[str]] = None) -> int:
                 parser.exit(2, f"Shodan API error: {exc}\n")
             shodan_records.extend(response["matches"])
 
+    probe_ports = _parse_probe_ports(args.probe_ports, parser)
     targets = load_targets(
         direct_targets=args.target,
         targets_file=args.targets_file,
         shodan_file=args.shodan_file,
         shodan_records=shodan_records,
+        censys_file=args.censys_file,
+        fofa_file=args.fofa_file,
+        ct_file=args.ct_file,
+        probe_ports=probe_ports,
     )
 
     if not targets:
         parser.error(
-            "Provide at least one --target, --targets-file, --shodan-file, or --shodan-query."
+            "Provide at least one target, external import file, --shodan-query, or --discovery-query."
         )
 
-    rules = load_rules(args.rules_file)
     probe_configs = build_probe_configs(args.probe_path)
+    conditional_probe_configs = (
+        build_conditional_deep_probe_configs(include_post=args.enable_post_probes)
+        if args.deep_validation
+        else []
+    )
     probe_labels = [
         config.path if config.method == "GET" else f"{config.method} {config.path}"
-        for config in probe_configs
+        for config in probe_configs + conditional_probe_configs
     ]
 
     results = scan_targets(
@@ -230,6 +319,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         verify_tls=args.verify_tls,
         user_agent=args.user_agent,
         rescan_shodan=args.rescan_shodan,
+        conditional_probe_configs=conditional_probe_configs,
     )
 
     rendered = render_results(results, args.format)
@@ -255,6 +345,27 @@ def main(argv: Optional[List[str]] = None) -> int:
     return 0
 
 
+def _parse_probe_ports(
+    value: Optional[str],
+    parser: argparse.ArgumentParser,
+) -> Optional[List[int]]:
+    if value in (None, ""):
+        return None
+    ports = []
+    for chunk in str(value).split(","):
+        chunk = chunk.strip()
+        if not chunk:
+            continue
+        try:
+            port = int(chunk)
+        except ValueError:
+            parser.error(f"--probe-ports contains a non-integer port: {chunk}")
+        if port < 1 or port > 65535:
+            parser.error(f"--probe-ports contains an out-of-range port: {port}")
+        ports.append(port)
+    return list(dict.fromkeys(ports)) or None
+
+
 def scan_targets(
     targets,
     rules,
@@ -265,8 +376,10 @@ def scan_targets(
     verify_tls: bool,
     user_agent: str,
     rescan_shodan: bool,
+    conditional_probe_configs=None,
 ):
     results: List[ScanResult] = []
+    conditional_probe_configs = conditional_probe_configs or []
 
     with ThreadPoolExecutor(max_workers=workers) as executor:
         future_map = {
@@ -280,6 +393,7 @@ def scan_targets(
                 verify_tls,
                 user_agent,
                 rescan_shodan,
+                conditional_probe_configs,
             ): target
             for target in targets
         }
@@ -299,7 +413,9 @@ def _scan_single_target(
     verify_tls: bool,
     user_agent: str,
     rescan_shodan: bool,
+    conditional_probe_configs=None,
 ) -> ScanResult:
+    conditional_probe_configs = conditional_probe_configs or []
     offline_observations = _observations_from_shodan_record(target.raw_record)
     metadata = _annotate_result_metadata(target.metadata, rules)
     if offline_observations and not rescan_shodan:
@@ -310,26 +426,7 @@ def _scan_single_target(
             metadata=metadata,
             observations=offline_observations,
         )
-        result.product_confidence = infer_product_confidence(offline_observations, rules)
-        result.proxy_detection = detect_proxy(
-            offline_observations,
-            passive_waf=_passive_waf_from_metadata(metadata),
-        )
-        result.honeypot_assessment = assess_honeypot(
-            offline_observations,
-            metadata=metadata,
-        )
-        result.fingerprint_matches = infer_fingerprint_matches(
-            offline_observations, rules
-        )
-        result.matched_versions = infer_versions(offline_observations, rules)
-        result.vulnerability_matches = correlate_vulnerabilities(
-            result.matched_versions,
-            rules,
-            platform=_platform_from_metadata(result.metadata),
-            shodan_vulns=_shodan_vulns_from_metadata(result.metadata),
-        )
-        return result
+        return _apply_inferences(result, rules)
 
     last_result = ScanResult(
         input_target=target.label,
@@ -358,29 +455,84 @@ def _scan_single_target(
             observations=observations,
             errors=list(last_result.errors),
         )
-        result.product_confidence = infer_product_confidence(observations, rules)
-        result.proxy_detection = detect_proxy(
-            observations,
-            passive_waf=_passive_waf_from_metadata(metadata),
-        )
-        result.honeypot_assessment = assess_honeypot(
-            observations,
-            metadata=metadata,
-        )
-        result.fingerprint_matches = infer_fingerprint_matches(observations, rules)
-        result.matched_versions = infer_versions(observations, rules)
-        result.vulnerability_matches = correlate_vulnerabilities(
-            result.matched_versions,
-            rules,
-            platform=_platform_from_metadata(result.metadata),
-            shodan_vulns=_shodan_vulns_from_metadata(result.metadata),
-        )
+        result = _apply_inferences(result, rules)
 
         last_result = result
         if has_signal(observations):
+            if conditional_probe_configs and _should_run_conditional_validation(result):
+                extra_observations, extra_errors = probe_candidate(
+                    base_url=candidate,
+                    probes=conditional_probe_configs,
+                    timeout=timeout,
+                    verify_tls=verify_tls,
+                    user_agent=user_agent,
+                    max_bytes=max_bytes,
+                )
+                result.errors.extend(_prefix_candidate_errors(candidate, extra_errors))
+                result.observations.update(extra_observations)
+                result = _apply_inferences(result, rules)
             return result
 
     return last_result
+
+
+def _apply_inferences(result: ScanResult, rules) -> ScanResult:
+    result.product_confidence = infer_product_confidence(result.observations, rules)
+    result.proxy_detection = detect_proxy(
+        result.observations,
+        passive_waf=_passive_waf_from_metadata(result.metadata),
+    )
+    result.honeypot_assessment = assess_honeypot(
+        result.observations,
+        metadata=result.metadata,
+    )
+    result.fingerprint_matches = infer_fingerprint_matches(result.observations, rules)
+    result.matched_versions = _merge_version_matches(
+        infer_versions(result.observations, rules),
+        mdns_version_candidates(result.metadata),
+        cdp_version_candidates(result.observations, result.metadata),
+    )
+    result.vulnerability_matches = correlate_vulnerabilities(
+        result.matched_versions,
+        rules,
+        platform=_platform_from_metadata(result.metadata),
+        shodan_vulns=_shodan_vulns_from_metadata(result.metadata),
+    )
+    return result
+
+
+def _should_run_conditional_validation(result: ScanResult) -> bool:
+    return any(
+        match.confidence >= 0.80 and _is_openclaw_family_match(match.family)
+        for match in result.fingerprint_matches
+    )
+
+
+def _is_openclaw_family_match(family: str) -> bool:
+    normalized = str(family or "").strip().lower()
+    if normalized in {"chromium_devtools_exposed", "novnc_presence", "websockify_presence"}:
+        return False
+    return normalized.startswith(("openclaw", "clawdbot", "moltbot", "claw_gateway"))
+
+
+def _merge_version_matches(*groups: Iterable[VersionMatch]) -> List[VersionMatch]:
+    deduped = {}
+    for group in groups:
+        for match in group:
+            key = (match.version, match.source)
+            existing = deduped.get(key)
+            if existing is None or _version_match_rank(match) > _version_match_rank(existing):
+                deduped[key] = match
+    return sorted(deduped.values(), key=_version_match_rank, reverse=True)
+
+
+def _version_match_rank(match: VersionMatch) -> tuple:
+    return (
+        1 if match.exact else 0,
+        1 if match.correlate else 0,
+        match.confidence,
+        version_sort_key(match.version),
+    )
 
 
 def _observations_from_shodan_record(raw_record) -> dict:
@@ -421,9 +573,7 @@ def _observations_from_shodan_record(raw_record) -> dict:
 
 
 def _normalize_shodan_headers(headers) -> dict:
-    if isinstance(headers, dict):
-        return {str(key).lower(): str(value) for key, value in headers.items()}
-    return {}
+    return safe_headers(headers)
 
 
 def _extract_shodan_favicon_hash(raw_record) -> Optional[int]:
@@ -499,8 +649,8 @@ def _extract_shodan_versions(raw_record, html: str, headers: dict) -> List[str]:
     for cpe in raw_record.get("cpe", []) or []:
         haystacks.append(str(cpe))
     for haystack in haystacks:
-        versions.update(VERSION_RE.findall(haystack))
-    return sorted(versions)
+        versions.update(find_versions(haystack))
+    return sorted(versions, key=version_sort_key, reverse=True)
 
 
 def _build_shodan_text(raw_record) -> str:
@@ -591,8 +741,20 @@ def _render_pretty(results: List[ScanResult]) -> str:
             f"Probed base: {result.probed_base or 'none'}",
             f"OpenClaw confidence: {result.product_confidence:.2f}",
         ]
+        status_signature = result.status_distribution_signature()
+        if status_signature:
+            lines.append(f"Status distribution: {status_signature}")
         if result.metadata.get("shodan_query"):
             lines.append(f"Shodan query: {result.metadata['shodan_query']}")
+        if result.metadata.get("external_engine"):
+            lines.append(f"Passive import engine: {result.metadata['external_engine']}")
+        if result.metadata.get("discovery_confidence") is not None:
+            sources = result.metadata.get("discovery_sources") or []
+            lines.append(
+                "Discovery confidence: "
+                f"{float(result.metadata['discovery_confidence']):.2f}"
+                + (f" ({'; '.join(sources[:4])})" if sources else "")
+            )
         if result.metadata.get("shodan_product") or result.metadata.get("shodan_version"):
             product_bits = []
             if result.metadata.get("shodan_product"):
@@ -685,6 +847,14 @@ def _render_csv(results: List[ScanResult]) -> str:
         "source",
         "probed_base",
         "product_confidence",
+        "status_distribution_signature",
+        "external_engine",
+        "discovery_confidence",
+        "discovery_sources",
+        "passive_http_title",
+        "passive_favicon_hash",
+        "passive_ssl_jarm",
+        "passive_tls_subject_cn",
         "shodan_query",
         "platform",
         "shodan_product",
@@ -734,6 +904,18 @@ def _render_csv(results: List[ScanResult]) -> str:
                 "source": result.source,
                 "probed_base": result.probed_base or "",
                 "product_confidence": f"{result.product_confidence:.2f}",
+                "status_distribution_signature": result.status_distribution_signature(),
+                "external_engine": result.metadata.get("external_engine", ""),
+                "discovery_confidence": result.metadata.get("discovery_confidence", ""),
+                "discovery_sources": ";".join(
+                    result.metadata.get("discovery_sources", [])[:12]
+                ),
+                "passive_http_title": result.metadata.get("passive_http_title", ""),
+                "passive_favicon_hash": result.metadata.get("passive_favicon_hash", ""),
+                "passive_ssl_jarm": result.metadata.get("passive_ssl_jarm", ""),
+                "passive_tls_subject_cn": result.metadata.get(
+                    "passive_tls_subject_cn", ""
+                ),
                 "shodan_query": result.metadata.get("shodan_query", ""),
                 "platform": result.metadata.get("platform", ""),
                 "shodan_product": result.metadata.get("shodan_product", ""),

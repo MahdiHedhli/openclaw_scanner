@@ -1,0 +1,57 @@
+{
+  "anonymization": {
+    "raw_mapping_saved": false,
+    "stable_join_keys": [
+      "anon_id",
+      "anon_ip"
+    ],
+    "synthetic_ip_ranges": [
+      "192.0.2.0/24",
+      "198.51.100.0/24",
+      "203.0.113.0/24"
+    ],
+    "transformed_fields": [
+      "ip",
+      "public_ip",
+      "active_target",
+      "preferred_url",
+      "scanner_input_target",
+      "input_target",
+      "probed_base",
+      "org",
+      "mdns_instance_names",
+      "first_error"
+    ]
+  },
+  "counts": {
+    "active_exact_version_rows": 0,
+    "active_family_match_rows": 13,
+    "active_responsive_rows": 14,
+    "active_shortlist_rows": 100,
+    "passive_exact_version_rows": 0,
+    "passive_rows": 500
+  },
+  "outputs": {
+    "openclaw-active-100-anonymized.csv": "artifacts/shodan/2026-06-02/public/openclaw-active-100-anonymized.csv",
+    "openclaw-active-responsive-14-anonymized.csv": "artifacts/shodan/2026-06-02/public/openclaw-active-responsive-14-anonymized.csv",
+    "openclaw-passive-500-anonymized.csv": "artifacts/shodan/2026-06-02/public/openclaw-passive-500-anonymized.csv",
+    "openclaw-passive-plus-active-500-anonymized.csv": "artifacts/shodan/2026-06-02/public/openclaw-passive-plus-active-500-anonymized.csv"
+  },
+  "rates": {
+    "candidate_to_family_match_percent": 13.0,
+    "candidate_to_family_match_rate": 0.13,
+    "candidate_to_responsive_percent": 14.0,
+    "candidate_to_responsive_rate": 0.14,
+    "passive_to_family_match_percent": 2.6,
+    "passive_to_family_match_rate": 0.026
+  },
+  "status_distribution_signature_counts": {
+    "": 86,
+    "200:12;401:1;404:23": 1,
+    "200:13;401:1;404:23": 9,
+    "200:13;401:3;404:21": 1,
+    "200:13;404:22;500:1": 1,
+    "200:32;401:1;405:4": 1,
+    "401:2;405:3;503:32": 1
+  }
+}

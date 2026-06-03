@@ -488,6 +488,65 @@ class InferenceTests(unittest.TestCase):
 
         self.assertIn("openclaw_openai_chat_surface_enabled", families)
 
+    def test_status_distribution_signature_rule_matches_observations(self):
+        rules = {
+            "version_rules": [
+                {
+                    "id": "status-distribution-example",
+                    "version": "2026.2.13",
+                    "confidence": 0.71,
+                    "all": [
+                        {
+                            "type": "status_distribution_signature",
+                            "value": "200:1;404:2",
+                        }
+                    ],
+                }
+            ]
+        }
+        observations = {
+            "/": ProbeObservation(
+                path="/",
+                url="http://example.test/",
+                status=200,
+            ),
+            "/api": ProbeObservation(
+                path="/api",
+                url="http://example.test/api",
+                status=404,
+            ),
+            "/api/version": ProbeObservation(
+                path="/api/version",
+                url="http://example.test/api/version",
+                status=404,
+            ),
+        }
+
+        matches = infer_versions(observations, rules)
+
+        self.assertEqual(len(matches), 1)
+        self.assertEqual(matches[0].version, "2026.2.13")
+        self.assertEqual(matches[0].source, "status-distribution-example")
+
+    def test_novnc_presence_is_not_exact_version_or_vulnerability_evidence(self):
+        rules = load_rules(None)
+        observations = {
+            "/vnc.html": ProbeObservation(
+                path="/vnc.html",
+                url="https://example.test/vnc.html",
+                status=200,
+                body_markers=["novnc_presence"],
+            )
+        }
+
+        families = {match.family for match in infer_fingerprint_matches(observations, rules)}
+        versions = infer_versions(observations, rules)
+        vulns = correlate_vulnerabilities(versions, rules)
+
+        self.assertIn("novnc_presence", families)
+        self.assertFalse(any(match.exact for match in versions))
+        self.assertEqual(vulns, [])
+
 
 if __name__ == "__main__":
     unittest.main()

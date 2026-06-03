@@ -139,6 +139,144 @@ class SourceTests(unittest.TestCase):
         self.assertIn("openclaw", metadata["mdns_product_markers"])
         self.assertEqual(metadata["mdns_advertised_ports"], [18789])
 
+    def test_mdns_cli_path_package_version_and_devtools_revision_are_extracted(self):
+        targets = load_targets(
+            shodan_records=[
+                {
+                    "ip_str": "203.0.113.62",
+                    "port": 5353,
+                    "mdns": {
+                        "services": {
+                            "18789/tcp clawdbot-gw": {
+                                "data": [
+                                    "role=gateway",
+                                    (
+                                        "cliPath=/root/.pnpm/clawdbot@2026.2.2-1_"
+                                        "devtools-protocol@0.0.1575685/"
+                                        "node_modules/clawdbot/dist/entry.js"
+                                    ),
+                                ],
+                                "ptr": "_clawdbot-gw._tcp.local",
+                            }
+                        }
+                    },
+                }
+            ]
+        )
+
+        metadata = targets[0].metadata
+        self.assertEqual(metadata["mdns_version"], "2026.2.2-1")
+        self.assertEqual(metadata["mdns_version_source"], "cli_path_package")
+        self.assertEqual(metadata["mdns_devtools_revision"], 1575685)
+
+    def test_probe_ports_expand_discovery_derived_candidates(self):
+        targets = load_targets(
+            shodan_records=[
+                {
+                    "ip_str": "203.0.113.80",
+                    "port": 5353,
+                    "mdns": {
+                        "services": {
+                            "18789/tcp openclaw-gw": {
+                                "data": ["gatewayPort=18789"],
+                                "ptr": "_openclaw-gw._tcp.local",
+                            }
+                        }
+                    },
+                }
+            ],
+            probe_ports=[18789, 8080],
+        )
+
+        self.assertEqual(targets[0].candidates[0], "https://203.0.113.80:18789")
+        self.assertIn("http://203.0.113.80:8080", targets[0].candidates)
+        self.assertIn("https://203.0.113.80:8080", targets[0].candidates)
+
+    def test_censys_export_is_normalized_to_scan_targets(self):
+        data = [
+            {
+                "ip": "203.0.113.81",
+                "services": [
+                    {
+                        "port": 8443,
+                        "service_name": "HTTPS",
+                        "http": {
+                            "response": {
+                                "html_title": "OpenClaw Control",
+                                "status_code": 200,
+                                "headers": {
+                                    "content-type": "text/html",
+                                    "authorization": "must-not-persist",
+                                    "set-cookie": "session=must-not-persist",
+                                    "x-access-token": "must-not-persist",
+                                },
+                            }
+                        },
+                        "tls": {
+                            "jarm": "26d26d16d26d26d22c26d26d26d26dfd9c9d14e4f4f67f94f0359f8b28f532",
+                            "certificates": {
+                                "leaf_data": {
+                                    "subject": {"common_name": ["OpenClaw Gateway"]},
+                                    "names": ["openclaw.example.test"],
+                                }
+                            },
+                        },
+                    }
+                ],
+            }
+        ]
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = Path(tmpdir) / "censys.json"
+            path.write_text(json.dumps(data), encoding="utf-8")
+            targets = load_targets(censys_file=str(path), probe_ports=[18789])
+
+        self.assertEqual(len(targets), 1)
+        self.assertEqual(targets[0].source, "censys")
+        self.assertEqual(targets[0].candidates[0], "https://203.0.113.81:8443")
+        self.assertIn("https://203.0.113.81:18789", targets[0].candidates)
+        self.assertEqual(targets[0].metadata["external_engine"], "censys")
+        self.assertEqual(targets[0].metadata["passive_http_title"], "OpenClaw Control")
+        self.assertNotIn(
+            "authorization",
+            targets[0].raw_record["http"]["headers"],
+        )
+        self.assertNotIn("set-cookie", targets[0].raw_record["http"]["headers"])
+        self.assertNotIn("x-access-token", targets[0].raw_record["http"]["headers"])
+        self.assertGreaterEqual(targets[0].metadata["discovery_confidence"], 0.82)
+
+    def test_fofa_export_with_fields_is_normalized_to_scan_targets(self):
+        data = {
+            "fields": ["host", "title", "port"],
+            "results": [["https://gateway.example.test:8443", "Clawdbot Control", "8443"]],
+        }
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = Path(tmpdir) / "fofa.json"
+            path.write_text(json.dumps(data), encoding="utf-8")
+            targets = load_targets(fofa_file=str(path))
+
+        self.assertEqual(targets[0].source, "fofa")
+        self.assertEqual(targets[0].label, "gateway.example.test:8443")
+        self.assertEqual(targets[0].candidates[0], "https://gateway.example.test:8443")
+        self.assertEqual(targets[0].metadata["fofa_http_title"], "Clawdbot Control")
+
+    def test_ct_export_only_imports_indicator_names(self):
+        data = [
+            {
+                "name_value": "openclaw-gw.example.test\nunrelated.example.test",
+                "common_name": "openclaw-gw.example.test",
+            }
+        ]
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = Path(tmpdir) / "ct.json"
+            path.write_text(json.dumps(data), encoding="utf-8")
+            targets = load_targets(ct_file=str(path))
+
+        self.assertEqual(len(targets), 1)
+        self.assertEqual(targets[0].source, "ct")
+        self.assertEqual(targets[0].label, "openclaw-gw.example.test")
+        self.assertEqual(targets[0].candidates[0], "https://openclaw-gw.example.test")
+        self.assertIn("ct_indicator_names", targets[0].metadata)
+
 
 if __name__ == "__main__":
     unittest.main()

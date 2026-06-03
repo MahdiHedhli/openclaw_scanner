@@ -1,14 +1,15 @@
+from collections import Counter
 import json
 import re
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple
 
 from .models import FingerprintMatch, ProbeObservation, VersionMatch, VulnerabilityMatch
-
-VERSION_RE = re.compile(
-    r"(?<![0-9A-Za-z])"
-    r"(20\d{2}\.\d+\.\d+(?:-[A-Za-z][0-9A-Za-z-]*(?:\.\d+)*)?)"
-    r"(?=$|[^0-9A-Za-z])"
+from .versions import (
+    find_versions,
+    find_versions_near_markers,
+    is_exact_version,
+    version_sort_key,
 )
 
 
@@ -61,15 +62,30 @@ def infer_versions(
 ) -> List[VersionMatch]:
     matches: List[VersionMatch] = []
     version_hints = _collect_version_hints(observations.values())
+    direct_hints = _collect_direct_version_hints(observations.values())
+    passive_hints = _collect_passive_banner_version_hints(observations.values())
 
-    for version in version_hints:
+    for version in direct_hints:
         matches.append(
             VersionMatch(
                 version=version,
                 confidence=0.97,
                 source="direct_version_hint",
-                notes="Extracted from HTTP content or headers.",
+                notes="Extracted from live HTTP content or headers.",
                 exact=True,
+                correlate=True,
+            )
+        )
+
+    for version in passive_hints:
+        matches.append(
+            VersionMatch(
+                version=version,
+                confidence=0.45,
+                source="passive_banner_text",
+                notes="Version-like token observed in passive banner text only.",
+                exact=False,
+                correlate=False,
             )
         )
 
@@ -82,6 +98,7 @@ def infer_versions(
                     source=rule.get("id", "custom_rule"),
                     notes=rule.get("notes"),
                     exact=bool(rule.get("exact", False)),
+                    correlate=bool(rule.get("correlate", rule.get("exact", False))),
                 )
             )
 
@@ -94,10 +111,45 @@ def infer_versions(
 
     ordered = sorted(
         deduped.values(),
-        key=lambda item: (1 if item.exact else 0, item.confidence, _version_sort_key(item.version)),
+        key=lambda item: (
+            1 if item.exact else 0,
+            1 if item.correlate else 0,
+            item.confidence,
+            version_sort_key(item.version),
+        ),
         reverse=True,
     )
     return ordered
+
+
+def mdns_version_candidates(metadata: Dict[str, Any]) -> List[VersionMatch]:
+    version = str((metadata or {}).get("mdns_version") or "").strip()
+    if not version or not is_exact_version(version):
+        return []
+
+    source = str((metadata or {}).get("mdns_version_source") or "txt").strip().lower()
+    if source in {"cli_path_package", "package_metadata", "package", "cli_path"}:
+        return [
+            VersionMatch(
+                version=version,
+                confidence=0.97,
+                source="mdns_cli_path",
+                notes="Exact version from explicit mDNS package/cliPath metadata.",
+                exact=True,
+                correlate=True,
+            )
+        ]
+
+    return [
+        VersionMatch(
+            version=version,
+            confidence=0.62,
+            source="mdns_txt",
+            notes="Version-like token from passive mDNS TXT metadata.",
+            exact=False,
+            correlate=False,
+        )
+    ]
 
 
 def infer_fingerprint_matches(
@@ -144,6 +196,8 @@ def correlate_vulnerabilities(
     shodan_vuln_ids = {str(value) for value in shodan_vulns or [] if value}
 
     for version_match in versions:
+        if not version_match.correlate:
+            continue
         for vuln in rules.get("vulnerabilities", []):
             affected, reasoning = _version_is_affected(version_match.version, vuln)
             if not affected:
@@ -211,14 +265,59 @@ def _platform_matches(
 def _collect_version_hints(observations: Iterable[ProbeObservation]) -> List[str]:
     hints = set()
     for observation in observations:
-        for version in observation.version_hints:
-            hints.add(version)
+        hints.update(_normalize_versions(observation.version_hints))
         for script in observation.js_files:
-            hints.update(_extract_versions_from_string(script))
+            hints.update(find_versions_near_markers(script))
         for key, value in observation.headers.items():
             if "version" in key.lower():
-                hints.update(_extract_versions_from_string(value))
-    return sorted(hints, key=_version_sort_key, reverse=True)
+                hints.update(find_versions(value))
+            else:
+                hints.update(find_versions_near_markers(value))
+    return sorted(hints, key=version_sort_key, reverse=True)
+
+
+def _collect_direct_version_hints(
+    observations: Iterable[ProbeObservation],
+) -> List[str]:
+    hints = set()
+    for observation in observations:
+        if _is_passive_observation(observation):
+            continue
+        hints.update(_normalize_versions(observation.version_hints))
+        for script in observation.js_files:
+            hints.update(find_versions_near_markers(script))
+        for key, value in observation.headers.items():
+            if "version" in key.lower() or "openclaw" in key.lower() or "clawdbot" in key.lower():
+                hints.update(find_versions(value))
+            else:
+                hints.update(find_versions_near_markers(value))
+    return sorted(hints, key=version_sort_key, reverse=True)
+
+
+def _collect_passive_banner_version_hints(
+    observations: Iterable[ProbeObservation],
+) -> List[str]:
+    hints = set()
+    for observation in observations:
+        if not _is_passive_observation(observation):
+            continue
+        hints.update(_normalize_versions(observation.version_hints))
+        for script in observation.js_files:
+            hints.update(find_versions(script))
+        for value in observation.headers.values():
+            hints.update(find_versions(value))
+    return sorted(hints, key=version_sort_key, reverse=True)
+
+
+def _normalize_versions(values: Iterable[str]) -> List[str]:
+    versions = set()
+    for value in values:
+        versions.update(find_versions(str(value)))
+    return sorted(versions, key=version_sort_key, reverse=True)
+
+
+def _is_passive_observation(observation: ProbeObservation) -> bool:
+    return observation.url.startswith("shodan://") or observation.path == "/__shodan__"
 
 
 def _get_observation(
@@ -273,7 +372,7 @@ def _has_openai_models_surface(observations: Dict[str, ProbeObservation]) -> boo
 
 
 def _extract_versions_from_string(value: str) -> List[str]:
-    return VERSION_RE.findall(value)
+    return find_versions_near_markers(value)
 
 
 def _rule_matches(
@@ -323,6 +422,10 @@ def _condition_matches(
         statuses = {int(value) for value in condition.get("statuses", [])}
         return any(obs.status in statuses for obs in candidate_observations)
 
+    if condition_type == "status_distribution_signature":
+        expected = str(condition["value"]).strip()
+        return _status_distribution_signature(observations) == expected
+
     if condition_type == "path_status_not":
         statuses = {int(value) for value in condition.get("statuses", [])}
         return any(obs.status is not None and obs.status not in statuses for obs in candidate_observations)
@@ -358,6 +461,31 @@ def _condition_matches(
     if condition_type == "json_key":
         key_name = condition["value"]
         return any(key_name in obs.json_keys for obs in candidate_observations)
+
+    if condition_type == "cdp_present":
+        expected = bool(condition.get("value", True))
+        return any((obs.cdp.get("present") == "true") == expected for obs in candidate_observations)
+
+    if condition_type == "cdp_debugger_url_present":
+        expected = bool(condition.get("value", True))
+        return any(
+            (obs.cdp.get("debugger_url_present") == "true") == expected
+            for obs in candidate_observations
+        )
+
+    if condition_type == "cdp_browser_family":
+        expected = str(condition["value"]).strip().lower()
+        return any(
+            obs.cdp.get("browser_family", "").strip().lower() == expected
+            for obs in candidate_observations
+        )
+
+    if condition_type == "cdp_engine":
+        expected = str(condition["value"]).strip().lower()
+        return any(
+            obs.cdp.get("engine", "").strip().lower() == expected
+            for obs in candidate_observations
+        )
 
     if condition_type == "body_hash":
         expected = condition["value"].lower()
@@ -425,6 +553,17 @@ def _condition_matches(
     return False
 
 
+def _status_distribution_signature(
+    observations: Dict[str, ProbeObservation]
+) -> str:
+    counts = Counter(
+        observation.status
+        for observation in observations.values()
+        if observation.status is not None
+    )
+    return ";".join(f"{status}:{counts[status]}" for status in sorted(counts))
+
+
 def _version_is_affected(version: str, vuln: Dict[str, Any]) -> Tuple[bool, str]:
     affected_ranges = vuln.get("affected_ranges", [])
     for range_rule in affected_ranges:
@@ -463,21 +602,10 @@ def _describe_range(version: str, range_rule: Dict[str, Any], vuln: Dict[str, An
 
 
 def _compare_versions(left: str, right: str) -> int:
-    left_key = _version_sort_key(left)
-    right_key = _version_sort_key(right)
+    left_key = version_sort_key(left)
+    right_key = version_sort_key(right)
     if left_key < right_key:
         return -1
     if left_key > right_key:
         return 1
     return 0
-
-
-def _version_sort_key(value: str) -> Tuple[Any, ...]:
-    parts = re.split(r"[._-]", value)
-    key: List[Any] = []
-    for part in parts:
-        if part.isdigit():
-            key.append((0, int(part)))
-        else:
-            key.append((1, part.lower()))
-    return tuple(key)

@@ -1,3 +1,4 @@
+from collections import Counter
 from dataclasses import asdict, dataclass, field
 from typing import Any, Dict, List, Optional
 
@@ -33,6 +34,7 @@ class ProbeObservation:
     json_keys: List[str] = field(default_factory=list)
     body_markers: List[str] = field(default_factory=list)
     version_hints: List[str] = field(default_factory=list)
+    cdp: Dict[str, str] = field(default_factory=dict)
     error_text: Optional[str] = None
     has_stack_trace: bool = False
     favicon_hash: Optional[int] = None
@@ -49,6 +51,7 @@ class VersionMatch:
     source: str
     notes: Optional[str] = None
     exact: bool = False
+    correlate: bool = True
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
@@ -125,6 +128,20 @@ class ScanResult:
     vulnerability_matches: List[VulnerabilityMatch] = field(default_factory=list)
     errors: List[str] = field(default_factory=list)
 
+    def status_distribution(self) -> Dict[int, int]:
+        counts = Counter(
+            observation.status
+            for observation in self.observations.values()
+            if observation.status is not None
+        )
+        return {status: counts[status] for status in sorted(counts)}
+
+    def status_distribution_signature(self) -> str:
+        return ";".join(
+            f"{status}:{count}"
+            for status, count in self.status_distribution().items()
+        )
+
     def to_dict(self) -> Dict[str, Any]:
         return {
             "input_target": self.input_target,
@@ -132,6 +149,8 @@ class ScanResult:
             "probed_base": self.probed_base,
             "metadata": self.metadata,
             "product_confidence": self.product_confidence,
+            "status_distribution": self.status_distribution(),
+            "status_distribution_signature": self.status_distribution_signature(),
             "observations": {
                 path: observation.to_dict()
                 for path, observation in self.observations.items()

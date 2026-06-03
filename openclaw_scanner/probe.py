@@ -11,6 +11,7 @@ from urllib.parse import urljoin, urlparse
 from urllib.request import Request, urlopen
 
 from .models import ProbeObservation
+from .versions import find_versions, find_versions_near_markers, version_sort_key
 
 
 @dataclass
@@ -23,7 +24,13 @@ class ProbeConfig:
     body: Optional[bytes] = None
 
 
-DEFAULT_PROBE_CONFIGS = [
+CORS_PREFLIGHT_HEADERS = {
+    "Origin": "https://scanner.invalid",
+    "Access-Control-Request-Method": "POST",
+    "Access-Control-Request-Headers": "authorization,content-type",
+}
+
+BASE_PROBE_CONFIGS = [
     ProbeConfig(path="/"),
     ProbeConfig(path="/login"),
     ProbeConfig(path="/api"),
@@ -48,6 +55,10 @@ DEFAULT_PROBE_CONFIGS = [
     ProbeConfig(path="/robots.txt"),
     ProbeConfig(path="/.well-known/security.txt"),
     ProbeConfig(path="/.well-known/openid-configuration"),
+    ProbeConfig(path="/json/version", probe_name="cdp-version"),
+    ProbeConfig(path="/json/list", probe_name="cdp-target-list"),
+    ProbeConfig(path="/json", probe_name="cdp-target-list"),
+    ProbeConfig(path="/devtools/browser", probe_name="cdp-browser"),
     ProbeConfig(path="/debug/pprof"),
     ProbeConfig(path="/debug/pprof/"),
     ProbeConfig(path="/ws"),
@@ -58,7 +69,44 @@ DEFAULT_PROBE_CONFIGS = [
     ProbeConfig(path="/favicon.ico"),
     ProbeConfig(path="/manifest.json"),
     ProbeConfig(path="/asset-manifest.json"),
-    # Safe method-aware error probe for richer external fingerprinting.
+]
+
+CONDITIONAL_DEEP_PROBE_CONFIGS = [
+    ProbeConfig(
+        path="/",
+        method="OPTIONS",
+        probe_name="cors-preflight",
+        headers=CORS_PREFLIGHT_HEADERS,
+    ),
+    ProbeConfig(
+        path="/tools/invoke",
+        method="OPTIONS",
+        probe_name="cors-preflight",
+        headers=CORS_PREFLIGHT_HEADERS,
+    ),
+    ProbeConfig(path="/socket.io/?EIO=4&transport=polling&t=scanner"),
+    ProbeConfig(path="/vnc.html"),
+    ProbeConfig(path="/websockify"),
+    ProbeConfig(path="/v1/completions"),
+    ProbeConfig(path="/v1/chat/completions"),
+    ProbeConfig(path="/v1/models"),
+    ProbeConfig(path="/v1/responses"),
+    ProbeConfig(path="/v1/embeddings"),
+    ProbeConfig(path="/browser"),
+    ProbeConfig(path="/browser-tool"),
+    ProbeConfig(path="/browser-tools"),
+    ProbeConfig(path="/api/browser"),
+    ProbeConfig(path="/api/browser-tools"),
+    ProbeConfig(path="/tools"),
+    ProbeConfig(path="/tools/browser"),
+    ProbeConfig(path="/tools/canvas"),
+    ProbeConfig(path="/canvas"),
+    ProbeConfig(path="/api/canvas"),
+    ProbeConfig(path="/v1/canvas"),
+    ProbeConfig(path="/ws", probe_name="ws-upgrade", websocket_upgrade=True),
+]
+
+POST_PROBE_CONFIGS = [
     ProbeConfig(path="/api/doesnotexist", method="POST", body=b""),
     ProbeConfig(
         path="/v1/embeddings",
@@ -86,6 +134,8 @@ DEFAULT_PROBE_CONFIGS = [
     ),
 ]
 
+DEFAULT_PROBE_CONFIGS = list(BASE_PROBE_CONFIGS)
+
 DEFAULT_PROBE_PATHS = list(
     dict.fromkeys(config.path for config in DEFAULT_PROBE_CONFIGS if config.method == "GET")
 )
@@ -100,19 +150,6 @@ PRODUCT_MARKERS = [
     "gateway token",
     "clawdbot",
     "moltbot",
-]
-
-VERSION_TOKEN = r"20\d{2}\.\d+\.\d+(?:-[A-Za-z0-9]+)?"
-
-VERSION_PATTERNS = [
-    re.compile(
-        rf"(?<![0-9A-Za-z])"
-        r"(?:openclaw|clawdbot|moltbot|gateway|version|release|build)"
-        r"[^0-9]{0,24}"
-        rf"({VERSION_TOKEN})"
-        rf"(?=$|[^0-9A-Za-z])",
-        re.IGNORECASE,
-    )
 ]
 
 TITLE_RE = re.compile(r"<title[^>]*>(.*?)</title>", re.IGNORECASE | re.DOTALL)
@@ -134,10 +171,25 @@ STACK_TRACE_PATTERNS = [
 ]
 
 
-def build_probe_configs(extra_paths: Optional[Iterable[str]] = None) -> List[ProbeConfig]:
-    configs = list(DEFAULT_PROBE_CONFIGS)
+def build_probe_configs(
+    extra_paths: Optional[Iterable[str]] = None,
+    include_post: bool = False,
+    deep_validation: bool = False,
+) -> List[ProbeConfig]:
+    configs = list(BASE_PROBE_CONFIGS)
+    if deep_validation:
+        configs.extend(CONDITIONAL_DEEP_PROBE_CONFIGS)
+    if include_post:
+        configs.extend(POST_PROBE_CONFIGS)
     for path in extra_paths or []:
         configs.append(ProbeConfig(path=path))
+    return _dedupe_probe_configs(configs)
+
+
+def build_conditional_deep_probe_configs(include_post: bool = False) -> List[ProbeConfig]:
+    configs = list(CONDITIONAL_DEEP_PROBE_CONFIGS)
+    if include_post:
+        configs.extend(POST_PROBE_CONFIGS)
     return _dedupe_probe_configs(configs)
 
 
@@ -241,6 +293,7 @@ def _fetch(
     error_text = _extract_error_text(text) if status is not None and status >= 400 else None
     has_stack_trace = _detect_stack_trace(text) if error_text else False
     favicon_hash = _compute_favicon_hash(path, status, content_type, raw_body)
+    json_keys = _extract_json_keys(text, content_type)
 
     return ProbeObservation(
         path=path,
@@ -257,9 +310,10 @@ def _fetch(
         body_sha256=hashlib.sha256(raw_body).hexdigest() if raw_body else None,
         title=_extract_title(text),
         js_files=_extract_js_files(text),
-        json_keys=_extract_json_keys(text, content_type),
+        json_keys=json_keys,
         body_markers=_extract_markers(text),
         version_hints=_extract_versions(text, headers),
+        cdp=_extract_cdp_facts(path, status, text, content_type),
         error_text=error_text,
         has_stack_trace=has_stack_trace,
         favicon_hash=favicon_hash,
@@ -294,19 +348,10 @@ def _extract_js_files(text: str) -> List[str]:
 
 
 def _extract_json_keys(text: str, content_type: Optional[str]) -> List[str]:
-    if not text:
-        return []
-    looks_json = False
-    if content_type and "json" in content_type.lower():
-        looks_json = True
-    if text.lstrip().startswith("{") or text.lstrip().startswith("["):
-        looks_json = True
-    if not looks_json:
-        return []
-
-    try:
-        parsed = json.loads(text)
-    except json.JSONDecodeError:
+    parsed = _parse_json_body(text, content_type)
+    if parsed is None:
+        parsed = _parse_socketio_open_packet(text)
+    if parsed is None:
         return []
 
     if isinstance(parsed, dict):
@@ -316,25 +361,134 @@ def _extract_json_keys(text: str, content_type: Optional[str]) -> List[str]:
     return []
 
 
+def _parse_json_body(text: str, content_type: Optional[str]):
+    if not text:
+        return None
+    looks_json = False
+    if content_type and "json" in content_type.lower():
+        looks_json = True
+    if text.lstrip().startswith("{") or text.lstrip().startswith("["):
+        looks_json = True
+    if not looks_json:
+        return None
+
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError:
+        return None
+
+
+def _parse_socketio_open_packet(text: str):
+    packet = (text or "").strip()
+    if not packet.startswith("0{"):
+        return None
+    try:
+        parsed = json.loads(packet[1:])
+    except json.JSONDecodeError:
+        return None
+    if not isinstance(parsed, dict):
+        return None
+    keys = {str(key).lower() for key in parsed}
+    if "sid" not in keys or "upgrades" not in keys:
+        return None
+    return parsed
+
+
+def _extract_cdp_facts(
+    path: str,
+    status: Optional[int],
+    text: str,
+    content_type: Optional[str],
+) -> Dict[str, str]:
+    if status != 200 or path not in {"/json/version", "/json/list", "/json"}:
+        return {}
+
+    parsed = _parse_json_body(text, content_type)
+    documents = []
+    if isinstance(parsed, dict):
+        documents = [parsed]
+    elif isinstance(parsed, list):
+        documents = [item for item in parsed if isinstance(item, dict)]
+    if not documents:
+        return {}
+
+    facts: Dict[str, str] = {}
+    debugger_url_present = False
+    for document in documents:
+        browser = _first_text(document, "Browser", "browser")
+        if browser:
+            engine, chromium_version, headless = _parse_browser_field(browser)
+            if engine:
+                facts.setdefault("engine", engine)
+            facts.setdefault("browser_family", "Chromium")
+            if chromium_version:
+                facts.setdefault("chromium_version", chromium_version)
+            if headless is not None:
+                facts.setdefault("headless", str(headless).lower())
+
+        protocol_version = _first_text(document, "Protocol-Version", "protocolVersion")
+        if protocol_version:
+            facts.setdefault("protocol_version", protocol_version)
+
+        v8_version = _first_text(document, "V8-Version", "v8Version")
+        if v8_version:
+            facts.setdefault("v8_version", v8_version)
+
+        if "webSocketDebuggerUrl" in document:
+            debugger_url_present = debugger_url_present or bool(
+                document.get("webSocketDebuggerUrl")
+            )
+
+    if facts or debugger_url_present:
+        facts["present"] = "true"
+        facts.setdefault("browser_family", "Chromium")
+        facts["debugger_url_present"] = str(debugger_url_present).lower()
+        facts["ws_debugger_present"] = facts["debugger_url_present"]
+    return facts
+
+
+def _first_text(document: Dict[str, object], *keys: str) -> Optional[str]:
+    for key in keys:
+        value = document.get(key)
+        if isinstance(value, str) and value.strip():
+            return value.strip()
+    return None
+
+
+def _parse_browser_field(value: str) -> Tuple[Optional[str], Optional[str], Optional[bool]]:
+    if "/" in value:
+        engine, version = value.split("/", 1)
+    else:
+        engine, version = value, ""
+    engine = engine.strip() or None
+    version = version.strip() or None
+    lower_engine = (engine or "").lower()
+    headless = True if "headless" in lower_engine else False if engine else None
+    return engine, version, headless
+
+
 def _extract_markers(text: str) -> List[str]:
     haystack = text.lower()
     found = [marker for marker in PRODUCT_MARKERS if marker in haystack]
+    if _parse_socketio_open_packet(text):
+        found.append("socketio_polling_handshake")
+    if "novnc" in haystack:
+        found.append("novnc_presence")
+    if "websockify" in haystack:
+        found.append("websockify_presence")
     return sorted(set(found))
 
 
 def _extract_versions(text: str, headers: Dict[str, str]) -> List[str]:
     hints = set()
-    combined = "\n".join(
-        [text]
-        + [str(value) for value in headers.values()]
-        + [str(key) for key in headers.keys()]
-    )
-    for pattern in VERSION_PATTERNS:
-        for match in pattern.findall(combined):
-            if isinstance(match, tuple):
-                match = match[0]
-            hints.add(match.lstrip("v"))
-    return sorted(hints)
+    hints.update(find_versions_near_markers(text))
+    for key, value in headers.items():
+        key_text = str(key).lower()
+        if "version" in key_text or "openclaw" in key_text or "clawdbot" in key_text:
+            hints.update(find_versions(str(value)))
+        else:
+            hints.update(find_versions_near_markers(str(value)))
+    return sorted(hints, key=version_sort_key, reverse=True)
 
 
 def _extract_error_text(text: str, max_length: int = 256) -> Optional[str]:

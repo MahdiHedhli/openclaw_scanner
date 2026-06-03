@@ -2,6 +2,74 @@
 
 ---
 
+## 2026-06-03 — Discovery Expansion and Conditional Validation Sprint
+
+**Topics:** Shodan query expansion, multi-engine passive imports, passive CT
+imports, alternate probe ports, conditional deep validation
+
+This update moves the scanner beyond a Shodan mDNS-only discovery posture while
+preserving the evidence-first boundary. The implemented discovery library now
+ships reusable Shodan query definitions for:
+
+- `http.title:"OpenClaw Control"`
+- `http.title:"Clawdbot Control"`
+- `http.title:"Moltbot Control"`
+- OpenClaw/Clawdbot/Moltbot mDNS service advertisements
+- lab-rule-derived favicon hash queries when active rules contain
+  `favicon_hash` conditions
+
+The new import layer normalizes Shodan-compatible, Censys, FOFA, and passive CT
+exports into the existing `ScanTarget` model. Normalized records preserve
+passive HTTP title/status/server, favicon hash, TLS/JARM, certificate CN/SAN,
+and discovery confidence/source metadata. Credential-bearing headers are
+dropped during normalization so imported artifacts do not retain
+`Authorization`, `Cookie`, `Set-Cookie`, or API-key header values.
+
+**Implemented scan controls:**
+
+- `--list-discovery-queries` for query-library inspection
+- `--discovery-query <id>` for running built-in Shodan query definitions
+- `--censys-file`, `--fofa-file`, and `--ct-file` passive imports
+- `--probe-ports` opt-in alternate port probing for discovery-derived hosts
+- default active probing limited to GET requests and WebSocket upgrade-header
+  handshakes
+- `--deep-validation` second-phase validation only after a strong
+  OpenClaw-family fingerprint
+- `--enable-post-probes` explicit opt-in for empty-body or `{}` POST probes
+
+Conditional deep validation currently records presence, status, headers, and
+response shape for Socket.IO polling, noVNC, websockify, OpenAI-compatible GET
+routes, browser-tool routes, canvas routes, CORS preflight behavior, and
+WebSocket upgrades. These are clustering and family-support signals only unless
+later lab captures promote a specific rule. The scanner does not authenticate,
+send tool-execution payloads, connect to browser debugger sockets, or interact
+with VNC.
+
+**Why this fits scope:**
+
+- It keeps the runtime stdlib-only.
+- It does not add exploitation or auth-bypass behavior.
+- It avoids active CT enumeration; CT support is file-import only.
+- It keeps exact-version attribution tied to lab-promoted rule evidence.
+- Passive TLS/JARM/provider-style signals can raise confidence but cannot
+  independently claim a version.
+- CDP/Chromium evidence remains browser-agent evidence; CDP alone is not
+  standalone OpenClaw proof and cannot drive vulnerability correlation.
+
+**Open follow-ups:**
+
+- Derive and promote stable favicon hashes only from saved lab captures that
+  survive validation.
+- Calibrate composite scoring across multiple deployments before using
+  composites for anything stronger than family confidence.
+- Keep JARM/JA3S/HTTP2 as optional passive metadata unless a future active TLS
+  mode is explicitly approved.
+- Continue OSINT collection for deployment examples under
+  `research/proposed_changes/`; hosting provider correlation remains
+  informational metadata only.
+
+---
+
 ## 2026-05-12 — Safe WebSocket Upgrade Handshake Fingerprinting
 
 **Topic:** Follow-up implementation on #12 WebSocket endpoint probing

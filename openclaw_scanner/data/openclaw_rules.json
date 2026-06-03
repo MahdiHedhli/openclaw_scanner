@@ -419,6 +419,124 @@
   ],
   "fingerprint_rules": [
     {
+      "id": "chromium-devtools-exposed",
+      "family": "chromium_devtools_exposed",
+      "label": "Exposed Chromium DevTools HTTP discovery endpoint",
+      "confidence": 0.78,
+      "notes": "Product-agnostic CDP evidence only. This does not identify OpenClaw or imply vulnerability without additional OpenClaw-family evidence.",
+      "any": [
+        {
+          "type": "cdp_debugger_url_present",
+          "path": "/json/version",
+          "value": true
+        },
+        {
+          "type": "cdp_debugger_url_present",
+          "path": "/json/list",
+          "value": true
+        },
+        {
+          "type": "cdp_debugger_url_present",
+          "path": "/json",
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "openclaw-cdp-devtools-exposed",
+      "family": "openclaw_cdp_devtools_exposed",
+      "label": "OpenClaw-family gateway with exposed Chromium DevTools discovery endpoint",
+      "confidence": 0.88,
+      "notes": "Requires sanitized CDP facts plus independent OpenClaw-family evidence. CDP alone is intentionally insufficient.",
+      "all": [
+        {
+          "type": "cdp_debugger_url_present",
+          "value": true
+        }
+      ],
+      "any": [
+        {
+          "type": "marker_present",
+          "value": "openclaw"
+        },
+        {
+          "type": "marker_present",
+          "value": "clawdbot"
+        },
+        {
+          "type": "marker_present",
+          "value": "moltbot"
+        },
+        {
+          "type": "title_contains",
+          "path": "/",
+          "value": "OpenClaw Control"
+        },
+        {
+          "type": "title_contains",
+          "path": "/",
+          "value": "Clawdbot Control"
+        },
+        {
+          "type": "title_contains",
+          "path": "/",
+          "value": "Moltbot Control"
+        }
+      ]
+    },
+    {
+      "id": "novnc-presence-only",
+      "family": "novnc_presence",
+      "label": "noVNC presence-only endpoint",
+      "confidence": 0.55,
+      "notes": "Presence-only signal captured by conditional deep validation. This can help feature clustering but is not OpenClaw proof, not exact version evidence, and not vulnerability-correlation evidence.",
+      "all": [
+        {
+          "type": "marker_present",
+          "path": "/vnc.html",
+          "value": "novnc_presence"
+        }
+      ]
+    },
+    {
+      "id": "websockify-presence-only",
+      "family": "websockify_presence",
+      "label": "websockify presence-only endpoint",
+      "confidence": 0.50,
+      "notes": "Presence-only signal captured by conditional deep validation. This can help feature clustering but is not OpenClaw proof, not exact version evidence, and not vulnerability-correlation evidence.",
+      "all": [
+        {
+          "type": "marker_present",
+          "path": "/websockify",
+          "value": "websockify_presence"
+        }
+      ]
+    },
+    {
+      "id": "socketio-polling-handshake",
+      "family": "socketio_polling_handshake",
+      "label": "Socket.IO/Engine.IO polling handshake shape",
+      "confidence": 0.52,
+      "notes": "Presence-only response-shape signal captured by conditional deep validation. It records Engine.IO polling behavior only and is not exact version or vulnerability-correlation evidence.",
+      "all": [
+        {
+          "type": "marker_present",
+          "path": "/socket.io/?EIO=4&transport=polling&t=scanner",
+          "value": "socketio_polling_handshake"
+        },
+        {
+          "type": "json_key",
+          "path": "/socket.io/?EIO=4&transport=polling&t=scanner",
+          "value": "sid"
+        },
+        {
+          "type": "json_key",
+          "path": "/socket.io/?EIO=4&transport=polling&t=scanner",
+          "value": "upgrades"
+        }
+      ]
+    },
+    {
       "id": "claw-gateway-tools-invoke-auth-json",
       "family": "claw_gateway_tools_invoke_auth_json",
       "label": "Claw-family gateway with auth-gated /tools/invoke HTTP API",

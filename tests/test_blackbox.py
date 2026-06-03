@@ -75,6 +75,7 @@ class BlackboxTests(unittest.TestCase):
         self.assertEqual(bundle["declared_version"], "2026.2.13")
         self.assertEqual(bundle["capture_count"], 1)
         signals = set(bundle["captures"][0]["signals"])
+        self.assertIn("status_distribution|101:1;200:3;404:1", signals)
         self.assertIn("script_contains|/|/static/dashboard.2026.2.13.js", signals)
         self.assertIn("json_key|/health|ok", signals)
         self.assertIn("header_contains|/health|content-type|application/json", signals)
@@ -84,6 +85,62 @@ class BlackboxTests(unittest.TestCase):
         self.assertIn("ws_upgrade_supported|/ws|true", signals)
         self.assertIn("ws_subprotocol_contains|/ws|openclaw-gateway", signals)
         self.assertIn("ws_extension_contains|/ws|permessage-deflate", signals)
+
+    def test_build_capture_bundle_records_stable_headers_only(self):
+        result = ScanResult(
+            input_target="198.51.100.11:18789",
+            source="direct",
+            probed_base="http://198.51.100.11:18789",
+            observations={
+                "CORS-PREFLIGHT OPTIONS /tools/invoke": ProbeObservation(
+                    path="/tools/invoke",
+                    url="http://198.51.100.11:18789/tools/invoke",
+                    method="OPTIONS",
+                    probe_name="cors-preflight",
+                    status=204,
+                    headers={
+                        "access-control-allow-origin": "https://scanner.invalid",
+                        "access-control-allow-methods": "GET, POST, OPTIONS",
+                        "access-control-allow-headers": "authorization,content-type",
+                        "allow": "GET, POST, OPTIONS",
+                        "server": "openclaw-edge",
+                        "www-authenticate": 'Basic realm="OpenClaw", charset="UTF-8"',
+                        "x-powered-by": "Express",
+                        "date": "Wed, 03 Jun 2026 12:00:00 GMT",
+                        "content-length": "0",
+                        "set-cookie": "sid=secret",
+                        "etag": '"volatile"',
+                    },
+                )
+            },
+        )
+
+        bundle = build_capture_bundle([result], probe_paths=["OPTIONS /tools/invoke"])
+        signals = set(bundle["captures"][0]["signals"])
+
+        self.assertIn(
+            "header_contains|/tools/invoke|access-control-allow-origin|https://scanner.invalid",
+            signals,
+        )
+        self.assertIn(
+            "header_contains|/tools/invoke|access-control-allow-methods|GET,OPTIONS,POST",
+            signals,
+        )
+        self.assertIn(
+            "header_contains|/tools/invoke|access-control-allow-headers|authorization,content-type",
+            signals,
+        )
+        self.assertIn("header_contains|/tools/invoke|allow|GET,OPTIONS,POST", signals)
+        self.assertIn("header_contains|/tools/invoke|server|openclaw-edge", signals)
+        self.assertIn(
+            "header_contains|/tools/invoke|www-authenticate|basic;realm=OpenClaw",
+            signals,
+        )
+        self.assertIn("header_contains|/tools/invoke|x-powered-by|Express", signals)
+        self.assertFalse(any("|date|" in signal for signal in signals))
+        self.assertFalse(any("|content-length|" in signal for signal in signals))
+        self.assertFalse(any("|set-cookie|" in signal for signal in signals))
+        self.assertFalse(any("|etag|" in signal for signal in signals))
 
     def test_generate_rule_suggestions_prefers_unique_stable_signals(self):
         version_a_bundle = {
@@ -162,6 +219,42 @@ class BlackboxTests(unittest.TestCase):
             and condition["probe_name"] == "ws-upgrade"
             for condition in rule["all"]
         ))
+
+    def test_generate_rule_suggestions_converts_status_distribution_signal(self):
+        version_a_bundle = {
+            "bundle_type": "openclaw_blackbox_capture",
+            "declared_version": "2026.2.13",
+            "captures": [
+                {"signals": ["status_distribution|200:13;401:3;404:21"]},
+                {"signals": ["status_distribution|200:13;401:3;404:21"]},
+            ],
+        }
+        version_b_bundle = {
+            "bundle_type": "openclaw_blackbox_capture",
+            "declared_version": "2026.2.14",
+            "captures": [
+                {"signals": ["status_distribution|200:13;401:1;404:23"]},
+                {"signals": ["status_distribution|200:13;401:1;404:23"]},
+            ],
+        }
+
+        report = generate_rule_suggestions(
+            [version_a_bundle, version_b_bundle],
+            max_conditions=1,
+        )
+
+        version_a = next(
+            item for item in report["versions"] if item["version"] == "2026.2.13"
+        )
+        self.assertEqual(
+            version_a["candidate_rule"]["all"],
+            [
+                {
+                    "type": "status_distribution_signature",
+                    "value": "200:13;401:3;404:21",
+                }
+            ],
+        )
 
     def test_generate_rule_suggestions_allows_unique_rules_for_similar_family_surfaces(self):
         common_signals = [

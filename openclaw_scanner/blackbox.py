@@ -6,9 +6,28 @@ from pathlib import Path
 from typing import Dict, Iterable, List, Optional, Sequence, Set, Tuple
 
 from .models import ProbeObservation, ScanResult
+from .versions import is_exact_version, version_sort_key
 
-EXACT_VERSION_RE = re.compile(r"^20\d{2}\.\d+\.\d+(?:-[0-9A-Za-z][0-9A-Za-z-]*(?:\.\d+)*)?$")
 SKIPPED_INPUT_PRETTY_LIMIT = 12
+STABLE_HEADER_NAMES = {
+    "access-control-allow-credentials",
+    "access-control-allow-headers",
+    "access-control-allow-methods",
+    "access-control-allow-origin",
+    "access-control-expose-headers",
+    "allow",
+    "cross-origin-embedder-policy",
+    "cross-origin-opener-policy",
+    "cross-origin-resource-policy",
+    "permissions-policy",
+    "referrer-policy",
+    "server",
+    "strict-transport-security",
+    "www-authenticate",
+    "x-content-type-options",
+    "x-frame-options",
+    "x-powered-by",
+}
 
 
 def build_capture_bundle(
@@ -133,7 +152,7 @@ def generate_rule_suggestions(
     similarity_by_version = _build_similarity_report(versions, stable_by_version)
 
     suggestions = []
-    for version in sorted(stable_by_version.keys(), key=_version_sort_key, reverse=True):
+    for version in sorted(stable_by_version.keys(), key=version_sort_key, reverse=True):
         stable_signals = stable_by_version[version]
         other_stable = set().union(
             *[
@@ -363,6 +382,9 @@ def _error_probe_label(error: str) -> str:
 
 def _signals_from_result(result: ScanResult) -> Set[str]:
     signals: Set[str] = set()
+    status_signature = result.status_distribution_signature()
+    if status_signature:
+        signals.add(f"status_distribution|{status_signature}")
     for observation in result.observations.values():
         signals.update(_signals_from_observation(observation))
     return signals
@@ -395,6 +417,8 @@ def _signals_from_observation(observation: ProbeObservation) -> Set[str]:
     content_type = _normalize_content_type(observation.content_type)
     if content_type:
         signals.add(f"header_contains|{path}|content-type|{content_type}")
+    signals.update(_stable_header_signals(observation))
+    signals.update(_cdp_signals(observation))
     if observation.body_sha256:
         signals.add(f"body_hash|{path}|{observation.body_sha256.lower()}")
     if observation.favicon_hash is not None:
@@ -412,6 +436,78 @@ def _normalize_content_type(value: Optional[str]) -> Optional[str]:
     if not value:
         return None
     return value.split(";", 1)[0].strip().lower() or None
+
+
+def _stable_header_signals(observation: ProbeObservation) -> Set[str]:
+    signals: Set[str] = set()
+    for header, raw_value in observation.headers.items():
+        normalized_header = str(header).strip().lower()
+        if normalized_header not in STABLE_HEADER_NAMES:
+            continue
+        normalized_value = _normalize_stable_header_value(normalized_header, raw_value)
+        if not normalized_value:
+            continue
+        signals.add(
+            f"header_contains|{observation.path}|{normalized_header}|{normalized_value}"
+        )
+    return signals
+
+
+def _normalize_stable_header_value(header: str, value: str) -> Optional[str]:
+    text = str(value or "").strip()
+    if not text:
+        return None
+    if header == "www-authenticate":
+        return _normalize_www_authenticate(text)
+    if header in {"allow", "access-control-allow-methods"}:
+        return ",".join(sorted(_split_header_tokens(text)))
+    if header in {
+        "access-control-allow-headers",
+        "access-control-expose-headers",
+    }:
+        return ",".join(sorted(token.lower() for token in _split_header_tokens(text)))
+    if header == "access-control-allow-origin":
+        return text[:160]
+    return re.sub(r"\s+", " ", text)[:160]
+
+
+def _normalize_www_authenticate(value: str) -> Optional[str]:
+    scheme_match = re.match(r"\s*([A-Za-z][A-Za-z0-9_-]*)", value)
+    if not scheme_match:
+        return None
+    scheme = scheme_match.group(1).lower()
+    realm_match = re.search(r'realm=(?:"([^"]*)"|([^,\s]+))', value, re.IGNORECASE)
+    if not realm_match:
+        return scheme
+    realm = (realm_match.group(1) or realm_match.group(2) or "").strip()
+    return f"{scheme};realm={realm[:80]}" if realm else scheme
+
+
+def _split_header_tokens(value: str) -> List[str]:
+    return [
+        token.strip().upper()
+        for token in value.split(",")
+        if token.strip()
+    ]
+
+
+def _cdp_signals(observation: ProbeObservation) -> Set[str]:
+    if observation.cdp.get("present") != "true":
+        return set()
+
+    signals = {f"cdp_present|{observation.path}|true"}
+    browser_family = observation.cdp.get("browser_family")
+    if browser_family:
+        signals.add(f"cdp_browser_family|{observation.path}|{browser_family.lower()}")
+    engine = observation.cdp.get("engine")
+    if engine:
+        signals.add(f"cdp_engine|{observation.path}|{engine.lower()}")
+    debugger_present = observation.cdp.get("debugger_url_present")
+    if debugger_present in {"true", "false"}:
+        signals.add(
+            f"cdp_debugger_url_present|{observation.path}|{debugger_present}"
+        )
+    return signals
 
 
 def _build_similarity_report(
@@ -621,6 +717,10 @@ def _signal_rank(signal: str, capture_count: int) -> int:
         "script_contains": 100,
         "favicon_hash": 95,
         "json_key": 90,
+        "cdp_debugger_url_present": 88,
+        "cdp_present": 86,
+        "cdp_browser_family": 84,
+        "cdp_engine": 83,
         "body_hash": 80 if capture_count > 1 else 35,
         "header_contains": 70,
         "ws_extension_contains": 68,
@@ -629,6 +729,7 @@ def _signal_rank(signal: str, capture_count: int) -> int:
         "ws_upgrade_status": 58,
         "ws_upgrade_supported": 57,
         "method_status": 55,
+        "status_distribution": 54,
         "path_status": 50,
         "marker_present": 25,
     }
@@ -653,7 +754,7 @@ def _build_candidate_rule(
     if not selected_signals:
         return {}
 
-    exact = bool(EXACT_VERSION_RE.match(version))
+    exact = is_exact_version(version)
     confidence = 0.62 + min(capture_count, 4) * 0.06 + min(len(selected_signals), 3) * 0.05
     if capture_count == 1:
         confidence = min(confidence, 0.74)
@@ -686,6 +787,9 @@ def _signal_to_condition(signal: str) -> Dict[str, object]:
             "path": path,
             "statuses": [int(status)],
         }
+    if signal_type == "status_distribution":
+        _, value = signal.split("|", 1)
+        return {"type": "status_distribution_signature", "value": value}
     if signal_type == "title_contains":
         _, path, value = parts
         return {"type": "title_contains", "path": path, "value": value}
@@ -701,6 +805,22 @@ def _signal_to_condition(signal: str) -> Dict[str, object]:
     if signal_type == "json_key":
         _, path, value = parts
         return {"type": "json_key", "path": path, "value": value}
+    if signal_type == "cdp_present":
+        _, path, value = parts
+        return {"type": "cdp_present", "path": path, "value": value.lower() == "true"}
+    if signal_type == "cdp_debugger_url_present":
+        _, path, value = parts
+        return {
+            "type": "cdp_debugger_url_present",
+            "path": path,
+            "value": value.lower() == "true",
+        }
+    if signal_type == "cdp_browser_family":
+        _, path, value = parts
+        return {"type": "cdp_browser_family", "path": path, "value": value}
+    if signal_type == "cdp_engine":
+        _, path, value = parts
+        return {"type": "cdp_engine", "path": path, "value": value}
     if signal_type == "body_hash":
         _, path, value = parts
         return {"type": "body_hash", "path": path, "value": value}
@@ -745,8 +865,3 @@ def _signal_to_condition(signal: str) -> Dict[str, object]:
 def _sanitize_rule_id(version: str) -> str:
     sanitized = re.sub(r"[^0-9A-Za-z]+", "-", version).strip("-").lower()
     return sanitized or "unknown-version"
-
-
-def _version_sort_key(value: str) -> Tuple[int, ...]:
-    parts = re.findall(r"\d+", value)
-    return tuple(int(part) for part in parts) if parts else (0,)

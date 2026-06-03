@@ -1,14 +1,15 @@
 import json
-import re
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Sequence
 from urllib.parse import urlparse
 
+from .discovery import score_passive_record
+from .external import load_external_records
 from .models import ScanTarget
 from .shodan_meta import detect_platform, extract_banner_meta, generate_pivot_queries
+from .versions import find_package_version, find_versions
 
 DEFAULT_TLS_PORTS = {443, 8443, 9443, 18789}
-MDNS_VERSION_RE = re.compile(r"20\d{2}\.\d+\.\d+(?:-[A-Za-z0-9]+)?")
 MDNS_PRODUCT_MARKERS = (
     "openclaw",
     "clawdbot",
@@ -24,6 +25,10 @@ def load_targets(
     targets_file: Optional[str] = None,
     shodan_file: Optional[str] = None,
     shodan_records: Optional[Sequence[dict]] = None,
+    censys_file: Optional[str] = None,
+    fofa_file: Optional[str] = None,
+    ct_file: Optional[str] = None,
+    probe_ports: Optional[Sequence[int]] = None,
 ) -> List[ScanTarget]:
     targets: List[ScanTarget] = []
 
@@ -50,10 +55,44 @@ def load_targets(
             )
 
     if shodan_file:
-        _append_shodan_targets(targets, _load_shodan_objects(Path(shodan_file)), "shodan")
+        _append_shodan_targets(
+            targets,
+            _load_shodan_objects(Path(shodan_file)),
+            "shodan",
+            probe_ports=probe_ports,
+        )
 
     if shodan_records:
-        _append_shodan_targets(targets, shodan_records, "shodan_api")
+        _append_shodan_targets(
+            targets,
+            shodan_records,
+            "shodan_api",
+            probe_ports=probe_ports,
+        )
+
+    if censys_file:
+        _append_external_targets(
+            targets,
+            load_external_records(censys_file, "censys"),
+            "censys",
+            probe_ports=probe_ports,
+        )
+
+    if fofa_file:
+        _append_external_targets(
+            targets,
+            load_external_records(fofa_file, "fofa"),
+            "fofa",
+            probe_ports=probe_ports,
+        )
+
+    if ct_file:
+        _append_external_targets(
+            targets,
+            load_external_records(ct_file, "ct"),
+            "ct",
+            probe_ports=probe_ports,
+        )
 
     deduped: Dict[str, ScanTarget] = {}
     for target in targets:
@@ -67,6 +106,7 @@ def _append_shodan_targets(
     targets: List[ScanTarget],
     records: Iterable[dict],
     source: str,
+    probe_ports: Optional[Sequence[int]] = None,
 ) -> None:
     for item in records:
         label = _shodan_label(item)
@@ -74,11 +114,15 @@ def _append_shodan_targets(
         banner_meta = extract_banner_meta(item)
         platform = detect_platform(banner_meta.os)
         mdns_fingerprint = _extract_mdns_fingerprint(item)
+        discovery_meta = score_passive_record(item)
         targets.append(
             ScanTarget(
                 label=label,
                 source=source,
-                candidates=_shodan_candidates(item),
+                candidates=_expand_candidates_for_ports(
+                    _shodan_candidates(item),
+                    probe_ports,
+                ),
                 metadata={
                     **{
                         key: item.get(key)
@@ -111,6 +155,10 @@ def _append_shodan_targets(
                             "shodan_module": banner_meta.shodan_module,
                             "platform": platform,
                             "shodan_pivot_queries": generate_pivot_queries(banner_meta),
+                            "discovery_confidence": discovery_meta.get(
+                                "discovery_confidence"
+                            ),
+                            "discovery_sources": discovery_meta.get("discovery_sources"),
                             "mdns_service_types": _sorted_strings(
                                 mdns_fingerprint.get("service_types", [])
                             ),
@@ -121,6 +169,8 @@ def _append_shodan_targets(
                             "mdns_advertised_ports": mdns_fingerprint.get("advertised_ports"),
                             "mdns_hostname": mdns_fingerprint.get("hostname"),
                             "mdns_version": mdns_fingerprint.get("version"),
+                            "mdns_version_source": mdns_fingerprint.get("version_source"),
+                            "mdns_devtools_revision": mdns_fingerprint.get("devtools_revision"),
                             "mdns_product_markers": _sorted_strings(
                                 mdns_fingerprint.get("product_markers", [])
                             ),
@@ -148,6 +198,33 @@ def _append_shodan_targets(
         )
 
 
+def _append_external_targets(
+    targets: List[ScanTarget],
+    records: Iterable[dict],
+    source: str,
+    probe_ports: Optional[Sequence[int]] = None,
+) -> None:
+    for item in records:
+        label = _shodan_label(item)
+        banner_meta = extract_banner_meta(item)
+        normalized = item.get("_openclaw_normalized") or {}
+        engine = str(normalized.get("engine") or source)
+        targets.append(
+            ScanTarget(
+                label=label,
+                source=source,
+                candidates=_expand_candidates_for_ports(
+                    _shodan_candidates(item),
+                    probe_ports,
+                ),
+                metadata={
+                    **_external_metadata(engine, banner_meta, normalized),
+                },
+                raw_record=item,
+            )
+        )
+
+
 def _target_candidates(value: str) -> List[str]:
     if not value:
         return []
@@ -158,6 +235,73 @@ def _target_candidates(value: str) -> List[str]:
 
     stripped = value.rstrip("/")
     return [f"https://{stripped}", f"http://{stripped}"]
+
+
+def _external_metadata(engine: str, banner_meta, normalized: Dict[str, Any]) -> Dict[str, Any]:
+    prefix = engine.lower().strip() or "external"
+    metadata = {
+        "external_engine": prefix,
+        "passive_http_title": banner_meta.http_title,
+        "passive_http_status": banner_meta.http_status,
+        "passive_http_server": banner_meta.http_server,
+        "passive_favicon_hash": banner_meta.favicon_hash,
+        "passive_ssl_jarm": banner_meta.ssl_jarm,
+        "passive_tls_subject_cn": banner_meta.ssl_cert_subject_cn,
+        "discovery_confidence": normalized.get("discovery_confidence"),
+        "discovery_sources": normalized.get("discovery_sources"),
+    }
+    metadata.update(
+        {
+            f"{prefix}_http_title": banner_meta.http_title,
+            f"{prefix}_http_status": banner_meta.http_status,
+            f"{prefix}_http_server": banner_meta.http_server,
+            f"{prefix}_favicon_hash": banner_meta.favicon_hash,
+            f"{prefix}_ssl_jarm": banner_meta.ssl_jarm,
+            f"{prefix}_tls_subject_cn": banner_meta.ssl_cert_subject_cn,
+        }
+    )
+    for key, value in normalized.items():
+        if key in {"engine", "discovery_confidence", "discovery_sources"}:
+            continue
+        metadata_key = key if key.startswith(f"{prefix}_") else f"{prefix}_{key}"
+        metadata[metadata_key] = value
+    return {
+        key: value
+        for key, value in metadata.items()
+        if value not in (None, [], {}, "")
+    }
+
+
+def _expand_candidates_for_ports(
+    candidates: Sequence[str],
+    probe_ports: Optional[Sequence[int]],
+) -> List[str]:
+    deduped = list(dict.fromkeys(candidates))
+    if not probe_ports:
+        return deduped
+
+    expanded = list(deduped)
+    hosts = []
+    for candidate in deduped:
+        parsed = urlparse(candidate)
+        if parsed.hostname:
+            hosts.append(parsed.hostname)
+    for host in dict.fromkeys(hosts):
+        authority_host = _format_authority_host(host)
+        for port in probe_ports:
+            if port <= 0:
+                continue
+            authority = f"{authority_host}:{port}"
+            schemes = ("https", "http") if port in DEFAULT_TLS_PORTS else ("http", "https")
+            for scheme in schemes:
+                expanded.append(f"{scheme}://{authority}")
+    return list(dict.fromkeys(expanded))
+
+
+def _format_authority_host(host: str) -> str:
+    if ":" in host and not host.startswith("["):
+        return f"[{host}]"
+    return host
 
 
 def _load_shodan_objects(path: Path) -> Iterable[dict]:
@@ -218,6 +362,10 @@ def _shodan_candidates(item: dict) -> List[str]:
 
 def _infer_shodan_scheme(item: dict) -> str:
     port = _extract_gateway_port(item) or item.get("port")
+    normalized = item.get("_openclaw_normalized") or {}
+    protocol = str(normalized.get("protocol") or "").lower()
+    if protocol in {"http", "https"}:
+        return protocol
     if item.get("ssl"):
         return "https"
     if port in DEFAULT_TLS_PORTS:
@@ -254,6 +402,8 @@ def _extract_mdns_fingerprint(item: dict) -> Dict[str, Any]:
     advertised_ports = set()
     product_markers = set()
     version = None
+    version_source = None
+    devtools_revision = None
     hostname = _normalize_mdns_hostname(mdns.get("hostname"))
 
     for service_name, service in services.items():
@@ -287,10 +437,22 @@ def _extract_mdns_fingerprint(item: dict) -> Dict[str, Any]:
                 txt_records[key] = value
                 if key == "gatewayport" and value.isdigit():
                     advertised_ports.add(int(value))
+                if devtools_revision is None:
+                    devtools_revision = _extract_devtools_revision(value)
                 if version is None:
-                    match = MDNS_VERSION_RE.search(value)
-                    if match:
-                        version = match.group(0)
+                    package_version = find_package_version(value)
+                    if package_version:
+                        version = package_version
+                        version_source = (
+                            "cli_path_package"
+                            if key in {"clipath", "cli_path", "cli-path"}
+                            else "package_metadata"
+                        )
+                    else:
+                        versions = find_versions(value)
+                        if versions:
+                            version = versions[0]
+                            version_source = "txt"
                 if hostname is None and key in {"lanhost", "hostname"}:
                     hostname = _normalize_mdns_hostname(value)
             else:
@@ -320,8 +482,25 @@ def _extract_mdns_fingerprint(item: dict) -> Dict[str, Any]:
         "advertised_ports": sorted(advertised_ports),
         "hostname": hostname,
         "version": version,
+        "version_source": version_source,
+        "devtools_revision": devtools_revision,
         "product_markers": sorted(product_markers),
     }
+
+
+def _extract_devtools_revision(value: str) -> Optional[int]:
+    marker = "devtools-protocol@0.0."
+    lower = value.lower()
+    index = lower.find(marker)
+    if index < 0:
+        return None
+    start = index + len(marker)
+    digits = []
+    for char in value[start:]:
+        if not char.isdigit():
+            break
+        digits.append(char)
+    return int("".join(digits)) if digits else None
 
 
 def _normalize_mdns_hostname(value: Any) -> Optional[str]:

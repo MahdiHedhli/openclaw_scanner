@@ -52,6 +52,33 @@ staying within the remote-only, unauthenticated scanning boundary.
 
 ---
 
+## Post-Research Addendum (2026-06-03)
+
+- Discovery now has a reusable Shodan query library for OpenClaw, Clawdbot, and
+  Moltbot control titles, mDNS advertisements, and lab-rule-derived favicon
+  hashes.
+- Shodan-compatible, Censys, FOFA, and passive CT exports now normalize into a
+  common target model with discovery confidence/source metadata and credential
+  header scrubbing.
+- Default active probing is constrained to GET requests and WebSocket
+  upgrade-header handshakes.
+- Conditional deep validation now runs only after a strong OpenClaw-family
+  fingerprint and records presence/status/header/shape signals for Socket.IO
+  polling, noVNC, websockify, OpenAI-compatible GET routes, browser-tool and
+  canvas routes, CORS preflight behavior, and WebSocket upgrades.
+- POST probes remain opt-in through `--enable-post-probes`; the scanner does not
+  authenticate, send tool-execution payloads, connect to debugger WebSockets,
+  or interact with VNC.
+
+**Scanner implication:** passive discovery is useful for candidate discovery
+but is not reliable exact-version evidence in the current field data. Discovery
+confidence, CDP/Chromium, Socket.IO, noVNC, websockify, TLS/JARM, and CT signals
+can improve triage and clustering, but exact versions still require
+lab-promoted rules or explicit correlation-grade package metadata such as mDNS
+`cliPath` versions.
+
+---
+
 ## Research Coverage
 
 | # | Topic | Status | Date |
