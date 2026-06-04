@@ -1,10 +1,10 @@
 # OpenClaw Scanner — Research Summary
 
-*Last updated: 2026-03-28 (Run 12 — FINAL)*
+*Last updated: 2026-06-04 (Post-research implementation and calibration addendum)*
 
-This document maintains a running executive summary of all research findings produced during the scheduled research period (2026-03-19 to 2026-03-28) for improving the OpenClaw Scanner's detection, fingerprinting, and version identification capabilities.
+This document maintains a running executive summary of all research findings produced during the scheduled research period (2026-03-19 to 2026-03-28) for improving the OpenClaw Scanner's detection, fingerprinting, and version identification capabilities. Post-research addenda track implementation, validation, and public-safe calibration results that materially change the scanner's research direction.
 
-**STATUS: RESEARCH PERIOD CONCLUDED.** All 13 original topics and 6 cross-cutting topics are complete. 22 proposed implementation files and 42 prioritized recommendations are ready for development.
+**STATUS: RESEARCH PERIOD CONCLUDED.** All 13 original topics and 6 cross-cutting topics are complete. Current work is implementation and calibration follow-through, not broad new research.
 
 ---
 
@@ -52,38 +52,171 @@ staying within the remote-only, unauthenticated scanning boundary.
 
 ---
 
-## Post-Research Addendum (2026-06-03)
+## Post-Research Addendum (2026-06-04)
 
-- Discovery now has a reusable Shodan query library for OpenClaw, Clawdbot, and
-  Moltbot control titles, mDNS advertisements, and lab-rule-derived favicon
-  hashes.
-- Shodan-compatible, Censys, FOFA, and passive CT exports now normalize into a
-  common target model with discovery confidence/source metadata and credential
-  header scrubbing.
-- Default active probing is constrained to GET requests and WebSocket
-  upgrade-header handshakes.
-- Conditional deep validation now runs only after a strong OpenClaw-family
-  fingerprint and records presence/status/header/shape signals for Socket.IO
-  polling, noVNC, websockify, OpenAI-compatible GET routes, browser-tool and
-  canvas routes, CORS preflight behavior, and WebSocket upgrades.
-- POST probes remain opt-in through `--enable-post-probes`; the scanner does not
-  authenticate, send tool-execution payloads, connect to debugger WebSockets,
-  or interact with VNC.
-- The 2026-06-03 Shodan title-query calibration processed 500 passive
-  candidates and actively validated a 100-host shortlist. Passive-only
-  metadata produced 0 family matches, 0 exact versions, and 0 vulnerability
-  correlations. Active default validation produced 70 family matches, 25
-  exact-version matches, and 10 vulnerability correlations. Conditional deep
-  validation with POST probes disabled preserved those counts while collecting
-  richer status-distribution evidence.
+The June 3 implementation sprint converted several research recommendations
+into scanner behavior and then calibrated them against public-safe, anonymized
+field data. The practical result is a stronger OpenClaw gateway discovery and
+fingerprinting workflow while preserving the evidence-first model:
 
-**Scanner implication:** passive discovery is useful for candidate discovery
-but is not reliable exact-version evidence in the current field data. Discovery
-confidence, CDP/Chromium, Socket.IO, noVNC, websockify, TLS/JARM, and CT signals
-can improve triage and clustering, but exact versions still require
-lab-promoted rules or explicit correlation-grade package metadata such as mDNS
-`cliPath` versions. Status-distribution signatures should remain clustering and
-reporting evidence until saved-capture validation proves a stronger claim.
+**Discovery does not equal identification.**
+
+### Patches Applied
+
+- Version evidence correctness is now centralized in `openclaw_scanner/versions.py`.
+  Numeric build suffixes and prerelease counters survive inference paths, including
+  versions such as `2026.2.2-1`, `2026.2.2-3`, and `2026.5.19-beta.1`.
+- `VersionMatch` now carries correlation intent. Passive banner text can remain
+  visible evidence, but generic raw passive text is not correlation-grade exact
+  version evidence and cannot drive vulnerability correlation by itself.
+- Explicit package or `cliPath` mDNS metadata can still produce correlation-grade
+  version evidence. Approximate CDP-derived windows are marked non-exact and
+  non-correlating.
+- CDP/browser-agent probing is read-only and sanitized. The scanner can inspect
+  `/json/version`, `/json/list`, `/json`, and related DevTools metadata without
+  connecting to debugger WebSockets or storing attachable debugger URLs.
+- CDP/Chromium signals are product-agnostic browser-agent evidence by default.
+  They do not identify OpenClaw unless paired with other OpenClaw-family markers,
+  and they do not support vulnerability correlation.
+- CORS preflight probes were added for `OPTIONS /` and `OPTIONS /tools/invoke`
+  with scanner-controlled origin/preflight headers. These collect response shape
+  and header behavior without POST side effects.
+- Stable header mining was expanded for `Server`, `WWW-Authenticate` scheme and
+  realm, `X-Powered-By`, `Allow`, CORS allow headers, and basic security headers.
+  Volatile or sensitive headers such as raw cookies, nonce-bearing CSP, `Date`,
+  and content length are excluded from stable fingerprinting.
+- Discovery now has reusable query definitions with IDs, engine, description,
+  confidence weight, and query string. Current Shodan coverage includes mDNS
+  OpenClaw gateway names, `http.title:"OpenClaw Control"`,
+  `http.title:"Clawdbot Control"`, `http.title:"Moltbot Control"`, and
+  lab-rule-derived favicon hash pivots.
+- Passive imports now normalize Shodan, Censys, FOFA, and passive CT exports into
+  one target model while scrubbing credential-bearing headers and sensitive
+  fields. Existing `--shodan-file` behavior remains compatible.
+- `--deep-validation` is conditional. It only runs after strong OpenClaw-family
+  evidence and collects presence, status, headers, and response shapes for
+  Socket.IO polling, noVNC, websockify, safe OpenAI-compatible GET routes,
+  browser-tool routes, canvas routes, CORS behavior, and WebSocket upgrades.
+- POST probes remain opt-in through `--enable-post-probes`; default probing stays
+  low-impact and does not authenticate, send tool-execution payloads, connect to
+  browser debugger sockets, or interact with VNC.
+
+### Validation Evidence
+
+- The sprint validation suite passed `python3 -m compileall openclaw_scanner tests`,
+  `python3 -m unittest discover -s tests -v`, and `git diff --check`.
+- The unit suite covers version suffix preservation, passive banner
+  non-correlation, explicit mDNS package correlation, `--rescan-shodan` mDNS
+  version survival, CDP non-correlation, exact-rule precedence over approximate
+  CDP evidence, CORS/OPTIONS behavior, and conditional deep-validation gating.
+- Saved-capture validation confirmed promoted exact-version rules still match
+  the known-version corpus. Exact lab rules outrank CDP, noVNC, and other
+  approximate or presence-only signals.
+- Negative corpus coverage includes CDP-only Chrome, generic OpenAI-compatible
+  services, generic SPA fallback behavior, fake passive banner version text, and
+  noVNC-only endpoints. These do not produce OpenClaw exact-version or
+  vulnerability-correlation claims without stronger evidence.
+
+### Public-Safe Field Calibration
+
+The June 3 Shodan title-query calibration used anonymized data only. Real IP
+addresses, organizations, and instance names were replaced with stable
+synthetic IDs and RFC5737 TEST-NET addresses before publication.
+
+| Metric | Passive candidates | Active default | Active deep, no POST |
+| --- | ---: | ---: | ---: |
+| Results processed | 500 | 100 | 100 |
+| Responsive active hosts | N/A | 100 | 100 |
+| OpenClaw family matches | 0 | 70 | 70 |
+| Exact version matches | 0 | 25 | 25 |
+| Vulnerability correlations | 0 | 10 | 10 |
+
+Key findings:
+
+- Passive title discovery is high-yield candidate discovery, but passive-only
+  evidence still produced 0 family matches, 0 exact versions, and 0 vulnerability
+  correlations.
+- Passive gating is now field-confirmed. In the 500-row passive CSV, 65
+  candidates carried non-correlating version-like evidence that raised
+  `product_confidence` to `1.0`, but those rows still produced 0 exact versions
+  and 0 vulnerability correlations because the evidence remained passive banner
+  text rather than correlation-grade version proof.
+- Default active validation found 70 OpenClaw-family services, 25 exact known
+  versions, and 10 vulnerability correlations from correlation-grade evidence.
+- Conditional deep validation with POST probes disabled did not change the
+  family, exact-version, or vulnerability counts, but it enriched the observation
+  set for clustering and deployment-mode analysis.
+- The 25 exact-versioned active hosts split into a small legacy cohort and a
+  larger current-release cohort: `2023.11.3` appeared on 8 hosts, `2026.5.28`
+  on 7, `2026.5.7` on 4, and `2026.1.29-beta.1`, `2026.2.2-1`,
+  `2026.5.3-1`, `2026.5.18`, `2026.5.22`, and `2026.5.27` on one host each.
+- Version suffix preservation is now field-confirmed. Numeric and prerelease
+  suffixes survived output and vulnerability correlation for `2026.2.2-1`,
+  `2026.1.29-beta.1`, and `2026.5.3-1`; they were not collapsed into bare
+  `YYYY.M.D` triples.
+- The vulnerable cohort was cleanly evidence-gated: 8 hosts on `2023.11.3`
+  correlated to 32 vulnerability records each, one `2026.1.29-beta.1` host
+  correlated to 30 records, and one `2026.2.2-1` host correlated to 29 records.
+  No vulnerability correlation came from passive metadata alone.
+- The `2023.11.3` cohort is the highest-priority operational finding in the
+  anonymized sample. Seven of those hosts shared `200:35;400:2;404:1`, and one
+  showed `200:28;400:2;401:7;404:1`, indicating externally visible auth-gated
+  API behavior on an old exact-versioned build.
+- The most common default `status_distribution_signature` clusters were
+  `200:19;404:19` across 30 hosts, `200:17;404:19` across 20 hosts, and
+  `101:2;200:17;404:19` across 15 hosts.
+- The most common deep-validation clusters were `200:34;404:23;405:1` across
+  20 hosts, `200:32;404:23;405:1` across 16 hosts, and
+  `101:2;200:32;404:23;405:1` across 14 hosts.
+- The dominant family fingerprints in the active sample were
+  `openclaw_ui_only_404_api` and `openclaw_spa_fallback_all_200`, suggesting
+  common deployment patterns where the UI is exposed while API routes are hidden,
+  auth-gated, or reverse-proxied differently.
+- The 30 active rows without a family match are not one bucket. Twenty-one had
+  `has_signal=False`; six of those were flat `200:19;404:19` rows consistent
+  with title/favicon false positives, and six were error-heavy rows with no
+  useful status signature. Nine had `has_signal=True` but no family match; eight
+  clustered around `200:35;400:2;404:1` or its `401` auth-challenge variant and
+  should be treated as prime rule-mining candidates.
+- Deep validation behaved as intended in field data. It increased matched-host
+  observations from 38 to 58 and introduced `405` method-response evidence for
+  all 70 family-matched hosts, while leaving family, exact-version, and
+  vulnerability counts unchanged. No CDP/Chromium DevTools family signal was
+  observed in the public-safe corpus.
+- Passive source filtering still needs tightening. The anonymized passive CSV
+  includes 12 candidates with non-OpenClaw product labels, including Ivanti EPMM,
+  Sophos SSL VPN, Ncat proxy, D-Link webcam, IIS, and Apache. These should feed
+  exclusion rules or secondary Shodan filters before active shortlist selection.
+
+Published public-safe artifacts:
+
+- `artifacts/shodan/2026-06-03/public/openclaw-passive-500-anonymized.csv`
+- `artifacts/shodan/2026-06-03/public/openclaw-active-default-100-anonymized.csv`
+- `artifacts/shodan/2026-06-03/public/openclaw-active-deep-100-anonymized.csv`
+- `artifacts/shodan/2026-06-03/public/openclaw-calibration-comparison-summary.json`
+
+### Research Implications
+
+- Status-distribution signatures are now a strong candidate for deployment-mode
+  and reverse-proxy clustering, but they must remain non-version evidence until
+  saved-capture validation proves a stronger claim.
+- The `200:35;400:2;404:1` and `200:28;400:2;401:7;404:1` clusters deserve a
+  dedicated rule-mining pass because they include both exact vulnerable
+  `2023.11.3` hosts and has-signal/no-family hosts.
+- Discovery confidence should improve ranking and sampling, not identification.
+  It must not create family matches, exact versions, or vulnerability
+  correlations by itself.
+- Non-OpenClaw passive products sharing title, favicon, port, or body-marker
+  characteristics should be represented as explicit negative/exclusion signals
+  so the active pipeline spends less budget on known false-positive families.
+- Exact-version attribution remains limited to lab-promoted remote-visible rules
+  or explicit correlation-grade metadata such as package or `cliPath` versions.
+- CDP/Chromium, noVNC, Socket.IO, websockify, CORS, TLS/JARM, and CT signals are
+  useful context and clustering signals, not standalone OpenClaw proof.
+- The next research focus should be offline clustering of the anonymized active
+  data, saved-capture comparison for status-distribution stability, favicon hash
+  promotion from lab captures, and safer public-scan ergonomics such as active
+  scan deadlines and resumable shortlists.
 
 ---
 

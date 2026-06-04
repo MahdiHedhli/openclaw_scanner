@@ -15,6 +15,7 @@
   <img alt="Stdlib only" src="https://img.shields.io/badge/dependencies-stdlib--only-0B7285">
   <img alt="License MIT" src="https://img.shields.io/badge/license-MIT-2F9E44">
   <img alt="Exact rules" src="https://img.shields.io/badge/exact_rules-17-E8590C">
+  <img alt="Latest OpenClaw" src="https://img.shields.io/badge/latest_openclaw-2026.6.1-1864AB">
   <img alt="Evidence first" src="https://img.shields.io/badge/mode-evidence--first-C92A2A">
 </p>
 
@@ -41,6 +42,7 @@ by this project.
 | 🌐 Active gateway probing | Low-impact default GET/WebSocket probes; conditional deep validation after strong family evidence |
 | 🧬 Fingerprint evidence | Status distributions, titles, JS assets, favicon hashes, JSON key shapes, body markers, version hints |
 | 🧪 Exact version rules | 17 lab-promoted OpenClaw releases through `2026.5.28` |
+| 📦 Latest OpenClaw package | `2026.6.1` is published; exact-rule coverage still requires a lab capture before promotion |
 | 🛡️ Defensive context | Reverse-proxy detection, honeypot heuristics, vulnerability correlation |
 | 🐍 Portable runtime | Stock `python3`; no third-party Python dependencies |
 
@@ -223,6 +225,26 @@ Key rates from the title-query pass:
 - Active candidate-to-exact-version rate: 25 / 100, or 25%.
 - Passive-to-family-match rate: 70 / 500, or 14%.
 
+Deeper CSV review produced these additional findings:
+
+- Passive gating held in field data: 65 passive candidates carried
+  non-correlating version-like evidence and still produced 0 exact versions and
+  0 vulnerability correlations.
+- The 25 exact-versioned active hosts were distributed across `2023.11.3` (8),
+  `2026.5.28` (7), `2026.5.7` (4), and one host each on
+  `2026.1.29-beta.1`, `2026.2.2-1`, `2026.5.3-1`, `2026.5.18`,
+  `2026.5.22`, and `2026.5.27`.
+- Vulnerability correlation stayed evidence-gated: 8 `2023.11.3` hosts
+  correlated to 32 records each, one `2026.1.29-beta.1` host correlated to 30,
+  and one `2026.2.2-1` host correlated to 29. No passive-only row produced a
+  vulnerability correlation.
+- Version suffix preservation was field-confirmed for `2026.2.2-1`,
+  `2026.1.29-beta.1`, and `2026.5.3-1`.
+- The 30 active rows without family matches split into false-positive,
+  error-heavy, and responsive/no-family buckets. The responsive/no-family rows
+  clustered around `200:35;400:2;404:1` or the `401` auth-challenge variant and
+  are the next rule-mining target.
+
 Deep validation did not change family, exact-version, or vulnerability counts
 in this sample, but it added richer response-shape evidence. The most common
 default status signatures were `200:19;404:19`, `200:17;404:19`, and
@@ -278,9 +300,10 @@ These rules are based on short-lived VLAN 30 captures and should be treated as
 high-value triage evidence. They are not exploit proof, and unusual deployment
 modes, proxies, custom builds, or hidden static assets can still reduce a scan
 to family-level confidence. As of the 2026-06-02 release-watch run, the stable
-package gap is closed through `2026.5.28`; newer prereleases are reported by
-the release-gap helper but are not captured unless prerelease coverage is
-explicitly requested.
+package gap is closed through `2026.5.28`. As of a 2026-06-04 npm registry
+check, the latest published OpenClaw package is `2026.6.1`; that release is not
+yet lab-promoted in this scanner and should go through the bounded release-watch
+capture workflow before exact-version rules are added.
 
 ## Input formats
 

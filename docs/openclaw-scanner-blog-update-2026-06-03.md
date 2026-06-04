@@ -34,6 +34,17 @@ correlations from correlation-grade evidence. The deep-validation pass produced
 the same counts while collecting richer response-shape and status-distribution
 evidence for future clustering.
 
+The exact-version distribution is the important operational readout. Eight
+hosts matched `2023.11.3`, and each correlated to 32 vulnerability records.
+Two other legacy exact versions also correlated to vulnerability records:
+`2026.1.29-beta.1` and `2026.2.2-1`. Current `2026.5.x` builds produced exact
+matches without vulnerability correlations.
+
+The field data also confirmed the version-evidence patch. Numeric and
+prerelease suffixes survived in output for `2026.2.2-1`,
+`2026.1.29-beta.1`, and `2026.5.3-1`, and passive banner text did not create
+exact-version or vulnerability claims by itself.
+
 This supports the scanner's core model:
 
 - Discovery is candidate generation.
@@ -65,6 +76,24 @@ These signatures are useful for clustering deployment modes, reverse proxies,
 and future version-corpus candidates. They are not exact-version proof by
 themselves.
 
+The older `2023.11.3` cohort clustered around `200:35;400:2;404:1` and
+`200:28;400:2;401:7;404:1`. The latter indicates auth-gated API behavior is
+externally visible on at least one old exact-versioned host in the anonymized
+sample.
+
+The 30 active rows without family matches also split into useful buckets:
+flat title/favicon false positives, error-heavy unreachable rows, and a smaller
+responsive group with OpenClaw-like signal but no current family rule hit. The
+responsive no-family group is the next rule-mining target.
+
+## Passive Noise Notes
+
+The passive candidate set still contains known non-OpenClaw products that
+passed initial discovery filters, including Ivanti EPMM, Sophos SSL VPN, Ncat
+proxy, D-Link webcam, IIS, and Apache. These should become negative or
+secondary-filter signals so active validation budget is spent on better
+candidates.
+
 ## Public-Safe Artifacts
 
 - `artifacts/shodan/2026-06-03/public/openclaw-passive-500-anonymized.csv`
@@ -80,7 +109,8 @@ principle: discovery is not identification. A title-based Shodan query produced
 matches, no exact versions, and no vulnerability correlations. After
 low-impact active validation of a 100-host shortlist, the scanner identified 70
 OpenClaw-family services, 25 exact known-version matches, and 10
-correlation-grade vulnerability matches. Enabling conditional deep validation
-without POST probes did not change the counts, but it added richer
-status-distribution evidence that should help future clustering and
-fingerprint-corpus work.
+correlation-grade vulnerability matches. The highest-priority finding was a
+cohort of 8 exact `2023.11.3` gateways, each correlating to 32 vulnerability
+records. Enabling conditional deep validation without POST probes did not
+change the counts, but it added richer status-distribution evidence that
+should help future clustering and fingerprint-corpus work.
