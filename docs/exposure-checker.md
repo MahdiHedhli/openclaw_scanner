@@ -185,3 +185,24 @@ and rate-limit outcome.
 - API rate limits source IPs and normalized targets.
 - API returns only the high-level result model.
 - No POST probes are used by checker mode.
+
+## 2026-06-05 Deployment Validation
+
+- Cloudflare Worker deployed successfully at
+  `https://openclaw-exposure-checker.mhedhli.workers.dev`.
+- Worker version deployed: `5014b2ba-7c51-4c8b-bb46-09a4d8d9c930`.
+- GitHub Pages workflow deployment completed successfully for commit
+  `cb38ab03bd8c7eb9e1ce76dbb72cff26ed1b1486`.
+- GitHub Pages URL returned HTTP 200:
+  `https://mahdihedhli.github.io/openclaw_scanner/`.
+- Checker URL returned HTTP 200:
+  `https://mahdihedhli.github.io/openclaw_scanner/checker/`.
+- Published checker page contains the required authorization warning,
+  authorization acknowledgement text, and disabled submit button.
+- Worker CORS preflight returned HTTP 204 for the GitHub Pages origin.
+- Worker rejected an invalid CAPTCHA token with HTTP 403 before scan execution.
+- Worker rejected a loopback target with HTTP 400 and
+  `non-public IP targets are blocked`.
+- Production CAPTCHA is not fully enabled until the operator copies the
+  Turnstile public site key into `site/checker/config.js` and sets the Worker
+  `TURNSTILE_SECRET_KEY` secret.
