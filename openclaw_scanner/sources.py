@@ -159,6 +159,18 @@ def _append_shodan_targets(
                                 "discovery_confidence"
                             ),
                             "discovery_sources": discovery_meta.get("discovery_sources"),
+                            "passive_noise_downgraded": discovery_meta.get(
+                                "passive_noise_downgraded"
+                            ),
+                            "passive_noise_confidence_cap": discovery_meta.get(
+                                "passive_noise_confidence_cap"
+                            ),
+                            "passive_noise_reasons": discovery_meta.get(
+                                "passive_noise_reasons"
+                            ),
+                            "passive_noise_matched_products": discovery_meta.get(
+                                "passive_noise_matched_products"
+                            ),
                             "mdns_service_types": _sorted_strings(
                                 mdns_fingerprint.get("service_types", [])
                             ),
@@ -249,6 +261,12 @@ def _external_metadata(engine: str, banner_meta, normalized: Dict[str, Any]) -> 
         "passive_tls_subject_cn": banner_meta.ssl_cert_subject_cn,
         "discovery_confidence": normalized.get("discovery_confidence"),
         "discovery_sources": normalized.get("discovery_sources"),
+        "passive_noise_downgraded": normalized.get("passive_noise_downgraded"),
+        "passive_noise_confidence_cap": normalized.get("passive_noise_confidence_cap"),
+        "passive_noise_reasons": normalized.get("passive_noise_reasons"),
+        "passive_noise_matched_products": normalized.get(
+            "passive_noise_matched_products"
+        ),
     }
     metadata.update(
         {
@@ -261,7 +279,15 @@ def _external_metadata(engine: str, banner_meta, normalized: Dict[str, Any]) -> 
         }
     )
     for key, value in normalized.items():
-        if key in {"engine", "discovery_confidence", "discovery_sources"}:
+        if key in {
+            "engine",
+            "discovery_confidence",
+            "discovery_sources",
+            "passive_noise_downgraded",
+            "passive_noise_confidence_cap",
+            "passive_noise_reasons",
+            "passive_noise_matched_products",
+        }:
             continue
         metadata_key = key if key.startswith(f"{prefix}_") else f"{prefix}_{key}"
         metadata[metadata_key] = value

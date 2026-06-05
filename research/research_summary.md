@@ -8,6 +8,61 @@ This document maintains a running executive summary of all research findings pro
 
 ---
 
+## Post-Research Addendum (2026-06-05, Public Checker Deployment)
+
+The public-safe checker is now represented as a deployable GitHub Pages plus
+Cloudflare Worker architecture instead of a static-only concept:
+
+- `site/` contains the GitHub Pages landing page and checker UI.
+- `cloudflare/worker/` contains the Worker API, rate-limit policy, Turnstile
+  verification path, target normalization, DNS-resolution SSRF preflight, and
+  bounded GET-only checker probes.
+- Cloudflare KV namespace `CHECKER_RATE_LIMITS` stores rate-limit counters for
+  the 5-scans-per-hour source-IP limit and 3-scans-per-hour normalized-target
+  limit.
+- The checker result model remains evidence-first and high-level: reachability,
+  possible OpenClaw candidate, family match, exact version only when bundled
+  evidence supports it, risk context, and short evidence summaries.
+
+**Scanner implication:** the public checker can improve accessibility without
+turning the project into a public scanner. Production launch still requires a
+real Turnstile widget, a Worker secret, and final live validation of CAPTCHA,
+rate limiting, and SSRF controls.
+
+---
+
+## Post-Research Addendum (2026-06-04, Public Checker Follow-Up)
+
+The post-calibration follow-up tightened public-data handling and converted the
+most actionable review findings into scanner utilities:
+
+- Passive evidence guardrails are now explicitly field-backed. Sixty-five
+  passive candidates reached `product_confidence=1.0` yet produced 0 exact
+  versions and 0 vulnerability correlations. This is now documented as a
+  regression guard against passive-only version or vulnerability false
+  positives.
+- Passive noise from obvious non-OpenClaw products is now annotated and
+  downgraded in discovery metadata. Current synthetic coverage includes Ivanti
+  EPMM, Sophos SSL VPN, D-Link webcam, Ncat proxy, generic Microsoft IIS, and
+  Apache/default-site banners. These metadata reasons improve ranking without
+  blocking active validation when OpenClaw-like evidence is also present.
+- The scanner now has an offline public-safe calibration candidate export mode
+  for anonymized active results. It selects `has_signal=True`, no-family,
+  no-exact-version rows with `product_confidence >= 0.3` and interesting
+  `status_distribution_signature` values, especially `200:35;400:2;404:1`.
+- A GitHub Pages-compatible checker frontend and API contract were added. The
+  static page requires authorization acknowledgement and CAPTCHA completion, but
+  delegates scanning to a separate rate-limited backend. The backend skeleton
+  validates targets, blocks SSRF-prone addresses/hostnames, uses GET-only
+  checker probes, and returns high-level results only.
+
+**Scanner implication:** public ergonomics can improve without weakening the
+evidence model. Candidate ranking, public checker UX, and calibration exports
+are separate from family identification, exact-version attribution, and
+vulnerability correlation.
+
+---
+
 ## Post-Research Addendum (2026-04-16)
 
 Follow-up review of current official documentation, release notes, and external

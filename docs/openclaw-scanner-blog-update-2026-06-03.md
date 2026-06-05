@@ -1,11 +1,30 @@
-# OpenClaw Scanner Blog Update: June 2026 Calibration
+---
+title: "OpenClaw Scanner: Fingerprint Exposed Gateways on Port 18789 (Open Source)"
+description: "Open source OpenClaw scanner for fingerprinting exposed OpenClaw gateways, OpenClaw port 18789 scanner workflows, and evidence-first OpenClaw vulnerability triage."
+keywords:
+  - OpenClaw scanner
+  - fingerprint exposed OpenClaw gateways
+  - OpenClaw port 18789 scanner
+  - OpenClaw vulnerability triage
+  - openclaw gateway fingerprinting
+  - shodan openclaw
+---
+
+# OpenClaw Scanner: Fingerprint Exposed Gateways on Port 18789 (Open Source)
+
+OpenClaw Scanner is an open source OpenClaw scanner for defenders who need to
+fingerprint exposed OpenClaw gateways, run OpenClaw port 18789 scanner
+workflows, and perform evidence-first OpenClaw vulnerability triage without
+turning passive discovery into unsupported vulnerability claims.
+
+Canonical GitHub repo: <https://github.com/MahdiHedhli/openclaw_scanner>
 
 This update uses anonymized calibration data only. Real IP addresses,
 organizations, and instance names were replaced with stable synthetic IDs and
 RFC5737 TEST-NET addresses so passive and active records can still be
 correlated without identifying the original hosts.
 
-## Summary
+## Summary: OpenClaw Port 18789 Scanner Calibration
 
 The June 3 calibration pass tested the new discovery expansion work against
 `http.title:"OpenClaw Control"`. We processed 500 passive candidates and
@@ -22,11 +41,14 @@ actively validated a 100-host shortlist twice:
 | Exact version matches | 0 | 25 | 25 |
 | Vulnerability correlations | 0 | 10 | 10 |
 
-## Interpretation
+## Interpretation: Fingerprint Exposed OpenClaw Gateways
 
 Passive title discovery was useful for building a candidate list, but it did
 not produce identification by itself. The passive-only pass produced zero
 family matches, zero exact versions, and zero vulnerability correlations.
+That included 65 rows with `product_confidence=1.0`. The stricter evidence
+model correctly kept those rows at candidate/visible-evidence level instead of
+turning passive banner text into exact-version or vulnerability claims.
 
 Active validation changed the picture. The default low-impact active pass found
 70 OpenClaw family matches, 25 exact-version matches, and 10 vulnerability
@@ -54,7 +76,7 @@ This supports the scanner's core model:
   metadata.
 - Vulnerability correlation only follows correlation-grade version evidence.
 
-## Status Distribution Signals
+## Status Distribution Signals for OpenClaw Gateway Fingerprinting
 
 The active default pass showed several repeated response-distribution clusters:
 
@@ -86,13 +108,32 @@ flat title/favicon false positives, error-heavy unreachable rows, and a smaller
 responsive group with OpenClaw-like signal but no current family rule hit. The
 responsive no-family group is the next rule-mining target.
 
-## Passive Noise Notes
+## Passive Noise Notes for OpenClaw Vulnerability Triage
 
 The passive candidate set still contains known non-OpenClaw products that
 passed initial discovery filters, including Ivanti EPMM, Sophos SSL VPN, Ncat
 proxy, D-Link webcam, IIS, and Apache. These should become negative or
 secondary-filter signals so active validation budget is spent on better
 candidates.
+
+The scanner now implements this as passive-noise metadata. Obvious
+non-OpenClaw products are downgraded or annotated in discovery output, but not
+hard-suppressed from active validation when other OpenClaw-like evidence is
+present.
+
+## Exposure Checker Follow-Up
+
+The public exposure checker should be deployed as a static GitHub Pages
+frontend plus a separate rate-limited backend. GitHub Pages alone cannot bypass
+browser CORS or perform reliable server-side scanning. The frontend requires an
+authorization acknowledgement and CAPTCHA token, then calls a backend that
+performs one low-impact GET-only check against one normalized public target.
+
+The backend must block localhost, RFC1918, link-local, multicast, cloud
+metadata, reserved, and internal-hostname targets, and it must not run POST
+probes, authenticate, attach debugger sockets, interact with VNC, or execute
+payloads. Vulnerability details should remain gated behind correlation-grade
+exact version evidence.
 
 ## Public-Safe Artifacts
 

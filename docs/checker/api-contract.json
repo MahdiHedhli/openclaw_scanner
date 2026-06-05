@@ -1,0 +1,35 @@
+{
+  "limits": {
+    "authentication_attempts": false,
+    "debugger_socket_connections": false,
+    "max_redirects": 2,
+    "max_response_bytes": 32768,
+    "methods": [
+      "GET"
+    ],
+    "post_probes": false,
+    "timeout_seconds": 4.0,
+    "vnc_interaction": false
+  },
+  "request": {
+    "body": {
+      "authorization_acknowledged": true,
+      "authorization_text": "I confirm that I own this system or am explicitly authorized to assess it.",
+      "captcha_token": "provider-token",
+      "target": "https://gateway.example.com:18789"
+    },
+    "content_type": "application/json",
+    "method": "POST"
+  },
+  "response": {
+    "evidence_summary": [
+      "status_distribution_signature=200:5;401:1",
+      "exact_version=2026.5.28; source=lab_rule_id"
+    ],
+    "exact_version": "2026.5.28",
+    "family_match": true,
+    "possible_openclaw": true,
+    "reachable": true,
+    "risk_context": "known version identified"
+  }
+}

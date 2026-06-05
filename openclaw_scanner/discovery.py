@@ -1,6 +1,8 @@
 from dataclasses import asdict, dataclass
 from typing import Any, Dict, Iterable, List, Optional
 
+from .passive_noise import assess_passive_noise
+
 
 DEFAULT_DISCOVERY_PROBE_PORTS = (18789, 8080, 8443, 9000, 3000, 5000)
 
@@ -220,9 +222,21 @@ def score_passive_record(record: Dict[str, Any]) -> Dict[str, Any]:
         sources.append("mdns:" + ",".join(sorted(set(mdns_markers))))
         confidence = max(confidence, 0.62)
 
+    noise = assess_passive_noise(record)
+    if noise.get("passive_noise_downgraded"):
+        confidence = min(
+            confidence,
+            float(noise.get("passive_noise_confidence_cap", confidence)),
+        )
+
     return {
         "discovery_confidence": round(confidence, 2),
         "discovery_sources": sorted(set(sources)),
+        **{
+            key: value
+            for key, value in noise.items()
+            if value not in (None, [], {}, "")
+        },
     }
 
 

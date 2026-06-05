@@ -1,8 +1,15 @@
-# Announcing OpenClaw Scanner
+---
+title: "OpenClaw Scanner: Fingerprint Exposed Gateways on Port 18789 (Open Source)"
+description: "Open source OpenClaw scanner for fingerprinting exposed OpenClaw gateways, OpenClaw port 18789 scanner workflows, and evidence-first OpenClaw vulnerability triage."
+---
+
+# OpenClaw Scanner: Fingerprint Exposed Gateways on Port 18789 (Open Source)
 
 OpenClaw Scanner is a lightweight, dependency-free triage tool for identifying
 OpenClaw gateway exposure and collecting defensible fingerprint evidence from
 passive internet datasets and live HTTP probes.
+
+Canonical GitHub repo: <https://github.com/MahdiHedhli/openclaw_scanner>
 
 The goal is intentionally narrow: help defenders sort likely OpenClaw gateway
 exposure from internet-scale noise without turning a scan result into an
@@ -13,7 +20,7 @@ remote-visible fingerprints we have validated in the lab.
 The tool is for authorized defensive assessment only. Active scanning of IPs or
 services you are not authorized to assess is not supported.
 
-## What It Does
+## What It Does: OpenClaw Scanner for Gateway Fingerprinting
 
 OpenClaw Scanner can:
 
@@ -44,7 +51,7 @@ evidence collection. POST probes are disabled by default and require explicit
 operator opt-in. It does not authenticate, send tool-execution payloads,
 connect to browser debugger sockets, or interact with VNC.
 
-## Initial Internet Exposure Check
+## Initial Internet Exposure Check: OpenClaw Port 18789 Scanner Results
 
 For the first public-facing calibration pass, we looked at the first 500 Shodan
 records advertising OpenClaw gateway mDNS metadata and then actively probed a
@@ -104,6 +111,13 @@ produced zero family matches, zero exact versions, and zero vulnerability
 correlations. Discovery found candidates; active evidence produced
 identification.
 
+That passive result was not trivial. Sixty-five passive candidates reached
+`product_confidence=1.0` because they carried strong candidate metadata, but the
+new evidence model still produced zero exact versions and zero vulnerability
+correlations for those rows. Under the older passive-banner logic, these are
+the rows that could have become passive-only version or vulnerability false
+positives.
+
 The title-query pass also reinforced the value of status-distribution
 fingerprinting. The most common default signatures were:
 
@@ -121,6 +135,24 @@ additional low-impact GET/OPTIONS/WebSocket evidence was collected:
 Deep validation did not change family, exact-version, or vulnerability counts
 for this sample. It did, however, enrich the observation set for future
 clustering work.
+
+The exact-versioned active cohort split into legacy and current builds. Eight
+anonymized gateways matched `2023.11.3`, and each correlated to 32 bundled
+vulnerability records. The field data also preserved full version suffixes for
+`2026.2.2-1`, `2026.1.29-beta.1`, and `2026.5.3-1`; those values were not
+collapsed to bare `YYYY.M.D` triples.
+
+The next calibration lane is the high-signal/no-family bucket. Several
+responsive rows carried signatures such as `200:35;400:2;404:1` or an
+auth-challenge variant with `401` responses, but did not yet satisfy a current
+OpenClaw family rule. Those rows should be mined against lab captures before any
+new family or version rule is promoted.
+
+The passive noise lane is equally important. The anonymized passive data
+included likely non-OpenClaw products such as Ivanti EPMM, Sophos SSL VPN, IIS,
+Apache default or generic banners, D-Link webcam, and Ncat proxy. The scanner
+now treats those as downgrade or annotation signals for passive candidate
+ranking, not as hard suppression of active validation.
 
 ## Public-Safe Data
 
@@ -141,7 +173,7 @@ Prepared artifacts:
 - `artifacts/shodan/2026-06-03/public/openclaw-active-deep-100-anonymized.csv`
 - `artifacts/shodan/2026-06-03/public/openclaw-calibration-comparison-summary.json`
 
-## Why Conservative Fingerprinting Matters
+## Why Conservative OpenClaw Vulnerability Triage Matters
 
 OpenClaw deployments can sit behind proxies, serve modified static bundles,
 hide versioned assets, or expose only a subset of the expected API behavior.
@@ -180,6 +212,35 @@ June 3 title-query follow-up did produce 25 exact-version matches and 10
 vulnerability correlations, all driven by correlation-grade evidence rather
 than passive discovery confidence.
 
+## Public Exposure Checker
+
+A static GitHub Pages site cannot safely or reliably perform server-side
+scanning by itself. The checker implementation therefore splits
+responsibilities:
+
+- GitHub Pages hosts the static landing page and checker UI from `site/`.
+- Cloudflare Worker `openclaw-exposure-checker` accepts one authorized target at
+  a time.
+- Cloudflare KV namespace `CHECKER_RATE_LIMITS` stores source-IP and target
+  rate-limit counters.
+- The Worker requires the exact authorization acknowledgement and a Cloudflare
+  Turnstile token before scanning.
+- The backend validates and normalizes the target, blocks localhost, RFC1918,
+  link-local, multicast, cloud metadata, reserved, internal-hostname targets,
+  and DNS results without concrete public A/AAAA answers, then performs only
+  low-impact GET checks.
+- The backend returns high-level results only: reachable, possible candidate,
+  family fingerprint found, exact version if correlation-grade evidence exists,
+  and vulnerability correlation only when exact correlation-grade version
+  evidence exists.
+
+The checker does not support scanning IPs or services you are not authorized to
+assess. It does not run POST probes, authenticate, connect to debugger sockets,
+interact with VNC, or execute payloads.
+
+Production launch still requires the real Turnstile widget and Worker secret;
+test CAPTCHA keys are acceptable only for local or staging validation.
+
 ## Getting Started
 
 Scan a target:
@@ -216,6 +277,12 @@ Actively validate Shodan-derived candidates:
 
 ```bash
 python3 -m openclaw_scanner --shodan-file shodan-results.json --rescan-shodan --probe-ports --deep-validation --format json --output active-results.json
+```
+
+Export public-safe rule-mining candidates from an anonymized active result CSV:
+
+```bash
+python3 -m openclaw_scanner --calibration-candidates-from openclaw-active-default-100-anonymized.csv --format csv
 ```
 
 ## What Comes Next

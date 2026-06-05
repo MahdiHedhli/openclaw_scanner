@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OpenClaw Exposure Checker</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #06111f;
+      --panel: #0c1b2d;
+      --panel-2: #10243b;
+      --text: #e8f1ff;
+      --muted: #9fb3ca;
+      --accent: #26b6f6;
+      --warn: #ffb454;
+      --danger: #ff5d5d;
+      --ok: #68d391;
+      --border: rgba(255, 255, 255, 0.14);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(38, 182, 246, 0.22), transparent 34rem),
+        radial-gradient(circle at bottom right, rgba(229, 62, 62, 0.18), transparent 28rem),
+        var(--bg);
+    }
+
+    main {
+      width: min(980px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 52px 0;
+    }
+
+    .hero {
+      display: grid;
+      gap: 18px;
+      margin-bottom: 26px;
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 820px;
+      font-size: clamp(2.1rem, 7vw, 4.9rem);
+      line-height: 0.95;
+    }
+
+    .lead {
+      max-width: 760px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 1.08rem;
+      line-height: 1.7;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(280px, 0.72fr);
+      gap: 20px;
+      align-items: start;
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      background: linear-gradient(145deg, rgba(12, 27, 45, 0.96), rgba(16, 36, 59, 0.9));
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
+      padding: 24px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    input[type="text"],
+    input[type="url"] {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px 16px;
+      color: var(--text);
+      background: rgba(0, 0, 0, 0.22);
+      font: inherit;
+    }
+
+    .field {
+      margin-bottom: 18px;
+    }
+
+    .check {
+      display: grid;
+      grid-template-columns: 22px 1fr;
+      gap: 12px;
+      align-items: start;
+      margin: 16px 0;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .warning {
+      border-left: 4px solid var(--warn);
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: rgba(255, 180, 84, 0.12);
+      color: #ffe1b5;
+      line-height: 1.55;
+    }
+
+    button {
+      width: 100%;
+      border: 0;
+      border-radius: 16px;
+      padding: 15px 18px;
+      color: #001525;
+      background: linear-gradient(135deg, #26b6f6, #68d391);
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.58;
+    }
+
+    .result {
+      min-height: 220px;
+      white-space: pre-wrap;
+      color: var(--muted);
+    }
+
+    .result strong {
+      color: var(--text);
+    }
+
+    .pill {
+      display: inline-block;
+      margin: 0 8px 8px 0;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 6px 10px;
+      color: var(--muted);
+      font-size: 0.84rem;
+    }
+
+    code {
+      color: #b8f7ff;
+    }
+
+    @media (max-width: 820px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="hero">
+      <div class="eyebrow">OpenClaw Scanner</div>
+      <h1>Public Exposure Checker</h1>
+      <p class="lead">
+        Check one system you own or are explicitly authorized to assess. This
+        static page does not scan by itself; it calls a separately deployed,
+        rate-limited backend that performs one low-impact OpenClaw exposure
+        check.
+      </p>
+    </section>
+
+    <section class="grid">
+      <form class="card" id="checker-form">
+        <div class="warning">
+          Do not scan IPs or services you are not authorized to assess. This
+          checker uses low-impact GET checks only and does not authenticate,
+          execute payloads, connect to debugger sockets, or interact with VNC.
+        </div>
+
+        <div class="field" style="margin-top: 20px;">
+          <label for="target">Target hostname or URL</label>
+          <input id="target" name="target" type="text" autocomplete="off"
+                 placeholder="https://gateway.example.com:18789" required>
+        </div>
+
+        <label class="check">
+          <input id="authorization" type="checkbox" required>
+          <span>I confirm that I own this system or am explicitly authorized to assess it.</span>
+        </label>
+
+        <div class="field">
+          <label for="captcha-token">CAPTCHA token</label>
+          <input id="captcha-token" name="captcha-token" type="text"
+                 placeholder="Replace with Turnstile/hCaptcha integration in production" required>
+        </div>
+
+        <button id="submit" type="submit">Run authorized check</button>
+      </form>
+
+      <aside class="card">
+        <h2 style="margin-top: 0;">Result</h2>
+        <div class="pill">Reachability</div>
+        <div class="pill">Family fingerprint</div>
+        <div class="pill">Exact evidence only</div>
+        <div class="pill">No POST probes</div>
+        <div class="result" id="result">
+Configure <code>window.OPENCLAW_CHECKER_CONFIG.apiEndpoint</code> or edit this
+page before publishing.
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    window.OPENCLAW_CHECKER_CONFIG = window.OPENCLAW_CHECKER_CONFIG || {
+      apiEndpoint: ""
+    };
+
+    const form = document.getElementById("checker-form");
+    const result = document.getElementById("result");
+    const submit = document.getElementById("submit");
+
+    function renderResult(payload) {
+      const lines = [];
+      lines.push(`Reachable: ${payload.reachable ? "yes" : "no"}`);
+      lines.push(`Possible OpenClaw candidate: ${payload.possible_openclaw ? "yes" : "no"}`);
+      lines.push(`Family fingerprint: ${payload.family_match ? "found" : "not found"}`);
+      lines.push(`Exact version: ${payload.exact_version || "not found"}`);
+      lines.push(`Risk context: ${payload.risk_context || "not available"}`);
+      if (Array.isArray(payload.evidence_summary) && payload.evidence_summary.length) {
+        lines.push("");
+        lines.push("Evidence summary:");
+        for (const item of payload.evidence_summary.slice(0, 8)) {
+          lines.push(`- ${String(item)}`);
+        }
+      }
+      lines.push("");
+      lines.push("Only correlation-grade exact version evidence can produce vulnerability details.");
+      result.textContent = lines.join("\n");
+    }
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const apiEndpoint = window.OPENCLAW_CHECKER_CONFIG.apiEndpoint;
+      const target = document.getElementById("target").value.trim();
+      const acknowledged = document.getElementById("authorization").checked;
+      const captchaToken = document.getElementById("captcha-token").value.trim();
+
+      if (!apiEndpoint) {
+        result.textContent = "Checker backend API endpoint is not configured.";
+        return;
+      }
+      if (!acknowledged) {
+        result.textContent = "Authorization acknowledgement is required.";
+        return;
+      }
+      if (!captchaToken) {
+        result.textContent = "CAPTCHA completion is required.";
+        return;
+      }
+
+      submit.disabled = true;
+      result.textContent = "Checking one authorized target...";
+      try {
+        const response = await fetch(apiEndpoint, {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({
+            target,
+            authorization_acknowledged: acknowledged,
+            captcha_token: captchaToken
+          })
+        });
+        const payload = await response.json();
+        if (!response.ok) {
+          throw new Error(payload.error || "Checker request failed.");
+        }
+        renderResult(payload);
+      } catch (error) {
+        result.textContent = `Error: ${error.message}`;
+      } finally {
+        submit.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

@@ -38,6 +38,16 @@ out of scope unless explicitly approved.
   default validation produced 70 family matches, 25 exact-version matches, and
   10 vulnerability correlations; `--deep-validation` with POST probes disabled
   preserved those counts while increasing response-shape detail.
+- Public calibration review found 65 passive rows at `product_confidence=1.0`
+  that correctly produced 0 exact versions and 0 vulnerability correlations.
+  Passive-noise downgrade metadata now covers obvious non-OpenClaw products such
+  as Ivanti EPMM, Sophos SSL VPN, D-Link webcam, Ncat proxy, IIS, and generic
+  Apache/default-site banners.
+- The repo now includes a public-safe GitHub Pages checker site under `site/`
+  plus a Cloudflare Worker API under `cloudflare/worker/`. GitHub Pages remains
+  UI only; scanning belongs in the separate rate-limited backend with CAPTCHA,
+  authorization acknowledgement, SSRF protections, GET-only probes, and
+  high-level output.
 - Exact-version attribution still requires lab-promoted remote-visible rules or
   explicit correlation-grade metadata such as package or `cliPath` mDNS
   versions. CDP/Chromium signals are browser-agent evidence and not standalone
@@ -85,6 +95,12 @@ out of scope unless explicitly approved.
 9. Calibrate conditional deep-validation presence signals so Socket.IO, noVNC,
    websockify, and CORS behavior improve clustering without becoming exact
    version or vulnerability-correlation evidence.
+10. Finish production exposure-checker deployment by creating the real
+    Turnstile widget, setting the Worker secret, updating the final Pages
+    origin in Worker CORS, and validating the live rate-limit and SSRF paths.
+11. Use `--calibration-candidates-from` on anonymized active results to mine
+    high-signal/no-family rows such as `200:35;400:2;404:1` without exposing
+    real IPs, organizations, or hostnames.
 
 ## Valid Follow-On Ideas
 

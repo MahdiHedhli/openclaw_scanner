@@ -6,8 +6,9 @@
 
 <p align="center">
   <strong>Evidence. Not assumption.</strong><br>
-  Conservative OpenClaw gateway fingerprinting from passive internet datasets,
-  low-impact HTTP probes, and known-version lab captures.
+  OpenClaw scanner for fingerprinting exposed OpenClaw gateways, including
+  OpenClaw port 18789 scanner workflows and evidence-first OpenClaw
+  vulnerability triage.
 </p>
 
 <p align="center">
@@ -23,10 +24,12 @@
 
 ## Why This Exists
 
-`openclaw_scanner` helps defenders triage exposed OpenClaw gateways without
-overclaiming. It can find candidates from Shodan, Censys, FOFA, or passive CT
-exports, actively validate remote behavior, and only make exact-version claims
-when a lab-promoted fingerprint is visible from the network.
+`openclaw_scanner` is an open source OpenClaw scanner that helps defenders
+fingerprint exposed OpenClaw gateways without overclaiming. It supports
+OpenClaw port 18789 scanner workflows, passive discovery from Shodan/Censys/
+FOFA/CT exports, low-impact active validation, and conservative OpenClaw
+vulnerability triage when correlation-grade exact version evidence is visible
+from the network.
 
 The scanner is intentionally low-impact. It does not exploit hosts, attempt
 authentication bypasses, brute force credentials, or run intrusive payloads.
@@ -46,10 +49,22 @@ by this project.
 | 🛡️ Defensive context | Reverse-proxy detection, honeypot heuristics, vulnerability correlation |
 | 🐍 Portable runtime | Stock `python3`; no third-party Python dependencies |
 
+## OpenClaw Scanner Search Phrases
+
+This project intentionally covers the common defensive search intents:
+
+- OpenClaw scanner
+- fingerprint exposed OpenClaw gateways
+- OpenClaw port 18789 scanner
+- OpenClaw vulnerability triage
+- OpenClaw gateway fingerprinting
+- Clawdbot and Moltbot gateway exposure checks
+
 ## Quick Navigation
 
 - [Quick Start](#quick-start)
 - [Field Calibration Snapshot](#field-calibration-snapshot)
+- [Public Exposure Checker](#public-exposure-checker)
 - [Known-Version Corpus](#known-version-corpus)
 - [Input Formats](#input-formats)
 - [Black-Box Calibration Workflow](#black-box-calibration-workflow)
@@ -171,6 +186,15 @@ python3 -m openclaw_scanner \
   --format json
 ```
 
+Export the next public-safe calibration targets from an anonymized active CSV:
+
+```bash
+python3 -m openclaw_scanner \
+  --calibration-candidates-from artifacts/shodan/2026-06-03/public/openclaw-active-default-100-anonymized.csv \
+  --format csv \
+  --output next-calibration-candidates.csv
+```
+
 Use the bundled demo data:
 
 ```bash
@@ -228,8 +252,10 @@ Key rates from the title-query pass:
 Deeper CSV review produced these additional findings:
 
 - Passive gating held in field data: 65 passive candidates carried
-  non-correlating version-like evidence and still produced 0 exact versions and
-  0 vulnerability correlations.
+  `product_confidence=1.0` and non-correlating version-like evidence, yet still
+  produced 0 exact versions and 0 vulnerability correlations. Under the older
+  passive-banner logic, these rows were the kind of data that could have become
+  passive-only version or vulnerability false positives.
 - The 25 exact-versioned active hosts were distributed across `2023.11.3` (8),
   `2026.5.28` (7), `2026.5.7` (4), and one host each on
   `2026.1.29-beta.1`, `2026.2.2-1`, `2026.5.3-1`, `2026.5.18`,
@@ -244,6 +270,10 @@ Deeper CSV review produced these additional findings:
   error-heavy, and responsive/no-family buckets. The responsive/no-family rows
   clustered around `200:35;400:2;404:1` or the `401` auth-challenge variant and
   are the next rule-mining target.
+- The passive candidate set included obvious non-OpenClaw products such as
+  Ivanti EPMM, Sophos SSL VPN, D-Link webcam, Ncat proxy, IIS, and Apache. The
+  scanner now annotates or downgrades these passive candidates instead of
+  treating discovery confidence as identification.
 
 Deep validation did not change family, exact-version, or vulnerability counts
 in this sample, but it added richer response-shape evidence. The most common
@@ -261,12 +291,37 @@ Public-safe anonymized artifacts live under:
 - `artifacts/shodan/2026-06-02/public/`
 - `artifacts/shodan/2026-06-03/public/`
 
+## Public Exposure Checker
+
+The repo includes a deployable GitHub Pages checker frontend under `site/` and
+a Cloudflare Worker API under `cloudflare/worker/`. The page is intentionally
+static and does not scan by itself; it calls the separate rate-limited Worker
+backend for one authorized, low-impact check.
+
+The checker flow is deliberately constrained:
+
+- the user must confirm: "I confirm that I own this system or am explicitly
+  authorized to assess it."
+- the user must complete CAPTCHA before a request is accepted
+- the backend validates targets and blocks localhost, private, link-local,
+  multicast, metadata, reserved, and internal-hostname targets
+- the checker path uses low-impact GET checks only
+- no POST probes, authentication attempts, debugger socket connections, VNC
+  interaction, or payload execution are allowed
+- vulnerability output is suppressed unless correlation-grade exact version
+  evidence exists
+- deployment details live in `docs/exposure-checker.md`
+
 ## Documentation
 
+- Canonical GitHub repo: <https://github.com/MahdiHedhli/openclaw_scanner>
 - [Roadmap](docs/roadmap.md)
 - [Known-version corpus workflow](docs/corpus-workflow.md)
 - [Announcement draft](docs/openclaw-scanner-announcement.md)
 - [June 2026 calibration blog update](docs/openclaw-scanner-blog-update-2026-06-03.md)
+- [Static exposure checker](docs/checker/index.html)
+- [Exposure checker API contract](docs/checker/api-contract.json)
+- [Exposure checker deployment guide](docs/exposure-checker.md)
 
 ## Known-Version Corpus
 

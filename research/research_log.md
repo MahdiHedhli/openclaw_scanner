@@ -2,6 +2,90 @@
 
 ---
 
+## 2026-06-05 — Public Exposure Checker Deployment Sprint
+
+**Topics:** GitHub Pages frontend, Cloudflare Worker API, Turnstile gate,
+rate limiting, SSRF hardening
+
+The checker concept moved from a static stub into a deployable split
+architecture:
+
+- GitHub Pages serves the landing page and checker UI from `site/`.
+- Cloudflare Worker `openclaw-exposure-checker` performs one bounded
+  low-impact check per authorized request.
+- Cloudflare KV namespace `CHECKER_RATE_LIMITS` backs the public rate-limit
+  counters.
+- The frontend requires the exact authorization acknowledgement and Turnstile
+  completion before enabling submission.
+- The Worker independently verifies authorization, CAPTCHA, source-IP and
+  target rate limits, target normalization, DNS-resolution SSRF preflight, and
+  redirect target validation.
+
+**Security boundaries preserved:**
+
+- GET-only checker probes for the first deployment.
+- No POST probes, authentication attempts, debugger socket connections, VNC
+  interaction, or payload execution.
+- Result output is high-level only: reachability, possible OpenClaw candidate,
+  family match, exact version when supported by bundled evidence, risk context,
+  and short evidence summaries.
+- DNS preflight accepts only concrete public A/AAAA answers; CNAME answers
+  alone do not satisfy the target-validation gate.
+
+**Remaining deployment dependency:** create a production Cloudflare Turnstile
+widget and set the Worker `TURNSTILE_SECRET_KEY` secret before public use.
+
+---
+
+## 2026-06-04 — Public Calibration Follow-Up and Exposure Checker Design
+
+**Topics:** passive evidence guardrails, passive noise tightening, calibration
+candidate export, public-safe exposure checker
+
+Claude's review of the anonymized June 3 public calibration data produced
+several implementation-grade findings:
+
+- 65 passive candidates reached `product_confidence=1.0`, but still produced 0
+  exact versions and 0 vulnerability correlations. This validates the stricter
+  evidence model and shows the kind of passive-only false positives the older
+  logic could have created.
+- The 25 exact-versioned active hosts split between legacy and current builds.
+  Eight anonymized gateways matched `2023.11.3`, and each correlated to 32
+  vulnerability records from correlation-grade exact version evidence.
+- Full version suffix preservation was confirmed in public output for
+  `2026.2.2-1`, `2026.1.29-beta.1`, and `2026.5.3-1`.
+- Conditional deep validation increased observation richness but did not change
+  the public calibration counts: 70 family matches, 25 exact versions, and 10
+  vulnerability correlations in both default and deep no-POST modes.
+- High-signal/no-family hosts with signatures such as `200:35;400:2;404:1`
+  are now the next calibration lane.
+- Passive noise includes likely non-OpenClaw products such as Ivanti EPMM,
+  Sophos SSL VPN, IIS, Apache default or generic banners, D-Link webcam, and
+  Ncat proxy.
+
+**Implemented follow-up controls:**
+
+- passive-noise downgrade metadata for obvious non-OpenClaw passive products
+- CSV/pretty/JSON exposure of passive-noise downgrade reasons
+- offline `--calibration-candidates-from` reporting for anonymized active
+  result files
+- a static checker frontend under `docs/checker/`
+- an API contract and dependency-free serverless backend skeleton with target
+  normalization, authorization acknowledgement, CAPTCHA placeholder, rate-limit
+  helper, and SSRF blocklist hooks
+
+**Scope boundaries preserved:**
+
+- Discovery confidence still cannot create family, exact-version, or
+  vulnerability-correlation claims by itself.
+- Passive-noise handling ranks or annotates candidates; it does not suppress
+  active validation when other strong OpenClaw evidence exists.
+- The checker path uses low-impact GET probes only and does not support POST,
+  authentication attempts, debugger socket connections, VNC interaction, or
+  payload execution.
+
+---
+
 ## 2026-06-03 — Discovery Expansion and Conditional Validation Sprint
 
 **Topics:** Shodan query expansion, multi-engine passive imports, passive CT

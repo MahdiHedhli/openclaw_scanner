@@ -1,0 +1,14 @@
+{
+  "name": "openclaw-scanner-deployment",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test:worker": "node --test tests/worker_api.test.mjs",
+    "worker:dry-run": "wrangler deploy --config cloudflare/worker/wrangler.toml --dry-run",
+    "worker:deploy": "wrangler deploy --config cloudflare/worker/wrangler.toml"
+  },
+  "devDependencies": {
+    "wrangler": "^4.98.0"
+  }
+}

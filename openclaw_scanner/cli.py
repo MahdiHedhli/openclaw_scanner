@@ -13,6 +13,7 @@ from .blackbox import (
     load_capture_bundle_inputs,
     render_rule_suggestions,
 )
+from .calibration import load_calibration_candidates
 from .cdp import cdp_version_candidates
 from .discovery import (
     DEFAULT_DISCOVERY_PROBE_PORTS,
@@ -76,6 +77,13 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--suggest-rules-from",
         help="Path to a black-box capture bundle JSON file or directory of capture bundles.",
+    )
+    parser.add_argument(
+        "--calibration-candidates-from",
+        help=(
+            "Standalone report mode for anonymized active result CSV/JSON files. "
+            "Outputs next rule-mining candidates keyed only by anon_id."
+        ),
     )
     parser.add_argument(
         "--max-rule-conditions",
@@ -228,6 +236,23 @@ def main(argv: Optional[List[str]] = None) -> int:
         else:
             sys.stdout.write(rendered)
             if not rendered.endswith("\n"):
+                sys.stdout.write("\n")
+        return 0
+
+    if args.calibration_candidates_from:
+        if scan_inputs_present:
+            parser.error(
+                "Use --calibration-candidates-from as a standalone mode without scan inputs."
+            )
+        rendered = load_calibration_candidates(
+            args.calibration_candidates_from,
+            args.format,
+        )
+        if args.output:
+            Path(args.output).write_text(rendered, encoding="utf-8")
+        else:
+            sys.stdout.write(rendered)
+            if rendered and not rendered.endswith("\n"):
                 sys.stdout.write("\n")
         return 0
 
@@ -755,6 +780,12 @@ def _render_pretty(results: List[ScanResult]) -> str:
                 f"{float(result.metadata['discovery_confidence']):.2f}"
                 + (f" ({'; '.join(sources[:4])})" if sources else "")
             )
+        if result.metadata.get("passive_noise_downgraded"):
+            reasons = result.metadata.get("passive_noise_reasons") or []
+            lines.append(
+                "Passive noise downgrade: "
+                + ("; ".join(str(reason) for reason in reasons[:3]) or "yes")
+            )
         if result.metadata.get("shodan_product") or result.metadata.get("shodan_version"):
             product_bits = []
             if result.metadata.get("shodan_product"):
@@ -851,6 +882,9 @@ def _render_csv(results: List[ScanResult]) -> str:
         "external_engine",
         "discovery_confidence",
         "discovery_sources",
+        "passive_noise_downgraded",
+        "passive_noise_reasons",
+        "passive_noise_matched_products",
         "passive_http_title",
         "passive_favicon_hash",
         "passive_ssl_jarm",
@@ -909,6 +943,15 @@ def _render_csv(results: List[ScanResult]) -> str:
                 "discovery_confidence": result.metadata.get("discovery_confidence", ""),
                 "discovery_sources": ";".join(
                     result.metadata.get("discovery_sources", [])[:12]
+                ),
+                "passive_noise_downgraded": (
+                    "true" if result.metadata.get("passive_noise_downgraded") else "false"
+                ),
+                "passive_noise_reasons": ";".join(
+                    result.metadata.get("passive_noise_reasons", [])[:6]
+                ),
+                "passive_noise_matched_products": ";".join(
+                    result.metadata.get("passive_noise_matched_products", [])[:6]
                 ),
                 "passive_http_title": result.metadata.get("passive_http_title", ""),
                 "passive_favicon_hash": result.metadata.get("passive_favicon_hash", ""),

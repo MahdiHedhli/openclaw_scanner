@@ -1,0 +1,17 @@
+name = "openclaw-exposure-checker"
+main = "src/index.js"
+compatibility_date = "2026-06-05"
+
+workers_dev = true
+
+[vars]
+ALLOWED_ORIGINS = "https://mahdihedhli.github.io,http://localhost:8788,http://127.0.0.1:8788"
+CHECKER_MAX_REDIRECTS = "2"
+CHECKER_MAX_RESPONSE_BYTES = "32768"
+CHECKER_TIMEOUT_MS = "4000"
+IP_RATE_LIMIT_PER_HOUR = "5"
+TARGET_RATE_LIMIT_PER_HOUR = "3"
+
+[[kv_namespaces]]
+binding = "CHECKER_RATE_LIMITS"
+id = "ea6a637801f34ac7b9e934947e0eb450"
