@@ -20,6 +20,11 @@
   <img alt="Evidence first" src="https://img.shields.io/badge/mode-evidence--first-C92A2A">
 </p>
 
+<p align="center">
+  <strong>Authorized web checker:</strong>
+  <a href="https://mahdihedhli.github.io/openclaw_scanner/checker/">OpenClaw Exposure Checker</a>
+</p>
+
 ---
 
 ## Why This Exists
@@ -292,6 +297,9 @@ Public-safe anonymized artifacts live under:
 - `artifacts/shodan/2026-06-03/public/`
 
 ## Public Exposure Checker
+
+Live authorized self-assessment page:
+<https://mahdihedhli.github.io/openclaw_scanner/checker/>
 
 The repo includes a deployable GitHub Pages checker frontend under `site/` and
 a Cloudflare Worker API under `cloudflare/worker/`. The page is intentionally
@@ -688,9 +696,6 @@ without an additional version hint.
 
 - Host-side scanning may be added later, but it is intentionally out of scope
   for the current external discovery tool.
-- A future GitHub Pages exposure checker may let users enter their own public IP
-  for testing, with rate limiting, a CAPTCHA, and an authorization warning
-  before scanning.
 
 ## Tests
 
