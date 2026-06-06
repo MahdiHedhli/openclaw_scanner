@@ -25,9 +25,9 @@ Cloudflare Worker API.
 - KV namespace id: `ea6a637801f34ac7b9e934947e0eb450`
 - Turnstile widget name: `OpenClaw Exposure Checker`
 - Turnstile hostname: `mahdihedhli.github.io`
-- Turnstile wiring status: widget created; production public site key must be
-  copied into `site/checker/config.js`, and the secret key must be set as the
-  Worker `TURNSTILE_SECRET_KEY` secret by the operator before public use.
+- Turnstile wiring status: production public site key copied into
+  `site/checker/config.js`; secret key set as the Worker
+  `TURNSTILE_SECRET_KEY` secret.
 
 ## Authorization Model
 
@@ -190,7 +190,7 @@ and rate-limit outcome.
 
 - Cloudflare Worker deployed successfully at
   `https://openclaw-exposure-checker.mhedhli.workers.dev`.
-- Worker version deployed: `5014b2ba-7c51-4c8b-bb46-09a4d8d9c930`.
+- Worker version deployed: `8a7a885c-a96d-414c-891b-9a3e13ae0453`.
 - GitHub Pages workflow deployment completed successfully for commit
   `cb38ab03bd8c7eb9e1ce76dbb72cff26ed1b1486`.
 - GitHub Pages URL returned HTTP 200:
@@ -203,6 +203,5 @@ and rate-limit outcome.
 - Worker rejected an invalid CAPTCHA token with HTTP 403 before scan execution.
 - Worker rejected a loopback target with HTTP 400 and
   `non-public IP targets are blocked`.
-- Production CAPTCHA is not fully enabled until the operator copies the
-  Turnstile public site key into `site/checker/config.js` and sets the Worker
-  `TURNSTILE_SECRET_KEY` secret.
+- Production CAPTCHA wiring is complete: the frontend has the public site key
+  and the Worker has the `TURNSTILE_SECRET_KEY` secret.

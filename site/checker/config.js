@@ -1,4 +1,4 @@
 window.OPENCLAW_CHECKER_CONFIG = {
   apiEndpoint: "https://openclaw-exposure-checker.mhedhli.workers.dev/scan",
-  turnstileSiteKey: ""
+  turnstileSiteKey: "0x4AAAAAADfgIQcZK-bFvcy-"
 };
