@@ -205,3 +205,8 @@ and rate-limit outcome.
   `non-public IP targets are blocked`.
 - Production CAPTCHA wiring is complete: the frontend has the public site key
   and the Worker has the `TURNSTILE_SECRET_KEY` secret.
+- Browser end-to-end validation completed against the project-owned GitHub Pages
+  URL. Turnstile completed non-interactively, the authorized check submitted,
+  and the result returned only high-level fields: reachable target, no
+  OpenClaw-family match, no exact version, no vulnerability context, and a
+  status-distribution evidence summary.
