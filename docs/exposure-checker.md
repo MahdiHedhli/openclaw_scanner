@@ -144,9 +144,54 @@ The public result view does not expose:
 - debugger URLs
 - internal diagnostics
 
-The Worker should log only minimal operational metadata needed for abuse
-prevention and debugging, such as request timestamp, hashed target key, status,
-and rate-limit outcome.
+The Worker records only aggregate operational telemetry needed to understand
+whether the checker is useful:
+
+- page views
+- approximate daily unique page visitors
+- scan requests
+- CAPTCHA-passed scan submissions
+- completed scans
+- family-match, exact-version, and vulnerability-context result counts
+- blocked validation, CAPTCHA, rate-limit, and error counts
+
+The metrics layer does not store raw IPs, targets, hostnames, response bodies,
+user agents, debugger URLs, credential-bearing headers, or raw scanner output.
+Daily unique counts are approximate: the Worker stores only daily hashed visitor
+markers and aggregate counters in KV. Counters are intended for directional
+usage tracking, not billing-grade analytics.
+
+## Usage Metrics
+
+The static site sends a first-party `page_view` event to the Worker endpoint:
+
+```text
+POST /telemetry
+```
+
+The scan API records aggregate counters as the request moves through the safe
+checker flow. A private summary endpoint returns recent daily rollups:
+
+```bash
+curl -H "Authorization: Bearer $METRICS_ADMIN_TOKEN" \
+  "https://openclaw-exposure-checker.mhedhli.workers.dev/metrics/summary?days=30"
+```
+
+Required secret:
+
+```bash
+npx wrangler secret put METRICS_ADMIN_TOKEN --config cloudflare/worker/wrangler.toml
+```
+
+Recommended optional secret:
+
+```bash
+npx wrangler secret put METRICS_SALT --config cloudflare/worker/wrangler.toml
+```
+
+If `METRICS_SALT` is absent, the Worker still hashes unique markers with a
+non-secret default namespace. Setting a secret salt improves privacy if KV
+contents are ever exported for troubleshooting.
 
 ## Deployment Steps
 
@@ -157,19 +202,31 @@ and rate-limit outcome.
    npx wrangler secret put TURNSTILE_SECRET_KEY --config cloudflare/worker/wrangler.toml
    ```
 
-3. Update `site/checker/config.js` with the production Worker URL and
+3. Set the private metrics admin token:
+
+   ```bash
+   npx wrangler secret put METRICS_ADMIN_TOKEN --config cloudflare/worker/wrangler.toml
+   ```
+
+4. Optionally set a secret metrics salt:
+
+   ```bash
+   npx wrangler secret put METRICS_SALT --config cloudflare/worker/wrangler.toml
+   ```
+
+5. Update `site/checker/config.js` with the production Worker URL and
    Turnstile site key.
-4. Update `ALLOWED_ORIGINS` in `cloudflare/worker/wrangler.toml` to the final
+6. Update `ALLOWED_ORIGINS` in `cloudflare/worker/wrangler.toml` to the final
    GitHub Pages origin.
-5. Deploy the Worker:
+7. Deploy the Worker:
 
    ```bash
    npx wrangler deploy --config cloudflare/worker/wrangler.toml
    ```
 
-6. Push `site/` and `.github/workflows/pages.yml` to `main` to trigger GitHub
+8. Push `site/` and `.github/workflows/pages.yml` to `main` to trigger GitHub
    Pages deployment.
-7. Validate authorization enforcement, CAPTCHA enforcement, rate limiting, SSRF
+9. Validate authorization enforcement, CAPTCHA enforcement, rate limiting, SSRF
    blocking, and one authorized low-impact check against a system you control.
 
 ## Validation Checklist
@@ -185,6 +242,9 @@ and rate-limit outcome.
 - API rate limits source IPs and normalized targets.
 - API returns only the high-level result model.
 - No POST probes are used by checker mode.
+- Static Pages emits a `page_view` telemetry event.
+- API increments scan outcome counters without storing raw targets.
+- Metrics summary requires `METRICS_ADMIN_TOKEN`.
 
 ## 2026-06-05 Deployment Validation
 

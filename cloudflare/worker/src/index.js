@@ -39,6 +39,22 @@ const BLOCKED_IPV4_CIDRS = [
   ["240.0.0.0", 4]
 ];
 const METADATA_IPV4 = new Set(["169.254.169.254"]);
+const METRIC_NAMES = [
+  "page_view",
+  "page_view_unique",
+  "scan_request",
+  "scan_blocked_validation",
+  "scan_blocked_captcha",
+  "scan_blocked_rate_limit",
+  "scan_captcha_passed",
+  "scan_captcha_passed_unique",
+  "scan_completed",
+  "scan_family_match",
+  "scan_exact_version",
+  "scan_vulnerability_context",
+  "scan_error"
+];
+const PAGE_METRIC_KEYS = ["home", "checker", "other"];
 
 export default {
   async fetch(request, env, ctx) {
@@ -53,14 +69,22 @@ export async function handleRequest(request, env, ctx = {}) {
   }
 
   const url = new URL(request.url);
+  if (request.method === "POST" && url.pathname === "/telemetry") {
+    return handleTelemetryRequest(request, env, ctx, origin);
+  }
+  if (request.method === "GET" && url.pathname === "/metrics/summary") {
+    return handleMetricsSummary(request, env, origin, url);
+  }
   if (request.method !== "POST" || url.pathname !== "/scan") {
     return jsonResponse({ error: "not found" }, 404, env, origin);
   }
+  trackUsage(ctx, env, request, "scan_request");
 
   let payload;
   try {
     payload = await request.json();
   } catch {
+    trackUsage(ctx, env, request, "scan_blocked_validation");
     return jsonResponse({ error: "request body must be JSON" }, 400, env, origin);
   }
 
@@ -69,14 +93,17 @@ export async function handleRequest(request, env, ctx = {}) {
     normalized = normalizeCheckerTarget(payload.target);
     validateAuthorization(payload);
   } catch (error) {
+    trackUsage(ctx, env, request, "scan_blocked_validation");
     return jsonResponse({ error: error.message }, 400, env, origin);
   }
 
   const clientIp = request.headers.get("CF-Connecting-IP") || "unknown";
   const captcha = await verifyTurnstile(payload.captcha_token, clientIp, env);
   if (!captcha.success) {
+    trackUsage(ctx, env, request, "scan_blocked_captcha");
     return jsonResponse({ error: "CAPTCHA validation failed" }, 403, env, origin);
   }
+  trackUsage(ctx, env, request, "scan_captcha_passed", { unique: true });
 
   const ipLimit = await consumeRateLimit(
     env.CHECKER_RATE_LIMITS,
@@ -85,6 +112,7 @@ export async function handleRequest(request, env, ctx = {}) {
     3600
   );
   if (!ipLimit.allowed) {
+    trackUsage(ctx, env, request, "scan_blocked_rate_limit");
     return jsonResponse(
       { error: "source IP rate limit exceeded", reset_after_seconds: ipLimit.resetAfterSeconds },
       429,
@@ -100,6 +128,7 @@ export async function handleRequest(request, env, ctx = {}) {
     3600
   );
   if (!targetLimit.allowed) {
+    trackUsage(ctx, env, request, "scan_blocked_rate_limit");
     return jsonResponse(
       { error: "target rate limit exceeded", reset_after_seconds: targetLimit.resetAfterSeconds },
       429,
@@ -111,11 +140,69 @@ export async function handleRequest(request, env, ctx = {}) {
   try {
     await validateResolvedTarget(normalized, env);
     const result = await runSafeScan(normalized, env);
+    trackUsage(ctx, env, request, "scan_completed");
+    if (result.family_match) {
+      trackUsage(ctx, env, request, "scan_family_match");
+    }
+    if (result.exact_version) {
+      trackUsage(ctx, env, request, "scan_exact_version");
+    }
+    if (String(result.risk_context || "").includes("vulnerability")) {
+      trackUsage(ctx, env, request, "scan_vulnerability_context");
+    }
     return jsonResponse(result, 200, env, origin);
   } catch (error) {
+    trackUsage(ctx, env, request, "scan_error");
     const status = error.statusCode || 400;
     return jsonResponse({ error: error.message }, status, env, origin);
   }
+}
+
+async function handleTelemetryRequest(request, env, ctx, origin) {
+  const clientIp = request.headers.get("CF-Connecting-IP") || "unknown";
+  const telemetryLimit = await consumeRateLimit(
+    env.CHECKER_RATE_LIMITS,
+    `telemetry:${hashKey(clientIp)}`,
+    numberEnv(env, "TELEMETRY_RATE_LIMIT_PER_HOUR", 120),
+    3600
+  );
+  if (!telemetryLimit.allowed) {
+    return new Response(null, { status: 204, headers: corsHeaders(env, origin) });
+  }
+
+  let payload;
+  try {
+    const raw = await request.text();
+    if (raw.length > 2048) {
+      throw new Error("telemetry payload too large");
+    }
+    payload = JSON.parse(raw || "{}");
+  } catch {
+    return jsonResponse({ error: "telemetry body must be JSON" }, 400, env, origin);
+  }
+
+  if (payload?.event !== "page_view") {
+    return jsonResponse({ error: "unsupported telemetry event" }, 400, env, origin);
+  }
+
+  await recordUsageMetric(env, request, "page_view", {
+    page: sanitizeTelemetryPage(payload.page),
+    unique: true
+  });
+  return jsonResponse({ ok: true }, 202, env, origin);
+}
+
+async function handleMetricsSummary(request, env, origin, url) {
+  if (!env.METRICS_ADMIN_TOKEN) {
+    return jsonResponse({ error: "metrics admin token is not configured" }, 403, env, origin);
+  }
+  const token = String(request.headers.get("Authorization") || "").replace(/^Bearer\s+/i, "");
+  if (!safeTokenEquals(token, env.METRICS_ADMIN_TOKEN)) {
+    return jsonResponse({ error: "metrics authorization required" }, 401, env, origin);
+  }
+  const days = Math.min(Math.max(Number(url.searchParams.get("days") || 14), 1), 90);
+  const summary = await metricsSummary(env.CHECKER_RATE_LIMITS, days);
+  return jsonResponse(summary, 200, env, origin);
 }
 
 export function validateAuthorization(payload) {
@@ -556,13 +643,120 @@ function formatStatusDistribution(counts) {
   return Object.keys(counts).map(Number).sort((a, b) => a - b).map((status) => `${status}:${counts[status]}`).join(";");
 }
 
+function trackUsage(ctx, env, request, metricName, options = {}) {
+  const promise = recordUsageMetric(env, request, metricName, options).catch(() => false);
+  if (ctx && typeof ctx.waitUntil === "function") {
+    ctx.waitUntil(promise);
+  }
+  return promise;
+}
+
+export async function recordUsageMetric(env, request, metricName, options = {}) {
+  const kv = env?.CHECKER_RATE_LIMITS;
+  if (!kv || !METRIC_NAMES.includes(metricName)) {
+    return false;
+  }
+  const date = options.date || dateKey();
+  const retentionSeconds = numberEnv(env, "METRICS_RETENTION_DAYS", 180) * 86400;
+  await incrementCounter(kv, metricKey(date, metricName), retentionSeconds);
+
+  if (metricName === "page_view") {
+    await incrementCounter(kv, metricKey(date, `page_view:${sanitizeTelemetryPage(options.page)}`), retentionSeconds);
+  }
+
+  if (options.unique) {
+    const clientIp = request?.headers?.get("CF-Connecting-IP") || "";
+    if (clientIp && clientIp !== "unknown") {
+      const salt = env.METRICS_SALT || "openclaw-checker-metrics-v1";
+      const uniqueHash = await sha256Hex(`${salt}:${date}:${metricName}:${clientIp}`);
+      const uniqueKey = `metrics:v1:unique:${date}:${metricName}:${uniqueHash}`;
+      const existing = await kv.get(uniqueKey);
+      if (!existing) {
+        await kv.put(uniqueKey, "1", { expirationTtl: retentionSeconds });
+        await incrementCounter(kv, metricKey(date, `${metricName}_unique`), retentionSeconds);
+      }
+    }
+  }
+
+  return true;
+}
+
+async function incrementCounter(kv, key, retentionSeconds) {
+  const raw = await kv.get(key);
+  const next = Math.max(Number(raw || 0), 0) + 1;
+  await kv.put(key, String(next), { expirationTtl: retentionSeconds });
+  return next;
+}
+
+export async function metricsSummary(kv, days = 14, now = new Date()) {
+  const safeDays = Math.min(Math.max(Number(days || 14), 1), 90);
+  const daily = [];
+  const totals = Object.fromEntries(METRIC_NAMES.map((name) => [name, 0]));
+  totals.pages = Object.fromEntries(PAGE_METRIC_KEYS.map((name) => [name, 0]));
+
+  for (let offset = safeDays - 1; offset >= 0; offset -= 1) {
+    const day = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() - offset));
+    const date = dateKey(day);
+    const row = { date, metrics: {}, pages: {} };
+    for (const metric of METRIC_NAMES) {
+      const value = Number((await kv?.get(metricKey(date, metric))) || 0);
+      row.metrics[metric] = value;
+      totals[metric] += value;
+    }
+    for (const page of PAGE_METRIC_KEYS) {
+      const value = Number((await kv?.get(metricKey(date, `page_view:${page}`))) || 0);
+      row.pages[page] = value;
+      totals.pages[page] += value;
+    }
+    daily.push(row);
+  }
+
+  return {
+    schema_version: 1,
+    generated_at: new Date().toISOString(),
+    window_days: safeDays,
+    retention_note: "Aggregate counters only; no raw IPs, targets, response bodies, or user agents are stored by this metrics layer.",
+    daily,
+    totals
+  };
+}
+
+function metricKey(date, metricName) {
+  return `metrics:v1:daily:${date}:${metricName}`;
+}
+
+function dateKey(date = new Date()) {
+  return date.toISOString().slice(0, 10);
+}
+
+export function sanitizeTelemetryPage(page) {
+  const normalized = String(page || "").trim().toLowerCase();
+  if (normalized === "/" || normalized === "/openclaw_scanner/" || normalized === "home") {
+    return "home";
+  }
+  if (normalized === "/checker/" || normalized === "/openclaw_scanner/checker/" || normalized === "checker") {
+    return "checker";
+  }
+  return "other";
+}
+
+function safeTokenEquals(left, right) {
+  const a = String(left || "");
+  const b = String(right || "");
+  let diff = a.length ^ b.length;
+  for (let index = 0; index < Math.max(a.length, b.length); index += 1) {
+    diff |= (a.charCodeAt(index) || 0) ^ (b.charCodeAt(index) || 0);
+  }
+  return diff === 0;
+}
+
 function corsHeaders(env, origin) {
   const allowed = String(env.ALLOWED_ORIGINS || "").split(",").map((item) => item.trim()).filter(Boolean);
   const allowOrigin = allowed.includes(origin) ? origin : allowed.includes("*") ? "*" : allowed[0] || "*";
   return {
     "Access-Control-Allow-Origin": allowOrigin,
-    "Access-Control-Allow-Methods": "POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
     "Access-Control-Max-Age": "600",
     Vary: "Origin"
   };

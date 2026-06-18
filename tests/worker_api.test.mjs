@@ -2,7 +2,11 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {
   consumeRateLimit,
+  handleRequest,
+  metricsSummary,
   normalizeCheckerTarget,
+  recordUsageMetric,
+  sanitizeTelemetryPage,
   validateAuthorization,
   validateHostname,
   validatePublicIPv4,
@@ -90,4 +94,87 @@ test("DNS preflight only accepts concrete public A or AAAA answers", async () =>
   } finally {
     globalThis.fetch = originalFetch;
   }
+});
+
+test("telemetry page names are normalized to coarse buckets", () => {
+  assert.equal(sanitizeTelemetryPage("/"), "home");
+  assert.equal(sanitizeTelemetryPage("/openclaw_scanner/"), "home");
+  assert.equal(sanitizeTelemetryPage("/checker/"), "checker");
+  assert.equal(sanitizeTelemetryPage("/openclaw_scanner/checker/"), "checker");
+  assert.equal(sanitizeTelemetryPage("/unexpected/path"), "other");
+});
+
+test("usage metrics record aggregate page views and daily unique visitors", async () => {
+  const kv = new MemoryKV();
+  const env = {
+    CHECKER_RATE_LIMITS: kv,
+    METRICS_RETENTION_DAYS: "30",
+    METRICS_SALT: "test-salt"
+  };
+  const requestA = new Request("https://worker.example/telemetry", {
+    headers: { "CF-Connecting-IP": "198.51.100.10" }
+  });
+  const requestB = new Request("https://worker.example/telemetry", {
+    headers: { "CF-Connecting-IP": "198.51.100.11" }
+  });
+
+  await recordUsageMetric(env, requestA, "page_view", { page: "/checker/", unique: true, date: "2026-06-17" });
+  await recordUsageMetric(env, requestA, "page_view", { page: "/checker/", unique: true, date: "2026-06-17" });
+  await recordUsageMetric(env, requestB, "page_view", { page: "/", unique: true, date: "2026-06-17" });
+
+  const summary = await metricsSummary(kv, 1, new Date("2026-06-17T12:00:00Z"));
+  assert.equal(summary.totals.page_view, 3);
+  assert.equal(summary.totals.page_view_unique, 2);
+  assert.equal(summary.totals.pages.checker, 2);
+  assert.equal(summary.totals.pages.home, 1);
+});
+
+test("telemetry endpoint records page views without target details", async () => {
+  const kv = new MemoryKV();
+  const env = {
+    CHECKER_RATE_LIMITS: kv,
+    ALLOWED_ORIGINS: "https://mahdihedhli.github.io",
+    TELEMETRY_RATE_LIMIT_PER_HOUR: "120",
+    METRICS_RETENTION_DAYS: "30",
+    METRICS_SALT: "test-salt"
+  };
+  const response = await handleRequest(new Request("https://worker.example/telemetry", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Origin: "https://mahdihedhli.github.io",
+      "CF-Connecting-IP": "198.51.100.20"
+    },
+    body: JSON.stringify({ event: "page_view", page: "/checker/" })
+  }), env);
+
+  assert.equal(response.status, 202);
+  const summary = await metricsSummary(kv, 1);
+  assert.equal(summary.totals.page_view, 1);
+  assert.equal(summary.totals.pages.checker, 1);
+  assert.equal([...kv.map.keys()].some((key) => key.includes("gateway.example.com")), false);
+});
+
+test("metrics summary endpoint requires an admin bearer token", async () => {
+  const kv = new MemoryKV();
+  const env = {
+    CHECKER_RATE_LIMITS: kv,
+    ALLOWED_ORIGINS: "*",
+    METRICS_ADMIN_TOKEN: "secret-token"
+  };
+
+  const rejected = await handleRequest(new Request("https://worker.example/metrics/summary?days=1"), env);
+  assert.equal(rejected.status, 401);
+
+  await recordUsageMetric(env, new Request("https://worker.example/scan", {
+    headers: { "CF-Connecting-IP": "198.51.100.30" }
+  }), "scan_completed", { date: new Date().toISOString().slice(0, 10) });
+
+  const accepted = await handleRequest(new Request("https://worker.example/metrics/summary?days=1", {
+    headers: { Authorization: "Bearer secret-token" }
+  }), env);
+  assert.equal(accepted.status, 200);
+  const body = await accepted.json();
+  assert.equal(body.totals.scan_completed, 1);
+  assert.match(body.retention_note, /no raw IPs, targets/);
 });

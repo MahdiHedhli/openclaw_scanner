@@ -318,6 +318,8 @@ The checker flow is deliberately constrained:
   interaction, or payload execution are allowed
 - vulnerability output is suppressed unless correlation-grade exact version
   evidence exists
+- first-party usage metrics count page views and aggregate scan outcomes without
+  storing raw targets, IPs, response bodies, user agents, or credentials
 - deployment details live in `docs/exposure-checker.md`
 
 ## Documentation
