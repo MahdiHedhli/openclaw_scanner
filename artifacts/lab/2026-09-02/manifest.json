@@ -1,0 +1,1267 @@
+{
+  "capture_queue": [
+    "2026.6.1",
+    "2026.6.5",
+    "2026.6.6",
+    "2026.6.8",
+    "2026.6.9",
+    "2026.6.10",
+    "2026.6.11",
+    "2026.6.33",
+    "2026.6.34",
+    "2026.7.1",
+    "2026.8.1",
+    "2026.8.2"
+  ],
+  "created_at": "2026-09-02T18:36:54Z",
+  "defaults": {
+    "destroy_after_capture": true,
+    "disk_gb": 40,
+    "memory_mb": 4096,
+    "vcpu": 2,
+    "vlan": 30
+  },
+  "homelab_docs_read": [
+    "/Users/mhedhli/Documents/Coding/Projects/homelab/docs/infrastructure.md",
+    "/Users/mhedhli/Documents/Coding/Projects/homelab/docs/vlans.md",
+    "/Users/mhedhli/Documents/Coding/Projects/homelab/docs/security.md",
+    "/Users/mhedhli/Documents/Coding/Projects/homelab/docs/todo.md"
+  ],
+  "owner_thread": "interactive-corpus-run",
+  "proxmox_preflight": {
+    "checked_at": "2026-09-02T20:32:40Z",
+    "command": "python3 scripts/proxmox_corpus_preflight.py --timeout 5 --format json --output artifacts/lab/2026-09-02/proxmox-preflight-final.json --manifest artifacts/lab/2026-09-02/manifest.json",
+    "artifact": "artifacts/lab/2026-09-02/proxmox-preflight-final.json",
+    "passed": true,
+    "vm_lifecycle_allowed": true,
+    "blockers": [],
+    "api_version": "9.2.5",
+    "template_ready": true,
+    "clone_identity_ready": true,
+    "clone_identity_sources": {
+      "has_user_source": true,
+      "has_key_source": true,
+      "env_ciuser_present": true,
+      "env_sshkeys_file_present": true,
+      "env_ssh_public_key_present": false,
+      "env_cicustom_present": false,
+      "template_ciuser_present": true,
+      "template_sshkeys_present": true,
+      "template_cicustom_present": false
+    },
+    "openclaw_related_vms": 0,
+    "openclaw_running_vms": 0
+  },
+  "queue_policy": {
+    "concurrency": 1,
+    "order": "oldest-stable-first",
+    "prereleases_included": false,
+    "promote_rules_automatically": false,
+    "stop_on_cleanup_failure": true
+  },
+  "release_gap": {
+    "checked_at": "2026-09-02T20:34:38Z",
+    "command": "python3 scripts/check_openclaw_release_gap.py --versions-file artifacts/lab/2026-09-02/openclaw-versions.json --capture-root artifacts/lab --output artifacts/lab/2026-09-02/openclaw-release-gap-post-capture.json --manifest artifacts/lab/2026-09-02/manifest.json",
+    "artifact": "artifacts/lab/2026-09-02/openclaw-release-gap-post-capture.json",
+    "package": "openclaw",
+    "decision": "no_vm_needed",
+    "capture_needed": false,
+    "capture_needed_versions": [],
+    "latest_published_version": "2026.9.1-beta.1",
+    "latest_captured_version": "2026.8.2",
+    "latest_promoted_exact_version": "2026.5.28",
+    "captured_version_count": 30,
+    "promoted_exact_version_count": 17,
+    "captured_unpromoted_versions": [
+      "2026.5.22-beta.1",
+      "2026.6.1",
+      "2026.6.5",
+      "2026.6.6",
+      "2026.6.8",
+      "2026.6.9",
+      "2026.6.10",
+      "2026.6.11",
+      "2026.6.33",
+      "2026.6.34",
+      "2026.7.1",
+      "2026.8.1",
+      "2026.8.2"
+    ],
+    "stable_uncaptured_versions_after_latest_capture": [],
+    "prerelease_uncaptured_versions_after_latest_capture": [
+      "2026.9.1-beta.1"
+    ]
+  },
+  "run_id": "2026-09-02-openclaw-corpus",
+  "run_state": {
+    "completed_versions": [
+      "2026.6.1",
+      "2026.6.5",
+      "2026.6.6",
+      "2026.6.8",
+      "2026.6.9",
+      "2026.6.10",
+      "2026.6.11",
+      "2026.6.33",
+      "2026.6.34",
+      "2026.7.1",
+      "2026.8.1",
+      "2026.8.2"
+    ],
+    "completed_at": "2026-09-02T20:34:13Z",
+    "next_cleanup_deadline": null,
+    "pause_cleanup_verified": true,
+    "paused_at": "2026-09-02T18:45:40Z",
+    "remaining_versions": [],
+    "resumed_at": "2026-09-02T18:55:42Z",
+    "retry_first": null,
+    "status": "captures_complete_unpromoted",
+    "still_running": 0
+  },
+  "fingerprint_review": {
+    "artifact": "artifacts/lab/2026-09-02/candidate-version-rules.json",
+    "candidate_version_count": 12,
+    "promotion_status": "needs_more_evidence",
+    "promotion_blocker": "Each version currently has one independent capture.",
+    "rules_promoted": 0
+  },
+  "saved_capture_inference": {
+    "checked_at": "2026-09-02T20:33:17Z",
+    "command": "python3 scripts/validate_saved_capture_inference.py --input-root artifacts/lab --rules-file openclaw_scanner/data/openclaw_rules.json --output artifacts/lab/2026-09-02/saved-capture-inference-final.json --require-all-exact --ignore-version 2026.5.22-beta.1 --ignore-version 2026.6.1 --ignore-version 2026.6.5 --ignore-version 2026.6.6 --ignore-version 2026.6.8 --ignore-version 2026.6.9 --ignore-version 2026.6.10 --ignore-version 2026.6.11 --ignore-version 2026.6.33 --ignore-version 2026.6.34 --ignore-version 2026.7.1 --ignore-version 2026.8.1 --ignore-version 2026.8.2 --manifest artifacts/lab/2026-09-02/manifest.json",
+    "artifact": "artifacts/lab/2026-09-02/saved-capture-inference-final.json",
+    "passed": true,
+    "require_all_exact": true,
+    "bundle_count": 48,
+    "capture_count": 48,
+    "evaluated_capture_count": 34,
+    "ignored_capture_count": 14,
+    "declared_exact_match_count": 34,
+    "declared_no_exact_match_count": 0,
+    "ignored_declared_no_exact_match_count": 14,
+    "declared_versions_without_exact_match": [],
+    "ignored_versions": [
+      "2026.5.22-beta.1",
+      "2026.6.1",
+      "2026.6.10",
+      "2026.6.11",
+      "2026.6.33",
+      "2026.6.34",
+      "2026.6.5",
+      "2026.6.6",
+      "2026.6.8",
+      "2026.6.9",
+      "2026.7.1",
+      "2026.8.1",
+      "2026.8.2"
+    ],
+    "ignored_versions_present": [
+      "2026.5.22-beta.1",
+      "2026.6.1",
+      "2026.6.10",
+      "2026.6.11",
+      "2026.6.33",
+      "2026.6.34",
+      "2026.6.5",
+      "2026.6.6",
+      "2026.6.8",
+      "2026.6.9",
+      "2026.7.1",
+      "2026.8.1",
+      "2026.8.2"
+    ],
+    "version_summary": [
+      {
+        "declared_version": "2026.1.29-beta.1",
+        "capture_count": 2,
+        "evaluated_capture_count": 2,
+        "ignored_capture_count": 0,
+        "declared_exact_match_count": 2,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 0,
+        "exact_sources": [
+          "lab-capture-2026-1-29-beta-1"
+        ],
+        "top_version_counts": [
+          {
+            "version": "2026.1.29-beta.1",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "declared_version": "2026.2.13",
+        "capture_count": 2,
+        "evaluated_capture_count": 2,
+        "ignored_capture_count": 0,
+        "declared_exact_match_count": 2,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 0,
+        "exact_sources": [
+          "lab-capture-2026-2-13"
+        ],
+        "top_version_counts": [
+          {
+            "version": "2026.2.13",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "declared_version": "2026.2.2-1",
+        "capture_count": 2,
+        "evaluated_capture_count": 2,
+        "ignored_capture_count": 0,
+        "declared_exact_match_count": 2,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 0,
+        "exact_sources": [
+          "lab-capture-2026-2-2-1"
+        ],
+        "top_version_counts": [
+          {
+            "version": "2026.2.2-1",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "declared_version": "2026.2.21",
+        "capture_count": 2,
+        "evaluated_capture_count": 2,
+        "ignored_capture_count": 0,
+        "declared_exact_match_count": 2,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 0,
+        "exact_sources": [
+          "lab-capture-2026-2-21"
+        ],
+        "top_version_counts": [
+          {
+            "version": "2026.2.21",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "declared_version": "2026.2.6",
+        "capture_count": 2,
+        "evaluated_capture_count": 2,
+        "ignored_capture_count": 0,
+        "declared_exact_match_count": 2,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 0,
+        "exact_sources": [
+          "lab-capture-2026-2-6"
+        ],
+        "top_version_counts": [
+          {
+            "version": "2026.2.6",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "declared_version": "2026.5.18",
+        "capture_count": 2,
+        "evaluated_capture_count": 2,
+        "ignored_capture_count": 0,
+        "declared_exact_match_count": 2,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 0,
+        "exact_sources": [
+          "lab-capture-2026-5-18"
+        ],
+        "top_version_counts": [
+          {
+            "version": "2026.5.18",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "declared_version": "2026.5.19-beta.1",
+        "capture_count": 2,
+        "evaluated_capture_count": 2,
+        "ignored_capture_count": 0,
+        "declared_exact_match_count": 2,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 0,
+        "exact_sources": [
+          "lab-capture-2026-5-19-beta-1"
+        ],
+        "top_version_counts": [
+          {
+            "version": "2026.5.19-beta.1",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "declared_version": "2026.5.20",
+        "capture_count": 2,
+        "evaluated_capture_count": 2,
+        "ignored_capture_count": 0,
+        "declared_exact_match_count": 2,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 0,
+        "exact_sources": [
+          "lab-capture-2026-5-20"
+        ],
+        "top_version_counts": [
+          {
+            "version": "2026.5.20",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "declared_version": "2026.5.22",
+        "capture_count": 2,
+        "evaluated_capture_count": 2,
+        "ignored_capture_count": 0,
+        "declared_exact_match_count": 2,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 0,
+        "exact_sources": [
+          "lab-capture-2026-5-22"
+        ],
+        "top_version_counts": [
+          {
+            "version": "2026.5.22",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "declared_version": "2026.5.22-beta.1",
+        "capture_count": 2,
+        "evaluated_capture_count": 0,
+        "ignored_capture_count": 2,
+        "declared_exact_match_count": 0,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 2,
+        "exact_sources": [],
+        "top_version_counts": []
+      },
+      {
+        "declared_version": "2026.5.24-beta.1",
+        "capture_count": 2,
+        "evaluated_capture_count": 2,
+        "ignored_capture_count": 0,
+        "declared_exact_match_count": 2,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 0,
+        "exact_sources": [
+          "lab-capture-2026-5-24-beta-1"
+        ],
+        "top_version_counts": [
+          {
+            "version": "2026.5.24-beta.1",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "declared_version": "2026.5.24-beta.2",
+        "capture_count": 2,
+        "evaluated_capture_count": 2,
+        "ignored_capture_count": 0,
+        "declared_exact_match_count": 2,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 0,
+        "exact_sources": [
+          "lab-capture-2026-5-24-beta-2"
+        ],
+        "top_version_counts": [
+          {
+            "version": "2026.5.24-beta.2",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "declared_version": "2026.5.25-beta.1",
+        "capture_count": 2,
+        "evaluated_capture_count": 2,
+        "ignored_capture_count": 0,
+        "declared_exact_match_count": 2,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 0,
+        "exact_sources": [
+          "lab-capture-2026-5-25-beta-1"
+        ],
+        "top_version_counts": [
+          {
+            "version": "2026.5.25-beta.1",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "declared_version": "2026.5.26",
+        "capture_count": 2,
+        "evaluated_capture_count": 2,
+        "ignored_capture_count": 0,
+        "declared_exact_match_count": 2,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 0,
+        "exact_sources": [
+          "lab-capture-2026-5-26"
+        ],
+        "top_version_counts": [
+          {
+            "version": "2026.5.26",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "declared_version": "2026.5.27",
+        "capture_count": 2,
+        "evaluated_capture_count": 2,
+        "ignored_capture_count": 0,
+        "declared_exact_match_count": 2,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 0,
+        "exact_sources": [
+          "lab-capture-2026-5-27"
+        ],
+        "top_version_counts": [
+          {
+            "version": "2026.5.27",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "declared_version": "2026.5.28",
+        "capture_count": 2,
+        "evaluated_capture_count": 2,
+        "ignored_capture_count": 0,
+        "declared_exact_match_count": 2,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 0,
+        "exact_sources": [
+          "lab-capture-2026-5-28"
+        ],
+        "top_version_counts": [
+          {
+            "version": "2026.5.28",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "declared_version": "2026.5.3-1",
+        "capture_count": 2,
+        "evaluated_capture_count": 2,
+        "ignored_capture_count": 0,
+        "declared_exact_match_count": 2,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 0,
+        "exact_sources": [
+          "lab-capture-2026-5-3-1"
+        ],
+        "top_version_counts": [
+          {
+            "version": "2026.5.3-1",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "declared_version": "2026.5.7",
+        "capture_count": 2,
+        "evaluated_capture_count": 2,
+        "ignored_capture_count": 0,
+        "declared_exact_match_count": 2,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 0,
+        "exact_sources": [
+          "lab-capture-2026-5-7"
+        ],
+        "top_version_counts": [
+          {
+            "version": "2026.5.7",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "declared_version": "2026.6.1",
+        "capture_count": 1,
+        "evaluated_capture_count": 0,
+        "ignored_capture_count": 1,
+        "declared_exact_match_count": 0,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 1,
+        "exact_sources": [],
+        "top_version_counts": []
+      },
+      {
+        "declared_version": "2026.6.10",
+        "capture_count": 1,
+        "evaluated_capture_count": 0,
+        "ignored_capture_count": 1,
+        "declared_exact_match_count": 0,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 1,
+        "exact_sources": [],
+        "top_version_counts": []
+      },
+      {
+        "declared_version": "2026.6.11",
+        "capture_count": 1,
+        "evaluated_capture_count": 0,
+        "ignored_capture_count": 1,
+        "declared_exact_match_count": 0,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 1,
+        "exact_sources": [],
+        "top_version_counts": []
+      },
+      {
+        "declared_version": "2026.6.33",
+        "capture_count": 1,
+        "evaluated_capture_count": 0,
+        "ignored_capture_count": 1,
+        "declared_exact_match_count": 0,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 1,
+        "exact_sources": [],
+        "top_version_counts": []
+      },
+      {
+        "declared_version": "2026.6.34",
+        "capture_count": 1,
+        "evaluated_capture_count": 0,
+        "ignored_capture_count": 1,
+        "declared_exact_match_count": 0,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 1,
+        "exact_sources": [],
+        "top_version_counts": []
+      },
+      {
+        "declared_version": "2026.6.5",
+        "capture_count": 1,
+        "evaluated_capture_count": 0,
+        "ignored_capture_count": 1,
+        "declared_exact_match_count": 0,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 1,
+        "exact_sources": [],
+        "top_version_counts": []
+      },
+      {
+        "declared_version": "2026.6.6",
+        "capture_count": 1,
+        "evaluated_capture_count": 0,
+        "ignored_capture_count": 1,
+        "declared_exact_match_count": 0,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 1,
+        "exact_sources": [],
+        "top_version_counts": []
+      },
+      {
+        "declared_version": "2026.6.8",
+        "capture_count": 1,
+        "evaluated_capture_count": 0,
+        "ignored_capture_count": 1,
+        "declared_exact_match_count": 0,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 1,
+        "exact_sources": [],
+        "top_version_counts": []
+      },
+      {
+        "declared_version": "2026.6.9",
+        "capture_count": 1,
+        "evaluated_capture_count": 0,
+        "ignored_capture_count": 1,
+        "declared_exact_match_count": 0,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 1,
+        "exact_sources": [],
+        "top_version_counts": []
+      },
+      {
+        "declared_version": "2026.7.1",
+        "capture_count": 1,
+        "evaluated_capture_count": 0,
+        "ignored_capture_count": 1,
+        "declared_exact_match_count": 0,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 1,
+        "exact_sources": [],
+        "top_version_counts": []
+      },
+      {
+        "declared_version": "2026.8.1",
+        "capture_count": 1,
+        "evaluated_capture_count": 0,
+        "ignored_capture_count": 1,
+        "declared_exact_match_count": 0,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 1,
+        "exact_sources": [],
+        "top_version_counts": []
+      },
+      {
+        "declared_version": "2026.8.2",
+        "capture_count": 1,
+        "evaluated_capture_count": 0,
+        "ignored_capture_count": 1,
+        "declared_exact_match_count": 0,
+        "declared_no_exact_match_count": 0,
+        "ignored_declared_no_exact_match_count": 1,
+        "exact_sources": [],
+        "top_version_counts": []
+      }
+    ],
+    "skipped_input_summary": [
+      {
+        "reason": "not an openclaw_blackbox_capture bundle",
+        "count": 741
+      }
+    ]
+  },
+  "security_gate": {
+    "credential_incident_gate_closed_by_operator": true,
+    "gate_closed_at": "2026-09-02",
+    "host_side_scanning": false,
+    "public_exposure": false,
+    "tailscale_serve": false
+  },
+  "vm_inventory": {
+    "created": 20,
+    "destroyed": 20,
+    "next_cleanup_deadline": null,
+    "reused": 0,
+    "shut_down": 20,
+    "still_running": 0
+  },
+  "vms": [
+    {
+      "artifact": "artifacts/lab/2026-09-02/openclaw-2026.6.1/proxmox-attempt-01.json",
+      "attempt_id": "01",
+      "auth_mode": "token",
+      "capture_artifact": "artifacts/lab/2026-09-02/openclaw-2026.6.1/capture.json",
+      "created_at": "2026-09-02T18:38:14Z",
+      "deleted_at": "2026-09-02T18:42:35Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-install-2026.6.1",
+        "command_recorded": false,
+        "reason": null,
+        "status": "passed"
+      },
+      "ip_or_hostname": "10.0.30.133",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": "artifacts/lab/2026-09-02/openclaw-2026.6.1/scan.json",
+      "scanner_command": "python3 -m openclaw_scanner --target http://<ip>:18789 --capture-version <version> --capture-name <name> --capture-output <capture> --format json --output <scan>",
+      "scanner_result": {
+        "reason": null,
+        "status": "captured"
+      },
+      "started_at": "2026-09-02T18:38:20Z",
+      "stopped_at": "2026-09-02T18:42:34Z",
+      "version": "2026.6.1",
+      "vlan": 30,
+      "vm_id": 102,
+      "vm_name": "openclaw-corpus-2026-6-1-01"
+    },
+    {
+      "artifact": "artifacts/lab/2026-09-02/openclaw-2026.6.5/proxmox-attempt-01.json",
+      "attempt_id": "01",
+      "auth_mode": "token",
+      "capture_artifact": null,
+      "created_at": "2026-09-02T18:43:30Z",
+      "deleted_at": "2026-09-02T18:45:11Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": null,
+        "command_recorded": null,
+        "reason": null,
+        "status": "not_run"
+      },
+      "ip_or_hostname": "10.0.30.179",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": null,
+      "scanner_command": null,
+      "scanner_result": {
+        "reason": null,
+        "status": "no_ip_discovered"
+      },
+      "started_at": "2026-09-02T18:43:35Z",
+      "stopped_at": "2026-09-02T18:45:09Z",
+      "version": "2026.6.5",
+      "vlan": 30,
+      "vm_id": 102,
+      "vm_name": "openclaw-corpus-2026-6-5-01"
+    },
+    {
+      "artifact": "artifacts/lab/2026-09-02/openclaw-2026.6.5/proxmox-attempt-02.json",
+      "attempt_id": "02",
+      "auth_mode": "token",
+      "capture_artifact": "artifacts/lab/2026-09-02/openclaw-2026.6.5/capture.json",
+      "created_at": "2026-09-02T18:56:17Z",
+      "deleted_at": "2026-09-02T19:00:31Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-install-2026.6.5",
+        "command_recorded": false,
+        "reason": null,
+        "status": "passed"
+      },
+      "ip_or_hostname": "10.0.30.117",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": "artifacts/lab/2026-09-02/openclaw-2026.6.5/scan.json",
+      "scanner_command": "python3 -m openclaw_scanner --target http://<ip>:18789 --capture-version <version> --capture-name <name> --capture-output <capture> --format json --output <scan>",
+      "scanner_result": {
+        "reason": null,
+        "status": "captured"
+      },
+      "started_at": "2026-09-02T18:56:21Z",
+      "stopped_at": "2026-09-02T19:00:29Z",
+      "version": "2026.6.5",
+      "vlan": 30,
+      "vm_id": 102,
+      "vm_name": "openclaw-corpus-2026-6-5-02"
+    },
+    {
+      "artifact": "artifacts/lab/2026-09-02/openclaw-2026.6.6/proxmox-attempt-01.json",
+      "attempt_id": "01",
+      "auth_mode": "token",
+      "capture_artifact": "artifacts/lab/2026-09-02/openclaw-2026.6.6/capture.json",
+      "created_at": "2026-09-02T19:01:02Z",
+      "deleted_at": "2026-09-02T19:05:14Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-install-2026.6.6",
+        "command_recorded": false,
+        "reason": null,
+        "status": "passed"
+      },
+      "ip_or_hostname": "10.0.30.192",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": "artifacts/lab/2026-09-02/openclaw-2026.6.6/scan.json",
+      "scanner_command": "python3 -m openclaw_scanner --target http://<ip>:18789 --capture-version <version> --capture-name <name> --capture-output <capture> --format json --output <scan>",
+      "scanner_result": {
+        "reason": null,
+        "status": "captured"
+      },
+      "started_at": "2026-09-02T19:01:07Z",
+      "stopped_at": "2026-09-02T19:05:13Z",
+      "version": "2026.6.6",
+      "vlan": 30,
+      "vm_id": 102,
+      "vm_name": "openclaw-corpus-2026-6-6-01"
+    },
+    {
+      "artifact": "artifacts/lab/2026-09-02/openclaw-2026.6.8/proxmox-attempt-01.json",
+      "attempt_id": "01",
+      "auth_mode": "token",
+      "capture_artifact": "artifacts/lab/2026-09-02/openclaw-2026.6.8/capture.json",
+      "created_at": "2026-09-02T19:05:32Z",
+      "deleted_at": "2026-09-02T19:10:02Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-install-2026.6.8",
+        "command_recorded": false,
+        "reason": null,
+        "status": "passed"
+      },
+      "ip_or_hostname": "10.0.30.130",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": "artifacts/lab/2026-09-02/openclaw-2026.6.8/scan.json",
+      "scanner_command": "python3 -m openclaw_scanner --target http://<ip>:18789 --capture-version <version> --capture-name <name> --capture-output <capture> --format json --output <scan>",
+      "scanner_result": {
+        "reason": null,
+        "status": "captured"
+      },
+      "started_at": "2026-09-02T19:05:36Z",
+      "stopped_at": "2026-09-02T19:10:01Z",
+      "version": "2026.6.8",
+      "vlan": 30,
+      "vm_id": 102,
+      "vm_name": "openclaw-corpus-2026-6-8-01"
+    },
+    {
+      "artifact": "artifacts/lab/2026-09-02/openclaw-2026.6.9/proxmox-attempt-01.json",
+      "attempt_id": "01",
+      "auth_mode": "token",
+      "capture_artifact": "artifacts/lab/2026-09-02/openclaw-2026.6.9/capture.json",
+      "created_at": "2026-09-02T19:10:20Z",
+      "deleted_at": "2026-09-02T19:16:24Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-install-2026.6.9",
+        "command_recorded": false,
+        "reason": null,
+        "status": "passed"
+      },
+      "ip_or_hostname": "10.0.30.114",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": "artifacts/lab/2026-09-02/openclaw-2026.6.9/scan.json",
+      "scanner_command": "python3 -m openclaw_scanner --target http://<ip>:18789 --capture-version <version> --capture-name <name> --capture-output <capture> --format json --output <scan>",
+      "scanner_result": {
+        "reason": null,
+        "status": "captured"
+      },
+      "started_at": "2026-09-02T19:10:24Z",
+      "stopped_at": "2026-09-02T19:16:23Z",
+      "version": "2026.6.9",
+      "vlan": 30,
+      "vm_id": 102,
+      "vm_name": "openclaw-corpus-2026-6-9-01"
+    },
+    {
+      "artifact": "artifacts/lab/2026-09-02/openclaw-2026.6.10/proxmox-attempt-01.json",
+      "attempt_id": "01",
+      "auth_mode": "token",
+      "capture_artifact": "artifacts/lab/2026-09-02/openclaw-2026.6.10/capture.json",
+      "created_at": "2026-09-02T19:16:42Z",
+      "deleted_at": "2026-09-02T19:20:58Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-install-2026.6.10",
+        "command_recorded": false,
+        "reason": null,
+        "status": "passed"
+      },
+      "ip_or_hostname": "10.0.30.153",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": "artifacts/lab/2026-09-02/openclaw-2026.6.10/scan.json",
+      "scanner_command": "python3 -m openclaw_scanner --target http://<ip>:18789 --capture-version <version> --capture-name <name> --capture-output <capture> --format json --output <scan>",
+      "scanner_result": {
+        "reason": null,
+        "status": "captured"
+      },
+      "started_at": "2026-09-02T19:16:45Z",
+      "stopped_at": "2026-09-02T19:20:57Z",
+      "version": "2026.6.10",
+      "vlan": 30,
+      "vm_id": 102,
+      "vm_name": "openclaw-corpus-2026-6-10-01"
+    },
+    {
+      "artifact": "artifacts/lab/2026-09-02/openclaw-2026.6.11/proxmox-attempt-01.json",
+      "attempt_id": "01",
+      "auth_mode": "token",
+      "capture_artifact": "artifacts/lab/2026-09-02/openclaw-2026.6.11/capture.json",
+      "created_at": "2026-09-02T19:21:15Z",
+      "deleted_at": "2026-09-02T19:25:34Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-install-2026.6.11",
+        "command_recorded": false,
+        "reason": null,
+        "status": "passed"
+      },
+      "ip_or_hostname": "10.0.30.144",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": "artifacts/lab/2026-09-02/openclaw-2026.6.11/scan.json",
+      "scanner_command": "python3 -m openclaw_scanner --target http://<ip>:18789 --capture-version <version> --capture-name <name> --capture-output <capture> --format json --output <scan>",
+      "scanner_result": {
+        "reason": null,
+        "status": "captured"
+      },
+      "started_at": "2026-09-02T19:21:18Z",
+      "stopped_at": "2026-09-02T19:25:33Z",
+      "version": "2026.6.11",
+      "vlan": 30,
+      "vm_id": 102,
+      "vm_name": "openclaw-corpus-2026-6-11-01"
+    },
+    {
+      "artifact": "artifacts/lab/2026-09-02/openclaw-2026.6.33/proxmox-attempt-01.json",
+      "attempt_id": "01",
+      "auth_mode": "token",
+      "capture_artifact": "artifacts/lab/2026-09-02/openclaw-2026.6.33/capture.json",
+      "created_at": "2026-09-02T19:25:54Z",
+      "deleted_at": "2026-09-02T19:30:16Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-install-2026.6.33",
+        "command_recorded": false,
+        "reason": null,
+        "status": "passed"
+      },
+      "ip_or_hostname": "10.0.30.187",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": "artifacts/lab/2026-09-02/openclaw-2026.6.33/scan.json",
+      "scanner_command": "python3 -m openclaw_scanner --target http://<ip>:18789 --capture-version <version> --capture-name <name> --capture-output <capture> --format json --output <scan>",
+      "scanner_result": {
+        "reason": null,
+        "status": "captured"
+      },
+      "started_at": "2026-09-02T19:26:00Z",
+      "stopped_at": "2026-09-02T19:30:15Z",
+      "version": "2026.6.33",
+      "vlan": 30,
+      "vm_id": 102,
+      "vm_name": "openclaw-corpus-2026-6-33-01"
+    },
+    {
+      "artifact": "artifacts/lab/2026-09-02/openclaw-2026.6.34/proxmox-attempt-01.json",
+      "attempt_id": "01",
+      "auth_mode": "token",
+      "capture_artifact": "artifacts/lab/2026-09-02/openclaw-2026.6.34/capture.json",
+      "created_at": "2026-09-02T19:30:34Z",
+      "deleted_at": "2026-09-02T19:34:52Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-install-2026.6.34",
+        "command_recorded": false,
+        "reason": null,
+        "status": "passed"
+      },
+      "ip_or_hostname": "10.0.30.167",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": "artifacts/lab/2026-09-02/openclaw-2026.6.34/scan.json",
+      "scanner_command": "python3 -m openclaw_scanner --target http://<ip>:18789 --capture-version <version> --capture-name <name> --capture-output <capture> --format json --output <scan>",
+      "scanner_result": {
+        "reason": null,
+        "status": "captured"
+      },
+      "started_at": "2026-09-02T19:30:37Z",
+      "stopped_at": "2026-09-02T19:34:50Z",
+      "version": "2026.6.34",
+      "vlan": 30,
+      "vm_id": 102,
+      "vm_name": "openclaw-corpus-2026-6-34-01"
+    },
+    {
+      "artifact": "artifacts/lab/2026-09-02/openclaw-2026.7.1/proxmox-attempt-01.json",
+      "attempt_id": "01",
+      "auth_mode": "token",
+      "capture_artifact": "artifacts/lab/2026-09-02/openclaw-2026.7.1/capture.json",
+      "created_at": "2026-09-02T19:35:09Z",
+      "deleted_at": "2026-09-02T19:39:29Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-install-2026.7.1",
+        "command_recorded": false,
+        "reason": null,
+        "status": "passed"
+      },
+      "ip_or_hostname": "10.0.30.134",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": "artifacts/lab/2026-09-02/openclaw-2026.7.1/scan.json",
+      "scanner_command": "python3 -m openclaw_scanner --target http://<ip>:18789 --capture-version <version> --capture-name <name> --capture-output <capture> --format json --output <scan>",
+      "scanner_result": {
+        "reason": null,
+        "status": "captured"
+      },
+      "started_at": "2026-09-02T19:35:13Z",
+      "stopped_at": "2026-09-02T19:39:28Z",
+      "version": "2026.7.1",
+      "vlan": 30,
+      "vm_id": 102,
+      "vm_name": "openclaw-corpus-2026-7-1-01"
+    },
+    {
+      "artifact": "artifacts/lab/2026-09-02/openclaw-2026.8.1/proxmox-attempt-01.json",
+      "attempt_id": "01",
+      "auth_mode": "token",
+      "capture_artifact": null,
+      "created_at": "2026-09-02T19:39:47Z",
+      "deleted_at": "2026-09-02T19:44:44Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-install-2026.8.1",
+        "command_recorded": false,
+        "reason": "deploy_command_failed",
+        "status": "failed"
+      },
+      "ip_or_hostname": "10.0.30.128",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": null,
+      "scanner_command": null,
+      "scanner_result": {
+        "reason": "deploy_command_failed",
+        "status": "deployment_failed"
+      },
+      "started_at": "2026-09-02T19:39:51Z",
+      "stopped_at": "2026-09-02T19:44:37Z",
+      "version": "2026.8.1",
+      "vlan": 30,
+      "vm_id": 102,
+      "vm_name": "openclaw-corpus-2026-8-1-01"
+    },
+    {
+      "artifact": "artifacts/lab/2026-09-02/openclaw-2026.8.2/proxmox-attempt-01.json",
+      "attempt_id": "01",
+      "auth_mode": "token",
+      "capture_artifact": null,
+      "created_at": "2026-09-02T19:45:30Z",
+      "deleted_at": "2026-09-02T19:49:52Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-install-2026.8.2",
+        "command_recorded": false,
+        "reason": "deploy_command_failed",
+        "status": "failed"
+      },
+      "ip_or_hostname": "10.0.30.120",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": null,
+      "scanner_command": null,
+      "scanner_result": {
+        "reason": "deploy_command_failed",
+        "status": "deployment_failed"
+      },
+      "started_at": "2026-09-02T19:45:35Z",
+      "stopped_at": "2026-09-02T19:49:50Z",
+      "version": "2026.8.2",
+      "vlan": 30,
+      "vm_id": 102,
+      "vm_name": "openclaw-corpus-2026-8-2-01"
+    },
+    {
+      "artifact": "artifacts/lab/2026-09-02/openclaw-2026.8.1/proxmox-attempt-02.json",
+      "attempt_id": "02",
+      "auth_mode": "token",
+      "capture_artifact": null,
+      "created_at": "2026-09-02T19:51:52Z",
+      "deleted_at": "2026-09-02T19:56:14Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-install-2026.8.1-diagnostic",
+        "command_recorded": false,
+        "reason": "deploy_command_failed",
+        "status": "failed"
+      },
+      "ip_or_hostname": "10.0.30.195",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": null,
+      "scanner_command": null,
+      "scanner_result": {
+        "reason": "deploy_command_failed",
+        "status": "deployment_failed"
+      },
+      "started_at": "2026-09-02T19:51:55Z",
+      "stopped_at": "2026-09-02T19:56:13Z",
+      "version": "2026.8.1",
+      "vlan": 30,
+      "vm_id": 102,
+      "vm_name": "openclaw-corpus-2026-8-1-02"
+    },
+    {
+      "artifact": "artifacts/lab/2026-09-02/openclaw-2026.8.1/proxmox-attempt-03.json",
+      "attempt_id": "03",
+      "auth_mode": "token",
+      "capture_artifact": null,
+      "created_at": "2026-09-02T19:57:13Z",
+      "deleted_at": "2026-09-02T20:01:25Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-install-2026.8.1-setup-diagnostic",
+        "command_recorded": false,
+        "reason": "deploy_command_failed",
+        "status": "failed"
+      },
+      "ip_or_hostname": "10.0.30.135",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": null,
+      "scanner_command": null,
+      "scanner_result": {
+        "reason": "deploy_command_failed",
+        "status": "deployment_failed"
+      },
+      "started_at": "2026-09-02T19:57:17Z",
+      "stopped_at": "2026-09-02T20:01:24Z",
+      "version": "2026.8.1",
+      "vlan": 30,
+      "vm_id": 102,
+      "vm_name": "openclaw-corpus-2026-8-1-03"
+    },
+    {
+      "artifact": "artifacts/lab/2026-09-02/openclaw-2026.8.1/proxmox-attempt-04.json",
+      "attempt_id": "04",
+      "auth_mode": "token",
+      "capture_artifact": null,
+      "created_at": "2026-09-02T20:02:19Z",
+      "deleted_at": "2026-09-02T20:06:20Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-install-2026.8.1-postinstall-diagnostic",
+        "command_recorded": false,
+        "reason": "deploy_command_failed",
+        "status": "failed"
+      },
+      "ip_or_hostname": "10.0.30.169",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": null,
+      "scanner_command": null,
+      "scanner_result": {
+        "reason": "deploy_command_failed",
+        "status": "deployment_failed"
+      },
+      "started_at": "2026-09-02T20:02:23Z",
+      "stopped_at": "2026-09-02T20:06:18Z",
+      "version": "2026.8.1",
+      "vlan": 30,
+      "vm_id": 102,
+      "vm_name": "openclaw-corpus-2026-8-1-04"
+    },
+    {
+      "artifact": "artifacts/lab/2026-09-02/openclaw-2026.8.1/proxmox-attempt-05.json",
+      "attempt_id": "05",
+      "auth_mode": "token",
+      "capture_artifact": null,
+      "created_at": "2026-09-02T20:07:51Z",
+      "deleted_at": "2026-09-02T20:11:57Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-install-2026.8.1-config-patch",
+        "command_recorded": false,
+        "reason": "deploy_command_failed",
+        "status": "failed"
+      },
+      "ip_or_hostname": "10.0.30.177",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": null,
+      "scanner_command": null,
+      "scanner_result": {
+        "reason": "deploy_command_failed",
+        "status": "deployment_failed"
+      },
+      "started_at": "2026-09-02T20:07:54Z",
+      "stopped_at": "2026-09-02T20:11:56Z",
+      "version": "2026.8.1",
+      "vlan": 30,
+      "vm_id": 102,
+      "vm_name": "openclaw-corpus-2026-8-1-05"
+    },
+    {
+      "artifact": "artifacts/lab/2026-09-02/openclaw-2026.8.1/proxmox-attempt-06.json",
+      "attempt_id": "06",
+      "auth_mode": "token",
+      "capture_artifact": null,
+      "created_at": "2026-09-02T20:12:36Z",
+      "deleted_at": "2026-09-02T20:17:39Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "openclaw-install-2026.8.1-config-patch-diagnostic",
+        "command_recorded": false,
+        "reason": "deploy_command_failed",
+        "status": "failed"
+      },
+      "ip_or_hostname": "10.0.30.146",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": null,
+      "scanner_command": null,
+      "scanner_result": {
+        "reason": "deploy_command_failed",
+        "status": "deployment_failed"
+      },
+      "started_at": "2026-09-02T20:12:41Z",
+      "stopped_at": "2026-09-02T20:17:23Z",
+      "version": "2026.8.1",
+      "vlan": 30,
+      "vm_id": 102,
+      "vm_name": "openclaw-corpus-2026-8-1-06"
+    },
+    {
+      "artifact": "artifacts/lab/2026-09-02/openclaw-2026.8.1/proxmox-attempt-07.json",
+      "attempt_id": "07",
+      "auth_mode": "token",
+      "capture_artifact": "artifacts/lab/2026-09-02/openclaw-2026.8.1/capture.json",
+      "created_at": "2026-09-02T20:22:49Z",
+      "deleted_at": "2026-09-02T20:27:10Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "modern-2026.8.1-schema-compatible",
+        "command_recorded": false,
+        "reason": null,
+        "status": "passed"
+      },
+      "ip_or_hostname": "10.0.30.186",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": "artifacts/lab/2026-09-02/openclaw-2026.8.1/scan.json",
+      "scanner_command": "python3 -m openclaw_scanner --target http://<ip>:18789 --capture-version <version> --capture-name <name> --capture-output <capture> --format json --output <scan>",
+      "scanner_result": {
+        "reason": null,
+        "status": "captured"
+      },
+      "started_at": "2026-09-02T20:22:53Z",
+      "stopped_at": "2026-09-02T20:27:09Z",
+      "version": "2026.8.1",
+      "vlan": 30,
+      "vm_id": 102,
+      "vm_name": "openclaw-corpus-2026-8-1-07"
+    },
+    {
+      "artifact": "artifacts/lab/2026-09-02/openclaw-2026.8.2/proxmox-attempt-02.json",
+      "attempt_id": "02",
+      "auth_mode": "token",
+      "capture_artifact": "artifacts/lab/2026-09-02/openclaw-2026.8.2/capture.json",
+      "created_at": "2026-09-02T20:27:48Z",
+      "deleted_at": "2026-09-02T20:32:27Z",
+      "deployment_method": "proxmox-vm-ssh-deploy",
+      "deployment_result": {
+        "command_label": "modern-2026.8.2-schema-compatible",
+        "command_recorded": false,
+        "reason": null,
+        "status": "passed"
+      },
+      "ip_or_hostname": "10.0.30.110",
+      "notes": null,
+      "port": 18789,
+      "product_family": "openclaw",
+      "scan_artifact": "artifacts/lab/2026-09-02/openclaw-2026.8.2/scan.json",
+      "scanner_command": "python3 -m openclaw_scanner --target http://<ip>:18789 --capture-version <version> --capture-name <name> --capture-output <capture> --format json --output <scan>",
+      "scanner_result": {
+        "reason": null,
+        "status": "captured"
+      },
+      "started_at": "2026-09-02T20:27:51Z",
+      "stopped_at": "2026-09-02T20:32:26Z",
+      "version": "2026.8.2",
+      "vlan": 30,
+      "vm_id": 102,
+      "vm_name": "openclaw-corpus-2026-8-2-02"
+    }
+  ]
+}

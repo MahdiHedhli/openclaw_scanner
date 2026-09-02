@@ -1,10 +1,37 @@
 # OpenClaw Scanner — Research Summary
 
-*Last updated: 2026-06-04 (Post-research implementation and calibration addendum)*
+*Last updated: 2026-09-02 (Stable corpus catch-up addendum)*
 
 This document maintains a running executive summary of all research findings produced during the scheduled research period (2026-03-19 to 2026-03-28) for improving the OpenClaw Scanner's detection, fingerprinting, and version identification capabilities. Post-research addenda track implementation, validation, and public-safe calibration results that materially change the scanner's research direction.
 
 **STATUS: RESEARCH PERIOD CONCLUDED.** All 13 original topics and 6 cross-cutting topics are complete. Current work is implementation and calibration follow-through, not broad new research.
+
+---
+
+## Post-Research Addendum (2026-09-02, Stable Corpus Catch-Up)
+
+The bounded release-watch workflow closed the stable capture gap through
+`2026.8.2`. Twelve releases after `2026.5.28` now have one independent VLAN 30
+capture each, and all lifecycle attempts were stopped and destroyed with zero
+corpus VMs left running.
+
+OpenClaw `2026.8.x` introduced a deployment compatibility boundary: its CLI
+requires `config patch --stdin`, and the former `models.pricing` configuration
+field is no longer valid. The fixes remain isolated in ignored version-scoped
+recipes and do not alter shared modern or legacy deployment paths.
+
+Candidate-rule generation found unique signals for all 12 releases, but every
+candidate remains `needs_more_evidence` because a single capture is not enough
+for promotion. Existing exact-version coverage therefore remains at 17
+lab-promoted releases through `2026.5.28`, while captured stable coverage now
+extends through `2026.8.2`. Strict saved-corpus validation passed all 34
+evaluated promoted captures, with the new single-capture versions explicitly
+treated as unpromoted evidence.
+
+**Scanner implication:** capture coverage and exact fingerprint coverage are
+separate milestones. Closing a package gap does not justify exact attribution
+until independent evidence and saved-capture validation satisfy the promotion
+policy.
 
 ---
 

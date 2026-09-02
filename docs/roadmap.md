@@ -14,9 +14,12 @@ out of scope unless explicitly approved.
   `2026.5.3-1`, `2026.5.7`, `2026.5.18`, `2026.5.19-beta.1`, `2026.5.20`,
   `2026.5.22`, `2026.5.24-beta.1`, `2026.5.24-beta.2`, and
   `2026.5.25-beta.1`, `2026.5.26`, `2026.5.27`, and `2026.5.28`.
-- The 2026-06-02 release-watch run closed the stable package gap through
-  `2026.5.28`. Later prereleases remain visible in release-gap reports but do
-  not trigger VM work unless prerelease coverage is explicitly requested.
+- The 2026-09-02 release-watch run closed the stable capture gap through
+  `2026.8.2`. It added one independent capture for each of 12 stable releases
+  after `2026.5.28`; all remain unpromoted until additional independent
+  evidence satisfies the corpus policy. Later prereleases remain visible in
+  release-gap reports but do not trigger VM work unless prerelease coverage is
+  explicitly requested.
 - Family classification is useful today, but many live signals do not map to a
   specific release without lab calibration.
 - Discovery now supports reusable Shodan query definitions, normalized Censys
@@ -72,8 +75,10 @@ out of scope unless explicitly approved.
 
 ## Priority Roadmap
 
-1. Continue expanding the known-version corpus beyond the 17 promoted exact
-   rules, with at least two captures per version before promotion.
+1. Add a second independent capture for the 12 stable releases from `2026.6.1`
+   through `2026.8.2`, then review their unique candidate signals for exact-rule
+   promotion. Keep the 17 currently promoted rules unchanged until validation
+   passes.
 2. Derive stable favicon hashes from saved lab captures and validate them before
    adding favicon-driven discovery queries or family rules.
 3. Promote `status_distribution_signature` from a raw observation into an

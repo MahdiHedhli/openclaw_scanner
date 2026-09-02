@@ -2,6 +2,30 @@
 
 ---
 
+## 2026-09-02 — Stable Corpus Catch-Up Through 2026.8.2
+
+**Topics:** release-gap closure, bounded VLAN 30 capture, deployment schema
+compatibility, candidate-rule review
+
+The release-watch queue captured all 12 stable releases missing after
+`2026.5.28`: `2026.6.1`, `2026.6.5`, `2026.6.6`, `2026.6.8`, `2026.6.9`,
+`2026.6.10`, `2026.6.11`, `2026.6.33`, `2026.6.34`, `2026.7.1`, `2026.8.1`,
+and `2026.8.2`.
+
+The `2026.8.x` package changed its configuration CLI from `config --stdin` to
+`config patch --stdin` and removed the legacy `models.pricing` field. Those
+compatibility changes were kept in ignored version-scoped recipes rather than
+committed into shared modern or legacy deployment paths.
+
+All 20 lifecycle attempts, including bounded diagnostics and retries, were
+stopped and destroyed. Final inventory reported zero running corpus VMs. Rule
+suggestion found unique candidate signals for every new version, but each has
+only one independent capture, so all 12 correctly remain
+`needs_more_evidence`; no exact rules were promoted. Saved-corpus validation
+still passed all 34 evaluated captures with existing promoted rules.
+
+---
+
 ## 2026-06-05 — Public Exposure Checker Deployment Sprint
 
 **Topics:** GitHub Pages frontend, Cloudflare Worker API, Turnstile gate,

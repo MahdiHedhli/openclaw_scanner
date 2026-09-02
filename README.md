@@ -364,11 +364,13 @@ releases:
 These rules are based on short-lived VLAN 30 captures and should be treated as
 high-value triage evidence. They are not exploit proof, and unusual deployment
 modes, proxies, custom builds, or hidden static assets can still reduce a scan
-to family-level confidence. As of the 2026-06-02 release-watch run, the stable
-package gap is closed through `2026.5.28`. As of a 2026-06-04 npm registry
-check, the latest published OpenClaw package is `2026.6.1`; that release is not
-yet lab-promoted in this scanner and should go through the bounded release-watch
-capture workflow before exact-version rules are added.
+to family-level confidence. The 2026-09-02 release-watch run closed the stable
+capture gap through `2026.8.2`, adding one independent capture for each of 12
+stable releases after `2026.5.28`. Those newer captures remain unpromoted until
+additional independent evidence satisfies the corpus policy, so bundled exact
+rules still end at `2026.5.28`. The same registry check observed
+`2026.9.1-beta.1` as the latest published prerelease; prereleases do not trigger
+VM work unless their coverage is explicitly requested.
 
 ## Input formats
 
